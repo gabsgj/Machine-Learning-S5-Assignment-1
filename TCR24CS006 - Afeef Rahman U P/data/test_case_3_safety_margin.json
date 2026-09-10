@@ -1,0 +1,22 @@
+{
+  "testName": "Test Case 3: Safety Margin & Tradeoff",
+  "description": "Short Path S->A->G close to obstacle vs Long Path S->C->D->G far away.",
+  "initialState": 1,
+  "goalState": 4,
+  "badStates": [3],
+  "states": [
+    {"id": 1, "embedding": [0.0, 0.0], "label": "S (Start)"},
+    {"id": 2, "embedding": [1.0, 0.2], "label": "A (Close to Bad)"},
+    {"id": 3, "embedding": [1.0, 0.8], "label": "B_BAD (Obstacle)"},
+    {"id": 4, "embedding": [2.0, 0.0], "label": "G (Goal)"},
+    {"id": 5, "embedding": [0.5, -2.0], "label": "C (Wide Safe Arc)"},
+    {"id": 6, "embedding": [1.5, -2.0], "label": "D (Wide Safe Arc)"}
+  ],
+  "transitions": [
+    {"id": 1, "from": 1, "to": 2, "cost": 1.0, "safety": 0.5, "reliability": 0.9, "available": true},
+    {"id": 2, "from": 2, "to": 4, "cost": 1.0, "safety": 0.5, "reliability": 0.9, "available": true},
+    {"id": 3, "from": 1, "to": 5, "cost": 1.2, "safety": 1.0, "reliability": 0.99, "available": true},
+    {"id": 4, "from": 5, "to": 6, "cost": 1.1, "safety": 1.0, "reliability": 0.99, "available": true},
+    {"id": 5, "from": 6, "to": 4, "cost": 1.2, "safety": 1.0, "reliability": 0.99, "available": true}
+  ]
+}

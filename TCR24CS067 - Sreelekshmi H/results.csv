@@ -1,0 +1,4 @@
+Test Case,State Path,Transition Path,Total Cost,Minimum Safety Distance,Explored States,Planning Time (ms),Bad States Visited,Estimated Memory (KB)
+Test 1 - Basic path,1 -> 2 -> 4,1 -> 2,5.0,inf,8,0.35,0,0.0
+Test 2 - Bad-state avoidance,1 -> 4,4,10.0,1.41,8,0.03,0,0.19
+Test 3 - Safe path,1 -> 4 -> 5 -> 6,3 -> 4 -> 5,5.0,1.41,12,0.04,0,0.31

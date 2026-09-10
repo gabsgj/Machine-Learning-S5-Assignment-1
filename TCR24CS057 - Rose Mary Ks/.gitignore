@@ -1,0 +1,6 @@
+planner
+planner.exe
+*.o
+*.out
+.vscode/
+.idea/

@@ -1,0 +1,31 @@
+PCCST503 Safe Semantic Planner Test Cases
+
+Test Case 1:
+S -> A -> B -> G
+
+Test Case 2:
+S -> A -> X -> G
+X is a bad state.
+
+Alternative:
+S -> C -> D -> G
+
+Test Case 3:
+Two valid paths exist.
+Path 1 has lower cost but is close to a bad state.
+Path 2 has higher cost but provides a larger safety margin.
+
+Test Case 4:
+Initial:
+S -> A -> G
+
+Transition A -> G becomes unavailable.
+Planner must find an alternative path.
+
+Test Case 5:
+Goal changes during execution.
+Planner must calculate a revised path.
+
+Test Case 6:
+A new shortcut transition is added.
+Planner must discover the improved solution.

@@ -1,0 +1,27 @@
+PCCST503 Assignment 1 demonstration scenarios
+
+The executable src/main.cpp constructs these scenarios directly.
+
+1. Basic Reachability
+   S -> A -> B -> G
+   Expected: unique valid route.
+
+2. Bad State Avoidance
+   Direct route contains a bad state.
+   Expected: safe detour is selected.
+
+3. Safety Margin
+   Two safe routes have different proximity to a bad state.
+   Expected: safety penalty influences the selected route.
+
+4. Dynamic Transition
+   A previously useful transition becomes unavailable.
+   Expected: D* Lite repairs the route.
+
+5. Goal Update
+   The goal changes after an initial plan.
+   Expected: planner replans toward the new goal.
+
+6. Transition Addition
+   A shortcut is inserted.
+   Expected: planner can use the new transition.

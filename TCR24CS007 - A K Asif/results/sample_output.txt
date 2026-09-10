@@ -1,0 +1,107 @@
+========================================
+ SAFE SEMANTIC PLANNER - PCCST503
+========================================
+
+Test Case 1: Basic Reachability
+===============================
+Status: SUCCESS
+Path: 1 -> 2 -> 3 -> 4
+Total cost: 6.0000
+Minimum safety distance: 1000000000.0000
+Cumulative reliability: 0.8574
+Explored states: 6
+Planning time (ms): 0.0817
+Memory usage (KB): 5260
+
+Test Case 2: Bad State Avoidance
+================================
+Status: SUCCESS
+Path: 1 -> 5 -> 6 -> 4
+Total cost: 9.0000
+Minimum safety distance: 1.4142
+Cumulative reliability: 0.7290
+Explored states: 5
+Planning time (ms): 0.0463
+Memory usage (KB): 5260
+
+Test Case 3: Safety Margin
+==========================
+Status: SUCCESS
+Path: 1 -> 5 -> 6 -> 4
+Total cost: 9.0000
+Minimum safety distance: 1.2806
+Cumulative reliability: 0.7290
+Explored states: 6
+Planning time (ms): 0.0612
+Memory usage (KB): 5260
+
+Test Case 4A: Initial Path
+==========================
+Status: SUCCESS
+Path: 1 -> 2 -> 4
+Total cost: 2.0000
+Minimum safety distance: 1000000000.0000
+Cumulative reliability: 0.8100
+Explored states: 4
+Planning time (ms): 0.0328
+Memory usage (KB): 5260
+
+Test Case 4B: After Transition Removal
+======================================
+Status: SUCCESS
+Path: 1 -> 3 -> 4
+Total cost: 4.0000
+Minimum safety distance: 1000000000.0000
+Cumulative reliability: 0.8100
+Explored states: 3
+Planning time (ms): 0.0000
+Replanning time (ms): 0.0293
+Memory usage (KB): 5260
+
+Test Case 5A: Original Goal
+===========================
+Status: SUCCESS
+Path: 1 -> 2 -> 3 -> 4
+Total cost: 6.0000
+Minimum safety distance: 1000000000.0000
+Cumulative reliability: 0.8574
+Explored states: 6
+Planning time (ms): 0.0473
+Memory usage (KB): 5260
+
+Test Case 5B: Goal Updated
+==========================
+Status: SUCCESS
+Path: 1 -> 5 -> 6
+Total cost: 6.0000
+Minimum safety distance: 1000000000.0000
+Cumulative reliability: 0.8100
+Explored states: 3
+Planning time (ms): 0.0000
+Replanning time (ms): 0.0368
+Memory usage (KB): 5260
+
+Test Case 6A: Before Shortcut
+=============================
+Status: SUCCESS
+Path: 1 -> 5 -> 6 -> 4
+Total cost: 9.0000
+Minimum safety distance: 1000000000.0000
+Cumulative reliability: 0.7290
+Explored states: 6
+Planning time (ms): 0.0416
+Memory usage (KB): 5260
+
+Test Case 6B: After Shortcut Added
+==================================
+Status: SUCCESS
+Path: 1 -> 4
+Total cost: 1.0000
+Minimum safety distance: 1000000000.0000
+Cumulative reliability: 0.9900
+Explored states: 6
+Planning time (ms): 0.0000
+Replanning time (ms): 0.0424
+Memory usage (KB): 5260
+
+Results saved to results/results.csv

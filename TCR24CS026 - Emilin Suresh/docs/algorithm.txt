@@ -1,0 +1,189 @@
+SAFE SEMANTIC PLANNER USING LIFELONG PLANNING A*
+
+ALGORITHM
+
+1. Start.
+
+2. Define the state representation.
+
+   * Represent each state as a node in the planning graph.
+   * Store the state identifier, heuristic value, safety information and other required properties.
+
+3. Define the transition representation.
+
+   * Represent each possible action/transition as an edge between two states.
+   * Store the transition cost and safety-related information.
+
+4. Define the planning problem.
+
+   * Specify the initial state.
+   * Specify the goal state.
+   * Store all available states and transitions.
+   * Define the safety threshold and other planning parameters.
+
+5. Initialize the LPA* planner.
+
+   * Create the planner object.
+   * Initialize the cost values g(s) and rhs(s) for every state.
+   * Set g(s) = infinity for all states.
+   * Set rhs(s) = infinity for all states.
+   * Set rhs(goal) = 0.
+   * Insert the goal state into the priority queue.
+
+6. Calculate the priority key of a state.
+
+   * Calculate the minimum of g(s) and rhs(s).
+   * Add the heuristic estimate between the state and the start state.
+   * Use the calculated values as the priority key for the LPA* queue.
+
+7. Execute the LPA* shortest-path computation.
+
+   * Select the state with the smallest priority key from the priority queue.
+   * Compare its g-value and rhs-value.
+   * If g(s) > rhs(s), update g(s) using rhs(s).
+   * Otherwise, set g(s) to infinity and update its affected predecessors.
+   * Continue processing states until the start state becomes locally consistent or the queue becomes empty.
+
+8. Check transition safety.
+
+   * Examine the safety information associated with each transition.
+   * Reject transitions that violate the specified safety constraints.
+   * Continue planning using safe alternatives whenever available.
+
+9. Generate the final path.
+
+   * Start from the initial state.
+   * Select the valid successor that gives the minimum cost while satisfying the safety constraint.
+   * Continue until the goal state is reached.
+
+10. Handle dynamic changes.
+
+    * Detect changes in transition costs, transition availability, or goal conditions.
+    * Update the affected states.
+    * Recalculate their rhs-values.
+    * Insert inconsistent states into the priority queue.
+    * Reuse previously calculated information instead of planning completely from scratch.
+
+11. Evaluate the resulting plan.
+
+    * Determine whether the goal is reachable.
+    * Calculate total path cost.
+    * Calculate the minimum safety distance/margin.
+    * Record the planning result and required performance information.
+
+12. Execute the required test cases:
+
+    * Test Case 1: Basic Reachability.
+    * Test Case 2: Avoid Bad State.
+    * Test Case 3: Safety-aware Path.
+    * Test Case 4: Transition Update.
+    * Test Case 5: Goal Update.
+    * Test Case 6: Transition Addition.
+
+13. Store the experimental results in the required output file.
+
+14. Display the test-case results.
+
+15. Stop.
+
+PSEUDOCODE
+
+LPA_STAR(problem):
+
+```
+Initialize all states
+
+for every state s:
+    g(s) = infinity
+    rhs(s) = infinity
+
+rhs(goal) = 0
+
+Insert goal into priority queue
+
+while priority queue is not empty:
+
+    u = state with minimum priority key
+
+    if g(u) > rhs(u):
+        g(u) = rhs(u)
+
+        for every predecessor p of u:
+            update(p)
+
+    else:
+        g(u) = infinity
+
+        update(u)
+
+        for every predecessor p of u:
+            update(p)
+
+    if start state is locally consistent:
+        stop
+
+Construct path from start to goal
+
+Check safety constraints
+
+Return path, cost and safety information
+```
+
+UPDATE(s):
+
+```
+if s is not the goal:
+    rhs(s) = minimum cost of:
+             cost(s, successor) + g(successor)
+
+if s is already in the priority queue:
+    remove it
+
+if g(s) != rhs(s):
+    insert s into the priority queue
+```
+
+DYNAMIC UPDATE:
+
+```
+When a transition cost or transition availability changes:
+
+    Update the affected transition
+
+    Identify affected states
+
+    Recalculate their rhs-values
+
+    Insert inconsistent states into the priority queue
+
+    Run LPA* again
+
+When the goal changes:
+
+    Update the goal state
+
+    Recalculate the affected values
+
+    Reuse existing planning information
+
+    Continue LPA* computation
+```
+
+SAFETY-AWARE PATH SELECTION:
+
+```
+Start at the initial state
+
+while current state is not the goal:
+
+    Examine all valid successors
+
+    Remove successors that violate safety constraints
+
+    Among the remaining successors,
+    select the successor with the lowest valid cost
+
+    Move to the selected successor
+
+Return the resulting safe path
+```

@@ -1,0 +1,18 @@
+{
+  "testName": "Test Case 1: Basic Reachability",
+  "description": "Linear graph S -> A -> B -> G. Verifies basic path generation.",
+  "initialState": 1,
+  "goalState": 4,
+  "badStates": [],
+  "states": [
+    {"id": 1, "embedding": [0.0, 0.0], "label": "S (Start)"},
+    {"id": 2, "embedding": [1.0, 0.0], "label": "A"},
+    {"id": 3, "embedding": [2.0, 0.0], "label": "B"},
+    {"id": 4, "embedding": [3.0, 0.0], "label": "G (Goal)"}
+  ],
+  "transitions": [
+    {"id": 1, "from": 1, "to": 2, "cost": 1.0, "safety": 1.0, "reliability": 1.0, "available": true},
+    {"id": 2, "from": 2, "to": 3, "cost": 1.0, "safety": 1.0, "reliability": 1.0, "available": true},
+    {"id": 3, "from": 3, "to": 4, "cost": 1.0, "safety": 1.0, "reliability": 1.0, "available": true}
+  ]
+}

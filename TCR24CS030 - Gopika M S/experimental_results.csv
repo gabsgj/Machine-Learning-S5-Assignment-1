@@ -1,0 +1,11 @@
+Test,Success,State Path,Transition Path,Total Cost,Minimum Safety Distance,Cumulative Reliability,Explored States,Planning Time (ms)
+Test 1 - Basic Reachability,True,0->1->2->3,0->1->2,3.0,1.0,0.8574,4,0.1
+Test 2 - Bad State Avoidance,True,0->2->4->3,3->4->5,4.0,1.0,0.8574,5,0.1
+Test 3A - Cost Focused,True,0->1->3,0->1,2.0,1.0,0.9025,3,0.1
+Test 3B - Safety Weighted,True,0->1->3,0->1,2.0,1.0,0.9025,3,0.1
+Test 4A - Before Transition Failure,True,0->1->3,0->1,2.0,1.0,0.9025,3,0.1
+Test 4B - After Transition Failure,True,0->2->4->3,2->3->4,3.2,1.0,0.8574,5,0.1
+Test 5A - Original Goal,True,0->1->3,0->1,2.0,1.0,0.9025,3,0.1
+Test 5B - Updated Goal,True,0->2->4,2->3,2.0,1.0,0.9025,3,0.1
+Test 6A - Before Shortcut,True,0->1->3,0->1,4.0,1.0,0.9025,3,0.1
+Test 6B - After Shortcut,True,0->3,99,0.5,1.0,0.99,2,0.1

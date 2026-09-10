@@ -1,0 +1,76 @@
+{
+  "benchmarks": [
+    {
+      "nodes": 20,
+      "dimensions": 4,
+      "badRatio": 0.15,
+      "initTimeMs": 0.0806,
+      "scratchTimeMs": 0.0709,
+      "replanTimeMs": 0.0182,
+      "speedup": 3.8956,
+      "replanExp": 12,
+      "scratchExp": 1,
+      "success": false
+    },
+    {
+      "nodes": 50,
+      "dimensions": 4,
+      "badRatio": 0.15,
+      "initTimeMs": 0.1778,
+      "scratchTimeMs": 0.1342,
+      "replanTimeMs": 0.0698,
+      "speedup": 1.92264,
+      "replanExp": 24,
+      "scratchExp": 1,
+      "success": false
+    },
+    {
+      "nodes": 100,
+      "dimensions": 4,
+      "badRatio": 0.15,
+      "initTimeMs": 0.4809,
+      "scratchTimeMs": 0.5537,
+      "replanTimeMs": 0.0947,
+      "speedup": 5.84688,
+      "replanExp": 13,
+      "scratchExp": 24,
+      "success": true
+    },
+    {
+      "nodes": 250,
+      "dimensions": 4,
+      "badRatio": 0.15,
+      "initTimeMs": 1.5206,
+      "scratchTimeMs": 1.0284,
+      "replanTimeMs": 0.0166,
+      "speedup": 61.9518,
+      "replanExp": 0,
+      "scratchExp": 5,
+      "success": true
+    },
+    {
+      "nodes": 500,
+      "dimensions": 4,
+      "badRatio": 0.15,
+      "initTimeMs": 6.6811,
+      "scratchTimeMs": 5.9845,
+      "replanTimeMs": 2.2106,
+      "speedup": 2.70718,
+      "replanExp": 7,
+      "scratchExp": 7,
+      "success": true
+    },
+    {
+      "nodes": 1000,
+      "dimensions": 4,
+      "badRatio": 0.15,
+      "initTimeMs": 36.7248,
+      "scratchTimeMs": 37.0219,
+      "replanTimeMs": 4.4761,
+      "speedup": 8.27102,
+      "replanExp": 4,
+      "scratchExp": 33,
+      "success": true
+    }
+  ]
+}

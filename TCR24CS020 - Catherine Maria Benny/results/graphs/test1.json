@@ -1,0 +1,30 @@
+{
+  "label": "Test Case 1",
+  "states": [
+    {"id": 0, "embedding": [0, 0], "bad": false, "onPath": true},
+    {"id": 1, "embedding": [1, 0], "bad": false, "onPath": true},
+    {"id": 2, "embedding": [2, 0], "bad": false, "onPath": true},
+    {"id": 3, "embedding": [3, 0], "bad": false, "onPath": true}
+  ],
+  "transitions": [
+    {"id": 0, "from": 0, "to": 1, "cost": 1, "safety": 0.9, "reliability": 0.95, "available": true, "onPath": true},
+    {"id": 1, "from": 1, "to": 2, "cost": 1, "safety": 0.9, "reliability": 0.95, "available": true, "onPath": true},
+    {"id": 2, "from": 2, "to": 3, "cost": 1, "safety": 0.9, "reliability": 0.95, "available": true, "onPath": true}
+  ],
+  "initialState": 0,
+  "goalState": 3,
+  "badStates": [],
+  "statePath": [0, 1, 2, 3],
+  "transitionPath": [0, 1, 2],
+  "metrics": {
+    "success": true,
+    "totalCost": 3,
+    "minimumSafetyDistance": null,
+    "reliability": 0.857375,
+    "objectiveScore": 2105.57,
+    "badStatesVisited": 0,
+    "exploredStates": 4,
+    "planningTimeMs": 0.020039,
+    "errorMessage": ""
+  }
+}

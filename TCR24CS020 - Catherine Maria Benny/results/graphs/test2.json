@@ -1,0 +1,35 @@
+{
+  "label": "Test Case 2",
+  "states": [
+    {"id": 0, "embedding": [0, 0], "bad": false, "onPath": true},
+    {"id": 1, "embedding": [1, 1], "bad": false, "onPath": false},
+    {"id": 2, "embedding": [2, 1], "bad": true, "onPath": false},
+    {"id": 3, "embedding": [1, -1], "bad": false, "onPath": true},
+    {"id": 4, "embedding": [3, 0], "bad": false, "onPath": true},
+    {"id": 5, "embedding": [2, -1], "bad": false, "onPath": true}
+  ],
+  "transitions": [
+    {"id": 0, "from": 0, "to": 1, "cost": 1.5, "safety": 0.9, "reliability": 0.95, "available": true, "onPath": false},
+    {"id": 1, "from": 1, "to": 2, "cost": 1, "safety": 0.9, "reliability": 0.95, "available": true, "onPath": false},
+    {"id": 2, "from": 2, "to": 4, "cost": 1.5, "safety": 0.9, "reliability": 0.95, "available": true, "onPath": false},
+    {"id": 3, "from": 0, "to": 3, "cost": 1.5, "safety": 0.9, "reliability": 0.95, "available": true, "onPath": true},
+    {"id": 4, "from": 3, "to": 5, "cost": 1, "safety": 0.9, "reliability": 0.95, "available": true, "onPath": true},
+    {"id": 5, "from": 5, "to": 4, "cost": 1.5, "safety": 0.9, "reliability": 0.95, "available": true, "onPath": true}
+  ],
+  "initialState": 0,
+  "goalState": 4,
+  "badStates": [2],
+  "statePath": [0, 3, 5, 4],
+  "transitionPath": [3, 4, 5],
+  "metrics": {
+    "success": true,
+    "totalCost": 4,
+    "minimumSafetyDistance": 1.41421,
+    "reliability": 0.857375,
+    "objectiveScore": 107.402,
+    "badStatesVisited": 0,
+    "exploredStates": 5,
+    "planningTimeMs": 0.0718,
+    "errorMessage": ""
+  }
+}

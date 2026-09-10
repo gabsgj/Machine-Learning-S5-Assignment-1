@@ -1,0 +1,58 @@
+Safe Semantic Planner - D* Lite demonstration
+
+[Test 1: Basic Reachability]
+success: true
+state path: 0 -> 1 -> 2 -> 5
+total cost: 3.0000
+minimum safety distance: 0.0000
+cumulative reliability: 0.8574
+explored states: 4
+planning time (ms): 0.8149
+
+[Test 2: Bad State Avoidance]
+success: true
+state path: 0 -> 3 -> 4 -> 5
+total cost: 3.2000
+minimum safety distance: 2.0000
+cumulative reliability: 0.8574
+explored states: 6
+planning time (ms): 0.1149
+
+[Test 3: Safety Margin]
+success: true
+state path: 0 -> 3 -> 4 -> 5
+total cost: 3.2000
+minimum safety distance: 1.4142
+cumulative reliability: 0.8574
+explored states: 6
+planning time (ms): 0.0439
+
+[Test 4: Dynamic Transition Removal]
+success: true
+state path: 0 -> 1 -> 6 -> 5
+total cost: 2.8000
+minimum safety distance: 0.0000
+cumulative reliability: 0.8574
+explored states: 6
+planning time (ms): 0.0240
+replanning time (ms): 0.0240
+
+[Test 5: Goal Update]
+success: true
+state path: 0 -> 3 -> 4
+total cost: 2.2000
+minimum safety distance: 0.0000
+cumulative reliability: 0.9025
+explored states: 3
+planning time (ms): 0.0069
+replanning time (ms): 0.0069
+
+[Test 6: Transition Addition]
+success: true
+state path: 0 -> 5
+total cost: 0.5000
+minimum safety distance: 0.0000
+cumulative reliability: 0.9900
+explored states: 1
+planning time (ms): 0.0020
+replanning time (ms): 0.0020

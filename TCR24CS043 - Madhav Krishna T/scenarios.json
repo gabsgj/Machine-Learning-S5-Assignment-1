@@ -1,0 +1,4782 @@
+{
+  "scenarios": [
+    {
+      "id": "TC1",
+      "name": "TC1: Nominal Baseline",
+      "description": "Topological grid with no hazard zones. Demonstrates optimal admissible heuristic search from S to G.",
+      "triggerLabel": "Re-verify Baseline Path (S → G)",
+      "triggerDescription": "Re-runs shortest path calculation to confirm baseline optimality from S to G.",
+      "triggerAction": {
+        "type": "recompute",
+        "displayText": "Baseline shortest path re-evaluated (S → G)"
+      },
+      "weights": {
+        "alpha": 1,
+        "beta": 1,
+        "gamma": 1,
+        "delta": 0.1,
+        "r": 0
+      },
+      "problem": {
+        "initialState": "s_0_0",
+        "goalState": "s_5_5",
+        "badStates": [],
+        "states": [
+          {
+            "id": "s_0_0",
+            "label": "S",
+            "embedding": [
+              0,
+              0
+            ]
+          },
+          {
+            "id": "s_1_0",
+            "label": "A1",
+            "embedding": [
+              1,
+              0
+            ]
+          },
+          {
+            "id": "s_2_0",
+            "label": "A2",
+            "embedding": [
+              2,
+              0
+            ]
+          },
+          {
+            "id": "s_3_0",
+            "label": "A3",
+            "embedding": [
+              3,
+              0
+            ]
+          },
+          {
+            "id": "s_4_0",
+            "label": "A4",
+            "embedding": [
+              4,
+              0
+            ]
+          },
+          {
+            "id": "s_5_0",
+            "label": "A5",
+            "embedding": [
+              5,
+              0
+            ]
+          },
+          {
+            "id": "s_0_1",
+            "label": "B1",
+            "embedding": [
+              0,
+              1
+            ]
+          },
+          {
+            "id": "s_1_1",
+            "label": "A",
+            "embedding": [
+              1,
+              1
+            ]
+          },
+          {
+            "id": "s_2_1",
+            "label": "B2",
+            "embedding": [
+              2,
+              1
+            ]
+          },
+          {
+            "id": "s_3_1",
+            "label": "B3",
+            "embedding": [
+              3,
+              1
+            ]
+          },
+          {
+            "id": "s_4_1",
+            "label": "B4",
+            "embedding": [
+              4,
+              1
+            ]
+          },
+          {
+            "id": "s_5_1",
+            "label": "B5",
+            "embedding": [
+              5,
+              1
+            ]
+          },
+          {
+            "id": "s_0_2",
+            "label": "C1",
+            "embedding": [
+              0,
+              2
+            ]
+          },
+          {
+            "id": "s_1_2",
+            "label": "C2",
+            "embedding": [
+              1,
+              2
+            ]
+          },
+          {
+            "id": "s_2_2",
+            "label": "B",
+            "embedding": [
+              2,
+              2
+            ]
+          },
+          {
+            "id": "s_3_2",
+            "label": "C3",
+            "embedding": [
+              3,
+              2
+            ]
+          },
+          {
+            "id": "s_4_2",
+            "label": "C4",
+            "embedding": [
+              4,
+              2
+            ]
+          },
+          {
+            "id": "s_5_2",
+            "label": "C5",
+            "embedding": [
+              5,
+              2
+            ]
+          },
+          {
+            "id": "s_0_3",
+            "label": "D1",
+            "embedding": [
+              0,
+              3
+            ]
+          },
+          {
+            "id": "s_1_3",
+            "label": "D2",
+            "embedding": [
+              1,
+              3
+            ]
+          },
+          {
+            "id": "s_2_3",
+            "label": "D3",
+            "embedding": [
+              2,
+              3
+            ]
+          },
+          {
+            "id": "s_3_3",
+            "label": "C",
+            "embedding": [
+              3,
+              3
+            ]
+          },
+          {
+            "id": "s_4_3",
+            "label": "D4",
+            "embedding": [
+              4,
+              3
+            ]
+          },
+          {
+            "id": "s_5_3",
+            "label": "D5",
+            "embedding": [
+              5,
+              3
+            ]
+          },
+          {
+            "id": "s_0_4",
+            "label": "E1",
+            "embedding": [
+              0,
+              4
+            ]
+          },
+          {
+            "id": "s_1_4",
+            "label": "E2",
+            "embedding": [
+              1,
+              4
+            ]
+          },
+          {
+            "id": "s_2_4",
+            "label": "E3",
+            "embedding": [
+              2,
+              4
+            ]
+          },
+          {
+            "id": "s_3_4",
+            "label": "E4",
+            "embedding": [
+              3,
+              4
+            ]
+          },
+          {
+            "id": "s_4_4",
+            "label": "D",
+            "embedding": [
+              4,
+              4
+            ]
+          },
+          {
+            "id": "s_5_4",
+            "label": "E5",
+            "embedding": [
+              5,
+              4
+            ]
+          },
+          {
+            "id": "s_0_5",
+            "label": "F1",
+            "embedding": [
+              0,
+              5
+            ]
+          },
+          {
+            "id": "s_1_5",
+            "label": "F2",
+            "embedding": [
+              1,
+              5
+            ]
+          },
+          {
+            "id": "s_2_5",
+            "label": "F3",
+            "embedding": [
+              2,
+              5
+            ]
+          },
+          {
+            "id": "s_3_5",
+            "label": "F4",
+            "embedding": [
+              3,
+              5
+            ]
+          },
+          {
+            "id": "s_4_5",
+            "label": "F5",
+            "embedding": [
+              4,
+              5
+            ]
+          },
+          {
+            "id": "s_5_5",
+            "label": "G",
+            "embedding": [
+              5,
+              5
+            ]
+          }
+        ],
+        "transitions": [
+          {
+            "id": "t1",
+            "from": "s_0_0",
+            "to": "s_1_0",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2",
+            "from": "s_0_0",
+            "to": "s_0_1",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t3",
+            "from": "s_0_0",
+            "to": "s_1_1",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t4",
+            "from": "s_1_0",
+            "to": "s_2_0",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t5",
+            "from": "s_1_0",
+            "to": "s_1_1",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t6",
+            "from": "s_1_0",
+            "to": "s_2_1",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t7",
+            "from": "s_0_1",
+            "to": "s_1_1",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t8",
+            "from": "s_0_1",
+            "to": "s_0_2",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t9",
+            "from": "s_0_1",
+            "to": "s_1_2",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t10",
+            "from": "s_1_1",
+            "to": "s_2_1",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t11",
+            "from": "s_1_1",
+            "to": "s_1_2",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t12",
+            "from": "s_1_1",
+            "to": "s_2_2",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t13",
+            "from": "s_2_0",
+            "to": "s_3_0",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t14",
+            "from": "s_2_0",
+            "to": "s_2_1",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t15",
+            "from": "s_2_0",
+            "to": "s_3_1",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t16",
+            "from": "s_2_1",
+            "to": "s_3_1",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t17",
+            "from": "s_2_1",
+            "to": "s_2_2",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t18",
+            "from": "s_2_1",
+            "to": "s_3_2",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t19",
+            "from": "s_1_2",
+            "to": "s_2_2",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t20",
+            "from": "s_1_2",
+            "to": "s_1_3",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t21",
+            "from": "s_1_2",
+            "to": "s_2_3",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t22",
+            "from": "s_2_2",
+            "to": "s_3_2",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t23",
+            "from": "s_2_2",
+            "to": "s_2_3",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t24",
+            "from": "s_2_2",
+            "to": "s_3_3",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t25",
+            "from": "s_3_0",
+            "to": "s_4_0",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t26",
+            "from": "s_3_0",
+            "to": "s_3_1",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t27",
+            "from": "s_3_0",
+            "to": "s_4_1",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t28",
+            "from": "s_3_1",
+            "to": "s_4_1",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t29",
+            "from": "s_3_1",
+            "to": "s_3_2",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t30",
+            "from": "s_3_1",
+            "to": "s_4_2",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t31",
+            "from": "s_3_2",
+            "to": "s_4_2",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t32",
+            "from": "s_3_2",
+            "to": "s_3_3",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t33",
+            "from": "s_3_2",
+            "to": "s_4_3",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t34",
+            "from": "s_2_3",
+            "to": "s_3_3",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t35",
+            "from": "s_2_3",
+            "to": "s_2_4",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t36",
+            "from": "s_2_3",
+            "to": "s_3_4",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t37",
+            "from": "s_3_3",
+            "to": "s_4_3",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t38",
+            "from": "s_3_3",
+            "to": "s_3_4",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t39",
+            "from": "s_3_3",
+            "to": "s_4_4",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t40",
+            "from": "s_4_0",
+            "to": "s_5_0",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t41",
+            "from": "s_4_0",
+            "to": "s_4_1",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t42",
+            "from": "s_4_0",
+            "to": "s_5_1",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t43",
+            "from": "s_4_1",
+            "to": "s_5_1",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t44",
+            "from": "s_4_1",
+            "to": "s_4_2",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t45",
+            "from": "s_4_1",
+            "to": "s_5_2",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t46",
+            "from": "s_4_2",
+            "to": "s_5_2",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t47",
+            "from": "s_4_2",
+            "to": "s_4_3",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t48",
+            "from": "s_4_2",
+            "to": "s_5_3",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t49",
+            "from": "s_4_3",
+            "to": "s_5_3",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t50",
+            "from": "s_4_3",
+            "to": "s_4_4",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t51",
+            "from": "s_4_3",
+            "to": "s_5_4",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t52",
+            "from": "s_3_4",
+            "to": "s_4_4",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t53",
+            "from": "s_3_4",
+            "to": "s_3_5",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t54",
+            "from": "s_3_4",
+            "to": "s_4_5",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t55",
+            "from": "s_4_4",
+            "to": "s_5_4",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t56",
+            "from": "s_4_4",
+            "to": "s_4_5",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t57",
+            "from": "s_4_4",
+            "to": "s_5_5",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t58",
+            "from": "s_5_0",
+            "to": "s_5_1",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t59",
+            "from": "s_5_1",
+            "to": "s_5_2",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t60",
+            "from": "s_5_2",
+            "to": "s_5_3",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t61",
+            "from": "s_5_3",
+            "to": "s_5_4",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t62",
+            "from": "s_5_4",
+            "to": "s_5_5",
+            "cost": 1,
+            "reliability": 0.95
+          }
+        ]
+      }
+    },
+    {
+      "id": "TC2",
+      "name": "TC2: Safety Margin Sweep",
+      "description": "Hazard state X at (3,3). Tunable safety radius r forces the path to cleanly detour around the exclusion buffer shield.",
+      "triggerLabel": "Expand Safety Margin (r: 0.50 → 1.50 → 2.50)",
+      "triggerDescription": "Cycles radius r across 0.50, 1.50, and 2.50 to demonstrate safety detours with zero hazard visits.",
+      "triggerAction": {
+        "type": "cycle_radius",
+        "radii": [
+          0.5,
+          1.5,
+          2.5
+        ],
+        "displayText": "Safety exclusion radius updated to {r} u"
+      },
+      "weights": {
+        "alpha": 1,
+        "beta": 1,
+        "gamma": 1,
+        "delta": 0.1,
+        "r": 1.5
+      },
+      "problem": {
+        "initialState": "s_0_0",
+        "goalState": "s_6_6",
+        "badStates": [
+          "s_3_3"
+        ],
+        "states": [
+          {
+            "id": "s_0_0",
+            "label": "S",
+            "embedding": [
+              0,
+              0
+            ]
+          },
+          {
+            "id": "s_1_0",
+            "label": "A1",
+            "embedding": [
+              1,
+              0
+            ]
+          },
+          {
+            "id": "s_2_0",
+            "label": "A2",
+            "embedding": [
+              2,
+              0
+            ]
+          },
+          {
+            "id": "s_3_0",
+            "label": "A3",
+            "embedding": [
+              3,
+              0
+            ]
+          },
+          {
+            "id": "s_4_0",
+            "label": "A4",
+            "embedding": [
+              4,
+              0
+            ]
+          },
+          {
+            "id": "s_5_0",
+            "label": "A5",
+            "embedding": [
+              5,
+              0
+            ]
+          },
+          {
+            "id": "s_6_0",
+            "label": "A6",
+            "embedding": [
+              6,
+              0
+            ]
+          },
+          {
+            "id": "s_0_1",
+            "label": "B1",
+            "embedding": [
+              0,
+              1
+            ]
+          },
+          {
+            "id": "s_1_1",
+            "label": "A",
+            "embedding": [
+              1,
+              1
+            ]
+          },
+          {
+            "id": "s_2_1",
+            "label": "B2",
+            "embedding": [
+              2,
+              1
+            ]
+          },
+          {
+            "id": "s_3_1",
+            "label": "B3",
+            "embedding": [
+              3,
+              1
+            ]
+          },
+          {
+            "id": "s_4_1",
+            "label": "B4",
+            "embedding": [
+              4,
+              1
+            ]
+          },
+          {
+            "id": "s_5_1",
+            "label": "B5",
+            "embedding": [
+              5,
+              1
+            ]
+          },
+          {
+            "id": "s_6_1",
+            "label": "B6",
+            "embedding": [
+              6,
+              1
+            ]
+          },
+          {
+            "id": "s_0_2",
+            "label": "C1",
+            "embedding": [
+              0,
+              2
+            ]
+          },
+          {
+            "id": "s_1_2",
+            "label": "C2",
+            "embedding": [
+              1,
+              2
+            ]
+          },
+          {
+            "id": "s_2_2",
+            "label": "B",
+            "embedding": [
+              2,
+              2
+            ]
+          },
+          {
+            "id": "s_3_2",
+            "label": "C3",
+            "embedding": [
+              3,
+              2
+            ]
+          },
+          {
+            "id": "s_4_2",
+            "label": "C4",
+            "embedding": [
+              4,
+              2
+            ]
+          },
+          {
+            "id": "s_5_2",
+            "label": "C5",
+            "embedding": [
+              5,
+              2
+            ]
+          },
+          {
+            "id": "s_6_2",
+            "label": "C6",
+            "embedding": [
+              6,
+              2
+            ]
+          },
+          {
+            "id": "s_0_3",
+            "label": "D1",
+            "embedding": [
+              0,
+              3
+            ]
+          },
+          {
+            "id": "s_1_3",
+            "label": "D2",
+            "embedding": [
+              1,
+              3
+            ]
+          },
+          {
+            "id": "s_2_3",
+            "label": "D3",
+            "embedding": [
+              2,
+              3
+            ]
+          },
+          {
+            "id": "s_3_3",
+            "label": "X",
+            "embedding": [
+              3,
+              3
+            ]
+          },
+          {
+            "id": "s_4_3",
+            "label": "D4",
+            "embedding": [
+              4,
+              3
+            ]
+          },
+          {
+            "id": "s_5_3",
+            "label": "D5",
+            "embedding": [
+              5,
+              3
+            ]
+          },
+          {
+            "id": "s_6_3",
+            "label": "D6",
+            "embedding": [
+              6,
+              3
+            ]
+          },
+          {
+            "id": "s_0_4",
+            "label": "E1",
+            "embedding": [
+              0,
+              4
+            ]
+          },
+          {
+            "id": "s_1_4",
+            "label": "E2",
+            "embedding": [
+              1,
+              4
+            ]
+          },
+          {
+            "id": "s_2_4",
+            "label": "E3",
+            "embedding": [
+              2,
+              4
+            ]
+          },
+          {
+            "id": "s_3_4",
+            "label": "E4",
+            "embedding": [
+              3,
+              4
+            ]
+          },
+          {
+            "id": "s_4_4",
+            "label": "C",
+            "embedding": [
+              4,
+              4
+            ]
+          },
+          {
+            "id": "s_5_4",
+            "label": "E5",
+            "embedding": [
+              5,
+              4
+            ]
+          },
+          {
+            "id": "s_6_4",
+            "label": "E6",
+            "embedding": [
+              6,
+              4
+            ]
+          },
+          {
+            "id": "s_0_5",
+            "label": "F1",
+            "embedding": [
+              0,
+              5
+            ]
+          },
+          {
+            "id": "s_1_5",
+            "label": "F2",
+            "embedding": [
+              1,
+              5
+            ]
+          },
+          {
+            "id": "s_2_5",
+            "label": "F3",
+            "embedding": [
+              2,
+              5
+            ]
+          },
+          {
+            "id": "s_3_5",
+            "label": "F4",
+            "embedding": [
+              3,
+              5
+            ]
+          },
+          {
+            "id": "s_4_5",
+            "label": "F5",
+            "embedding": [
+              4,
+              5
+            ]
+          },
+          {
+            "id": "s_5_5",
+            "label": "D",
+            "embedding": [
+              5,
+              5
+            ]
+          },
+          {
+            "id": "s_6_5",
+            "label": "F6",
+            "embedding": [
+              6,
+              5
+            ]
+          },
+          {
+            "id": "s_0_6",
+            "label": "G1",
+            "embedding": [
+              0,
+              6
+            ]
+          },
+          {
+            "id": "s_1_6",
+            "label": "G2",
+            "embedding": [
+              1,
+              6
+            ]
+          },
+          {
+            "id": "s_2_6",
+            "label": "G3",
+            "embedding": [
+              2,
+              6
+            ]
+          },
+          {
+            "id": "s_3_6",
+            "label": "G4",
+            "embedding": [
+              3,
+              6
+            ]
+          },
+          {
+            "id": "s_4_6",
+            "label": "G5",
+            "embedding": [
+              4,
+              6
+            ]
+          },
+          {
+            "id": "s_5_6",
+            "label": "G6",
+            "embedding": [
+              5,
+              6
+            ]
+          },
+          {
+            "id": "s_6_6",
+            "label": "G",
+            "embedding": [
+              6,
+              6
+            ]
+          }
+        ],
+        "transitions": [
+          {
+            "id": "t2_1",
+            "from": "s_0_0",
+            "to": "s_1_0",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_2",
+            "from": "s_0_0",
+            "to": "s_0_1",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_3",
+            "from": "s_0_0",
+            "to": "s_1_1",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t2_4",
+            "from": "s_1_0",
+            "to": "s_2_0",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_5",
+            "from": "s_1_0",
+            "to": "s_1_1",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_6",
+            "from": "s_1_0",
+            "to": "s_2_1",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t2_7",
+            "from": "s_2_0",
+            "to": "s_3_0",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_8",
+            "from": "s_2_0",
+            "to": "s_2_1",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_9",
+            "from": "s_2_0",
+            "to": "s_3_1",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t2_10",
+            "from": "s_3_0",
+            "to": "s_4_0",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_11",
+            "from": "s_3_0",
+            "to": "s_3_1",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_12",
+            "from": "s_3_0",
+            "to": "s_4_1",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t2_13",
+            "from": "s_4_0",
+            "to": "s_5_0",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_14",
+            "from": "s_4_0",
+            "to": "s_4_1",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_15",
+            "from": "s_4_0",
+            "to": "s_5_1",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t2_16",
+            "from": "s_5_0",
+            "to": "s_6_0",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_17",
+            "from": "s_5_0",
+            "to": "s_5_1",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_18",
+            "from": "s_5_0",
+            "to": "s_6_1",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t2_19",
+            "from": "s_6_0",
+            "to": "s_6_1",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_20",
+            "from": "s_0_1",
+            "to": "s_1_1",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_21",
+            "from": "s_0_1",
+            "to": "s_0_2",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_22",
+            "from": "s_0_1",
+            "to": "s_1_2",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t2_23",
+            "from": "s_1_1",
+            "to": "s_2_1",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_24",
+            "from": "s_1_1",
+            "to": "s_1_2",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_25",
+            "from": "s_1_1",
+            "to": "s_2_2",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t2_26",
+            "from": "s_2_1",
+            "to": "s_3_1",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_27",
+            "from": "s_2_1",
+            "to": "s_2_2",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_28",
+            "from": "s_2_1",
+            "to": "s_3_2",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t2_29",
+            "from": "s_3_1",
+            "to": "s_4_1",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_30",
+            "from": "s_3_1",
+            "to": "s_3_2",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_31",
+            "from": "s_3_1",
+            "to": "s_4_2",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t2_32",
+            "from": "s_4_1",
+            "to": "s_5_1",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_33",
+            "from": "s_4_1",
+            "to": "s_4_2",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_34",
+            "from": "s_4_1",
+            "to": "s_5_2",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t2_35",
+            "from": "s_5_1",
+            "to": "s_6_1",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_36",
+            "from": "s_5_1",
+            "to": "s_5_2",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_37",
+            "from": "s_5_1",
+            "to": "s_6_2",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t2_38",
+            "from": "s_6_1",
+            "to": "s_6_2",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_39",
+            "from": "s_0_2",
+            "to": "s_1_2",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_40",
+            "from": "s_0_2",
+            "to": "s_0_3",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_41",
+            "from": "s_0_2",
+            "to": "s_1_3",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t2_42",
+            "from": "s_1_2",
+            "to": "s_2_2",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_43",
+            "from": "s_1_2",
+            "to": "s_1_3",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_44",
+            "from": "s_1_2",
+            "to": "s_2_3",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t2_45",
+            "from": "s_2_2",
+            "to": "s_3_2",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_46",
+            "from": "s_2_2",
+            "to": "s_2_3",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_47",
+            "from": "s_2_2",
+            "to": "s_3_3",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t2_48",
+            "from": "s_3_2",
+            "to": "s_4_2",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_49",
+            "from": "s_3_2",
+            "to": "s_3_3",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_50",
+            "from": "s_3_2",
+            "to": "s_4_3",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t2_51",
+            "from": "s_4_2",
+            "to": "s_5_2",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_52",
+            "from": "s_4_2",
+            "to": "s_4_3",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_53",
+            "from": "s_4_2",
+            "to": "s_5_3",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t2_54",
+            "from": "s_5_2",
+            "to": "s_6_2",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_55",
+            "from": "s_5_2",
+            "to": "s_5_3",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_56",
+            "from": "s_5_2",
+            "to": "s_6_3",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t2_57",
+            "from": "s_6_2",
+            "to": "s_6_3",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_58",
+            "from": "s_4_4",
+            "to": "s_5_4",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_59",
+            "from": "s_4_4",
+            "to": "s_4_5",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_60",
+            "from": "s_4_4",
+            "to": "s_5_5",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t2_61",
+            "from": "s_5_4",
+            "to": "s_6_4",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_62",
+            "from": "s_5_4",
+            "to": "s_5_5",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_63",
+            "from": "s_5_4",
+            "to": "s_6_5",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t2_64",
+            "from": "s_6_4",
+            "to": "s_6_5",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_65",
+            "from": "s_5_5",
+            "to": "s_6_5",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_66",
+            "from": "s_5_5",
+            "to": "s_5_6",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t2_67",
+            "from": "s_5_5",
+            "to": "s_6_6",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t2_68",
+            "from": "s_6_5",
+            "to": "s_6_6",
+            "cost": 1,
+            "reliability": 0.95
+          }
+        ]
+      }
+    },
+    {
+      "id": "TC3",
+      "name": "TC3: Multi-Objective Trade-off",
+      "description": "Multi-objective decision between Path A (cost: 2.00, rel: 0.50) vs Path B (cost: 3.00, rel: 0.99). Delta slider switches optimal route.",
+      "triggerLabel": "Toggle High Reliability Preference (δ: 0.00 ↔ 0.95)",
+      "triggerDescription": "Switches delta between 0.00 (selects cheaper Path A) and 0.95 (selects reliable Path B).",
+      "triggerAction": {
+        "type": "toggle_delta",
+        "deltaValues": [
+          0,
+          0.95
+        ],
+        "displayText": "Reliability weight δ switched to {delta}"
+      },
+      "weights": {
+        "alpha": 1,
+        "beta": 1,
+        "gamma": 1,
+        "delta": 0,
+        "r": 0
+      },
+      "problem": {
+        "initialState": "start",
+        "goalState": "goal",
+        "badStates": [],
+        "states": [
+          {
+            "id": "start",
+            "label": "S",
+            "embedding": [
+              0,
+              0
+            ]
+          },
+          {
+            "id": "midA",
+            "label": "A",
+            "embedding": [
+              1.5,
+              -1.2
+            ]
+          },
+          {
+            "id": "midB",
+            "label": "B",
+            "embedding": [
+              1.5,
+              1.2
+            ]
+          },
+          {
+            "id": "goal",
+            "label": "G",
+            "embedding": [
+              3,
+              0
+            ]
+          }
+        ],
+        "transitions": [
+          {
+            "id": "tA1",
+            "from": "start",
+            "to": "midA",
+            "cost": 1,
+            "reliability": 0.5
+          },
+          {
+            "id": "tA2",
+            "from": "midA",
+            "to": "goal",
+            "cost": 1,
+            "reliability": 0.5
+          },
+          {
+            "id": "tB1",
+            "from": "start",
+            "to": "midB",
+            "cost": 1.5,
+            "reliability": 0.99
+          },
+          {
+            "id": "tB2",
+            "from": "midB",
+            "to": "goal",
+            "cost": 1.5,
+            "reliability": 0.99
+          }
+        ]
+      }
+    },
+    {
+      "id": "TC4",
+      "name": "TC4: Dynamic Edge Degradation",
+      "description": "8x8 topological grid. Severing transition B → C triggers incremental D* Lite replanning affecting only downstream vertices.",
+      "triggerLabel": "Sever Critical Transition (B → C)",
+      "triggerDescription": "Disables active transition along the current optimal diagonal path, demonstrating local D* Lite subtree repair.",
+      "triggerAction": {
+        "type": "sever_current_path_mid",
+        "displayText": "Edge B → C severed (set unavailable)"
+      },
+      "weights": {
+        "alpha": 1,
+        "beta": 1,
+        "gamma": 1,
+        "delta": 0.1,
+        "r": 0
+      },
+      "problem": {
+        "initialState": "s_0_0",
+        "goalState": "s_7_7",
+        "badStates": [],
+        "states": [
+          {
+            "id": "s_0_0",
+            "label": "S",
+            "embedding": [
+              0,
+              0
+            ]
+          },
+          {
+            "id": "s_1_0",
+            "label": "A1",
+            "embedding": [
+              1,
+              0
+            ]
+          },
+          {
+            "id": "s_2_0",
+            "label": "A2",
+            "embedding": [
+              2,
+              0
+            ]
+          },
+          {
+            "id": "s_3_0",
+            "label": "A3",
+            "embedding": [
+              3,
+              0
+            ]
+          },
+          {
+            "id": "s_4_0",
+            "label": "A4",
+            "embedding": [
+              4,
+              0
+            ]
+          },
+          {
+            "id": "s_5_0",
+            "label": "A5",
+            "embedding": [
+              5,
+              0
+            ]
+          },
+          {
+            "id": "s_6_0",
+            "label": "A6",
+            "embedding": [
+              6,
+              0
+            ]
+          },
+          {
+            "id": "s_7_0",
+            "label": "A7",
+            "embedding": [
+              7,
+              0
+            ]
+          },
+          {
+            "id": "s_0_1",
+            "label": "B1",
+            "embedding": [
+              0,
+              1
+            ]
+          },
+          {
+            "id": "s_1_1",
+            "label": "A",
+            "embedding": [
+              1,
+              1
+            ]
+          },
+          {
+            "id": "s_2_1",
+            "label": "B2",
+            "embedding": [
+              2,
+              1
+            ]
+          },
+          {
+            "id": "s_3_1",
+            "label": "B3",
+            "embedding": [
+              3,
+              1
+            ]
+          },
+          {
+            "id": "s_4_1",
+            "label": "B4",
+            "embedding": [
+              4,
+              1
+            ]
+          },
+          {
+            "id": "s_5_1",
+            "label": "B5",
+            "embedding": [
+              5,
+              1
+            ]
+          },
+          {
+            "id": "s_6_1",
+            "label": "B6",
+            "embedding": [
+              6,
+              1
+            ]
+          },
+          {
+            "id": "s_7_1",
+            "label": "B7",
+            "embedding": [
+              7,
+              1
+            ]
+          },
+          {
+            "id": "s_0_2",
+            "label": "C1",
+            "embedding": [
+              0,
+              2
+            ]
+          },
+          {
+            "id": "s_1_2",
+            "label": "C2",
+            "embedding": [
+              1,
+              2
+            ]
+          },
+          {
+            "id": "s_2_2",
+            "label": "B",
+            "embedding": [
+              2,
+              2
+            ]
+          },
+          {
+            "id": "s_3_2",
+            "label": "C3",
+            "embedding": [
+              3,
+              2
+            ]
+          },
+          {
+            "id": "s_4_2",
+            "label": "C4",
+            "embedding": [
+              4,
+              2
+            ]
+          },
+          {
+            "id": "s_5_2",
+            "label": "C5",
+            "embedding": [
+              5,
+              2
+            ]
+          },
+          {
+            "id": "s_6_2",
+            "label": "C6",
+            "embedding": [
+              6,
+              2
+            ]
+          },
+          {
+            "id": "s_7_2",
+            "label": "C7",
+            "embedding": [
+              7,
+              2
+            ]
+          },
+          {
+            "id": "s_0_3",
+            "label": "D1",
+            "embedding": [
+              0,
+              3
+            ]
+          },
+          {
+            "id": "s_1_3",
+            "label": "D2",
+            "embedding": [
+              1,
+              3
+            ]
+          },
+          {
+            "id": "s_2_3",
+            "label": "D3",
+            "embedding": [
+              2,
+              3
+            ]
+          },
+          {
+            "id": "s_3_3",
+            "label": "C",
+            "embedding": [
+              3,
+              3
+            ]
+          },
+          {
+            "id": "s_4_3",
+            "label": "D4",
+            "embedding": [
+              4,
+              3
+            ]
+          },
+          {
+            "id": "s_5_3",
+            "label": "D5",
+            "embedding": [
+              5,
+              3
+            ]
+          },
+          {
+            "id": "s_6_3",
+            "label": "D6",
+            "embedding": [
+              6,
+              3
+            ]
+          },
+          {
+            "id": "s_7_3",
+            "label": "D7",
+            "embedding": [
+              7,
+              3
+            ]
+          },
+          {
+            "id": "s_0_4",
+            "label": "E1",
+            "embedding": [
+              0,
+              4
+            ]
+          },
+          {
+            "id": "s_1_4",
+            "label": "E2",
+            "embedding": [
+              1,
+              4
+            ]
+          },
+          {
+            "id": "s_2_4",
+            "label": "E3",
+            "embedding": [
+              2,
+              4
+            ]
+          },
+          {
+            "id": "s_3_4",
+            "label": "E4",
+            "embedding": [
+              3,
+              4
+            ]
+          },
+          {
+            "id": "s_4_4",
+            "label": "D",
+            "embedding": [
+              4,
+              4
+            ]
+          },
+          {
+            "id": "s_5_4",
+            "label": "E5",
+            "embedding": [
+              5,
+              4
+            ]
+          },
+          {
+            "id": "s_6_4",
+            "label": "E6",
+            "embedding": [
+              6,
+              4
+            ]
+          },
+          {
+            "id": "s_7_4",
+            "label": "E7",
+            "embedding": [
+              7,
+              4
+            ]
+          },
+          {
+            "id": "s_0_5",
+            "label": "F1",
+            "embedding": [
+              0,
+              5
+            ]
+          },
+          {
+            "id": "s_1_5",
+            "label": "F2",
+            "embedding": [
+              1,
+              5
+            ]
+          },
+          {
+            "id": "s_2_5",
+            "label": "F3",
+            "embedding": [
+              2,
+              5
+            ]
+          },
+          {
+            "id": "s_3_5",
+            "label": "F4",
+            "embedding": [
+              3,
+              5
+            ]
+          },
+          {
+            "id": "s_4_5",
+            "label": "F5",
+            "embedding": [
+              4,
+              5
+            ]
+          },
+          {
+            "id": "s_5_5",
+            "label": "E",
+            "embedding": [
+              5,
+              5
+            ]
+          },
+          {
+            "id": "s_6_5",
+            "label": "F6",
+            "embedding": [
+              6,
+              5
+            ]
+          },
+          {
+            "id": "s_7_5",
+            "label": "F7",
+            "embedding": [
+              7,
+              5
+            ]
+          },
+          {
+            "id": "s_0_6",
+            "label": "G1",
+            "embedding": [
+              0,
+              6
+            ]
+          },
+          {
+            "id": "s_1_6",
+            "label": "G2",
+            "embedding": [
+              1,
+              6
+            ]
+          },
+          {
+            "id": "s_2_6",
+            "label": "G3",
+            "embedding": [
+              2,
+              6
+            ]
+          },
+          {
+            "id": "s_3_6",
+            "label": "G4",
+            "embedding": [
+              3,
+              6
+            ]
+          },
+          {
+            "id": "s_4_6",
+            "label": "G5",
+            "embedding": [
+              4,
+              6
+            ]
+          },
+          {
+            "id": "s_5_6",
+            "label": "G6",
+            "embedding": [
+              5,
+              6
+            ]
+          },
+          {
+            "id": "s_6_6",
+            "label": "F",
+            "embedding": [
+              6,
+              6
+            ]
+          },
+          {
+            "id": "s_7_6",
+            "label": "G7",
+            "embedding": [
+              7,
+              6
+            ]
+          },
+          {
+            "id": "s_0_7",
+            "label": "H1",
+            "embedding": [
+              0,
+              7
+            ]
+          },
+          {
+            "id": "s_1_7",
+            "label": "H2",
+            "embedding": [
+              1,
+              7
+            ]
+          },
+          {
+            "id": "s_2_7",
+            "label": "H3",
+            "embedding": [
+              2,
+              7
+            ]
+          },
+          {
+            "id": "s_3_7",
+            "label": "H4",
+            "embedding": [
+              3,
+              7
+            ]
+          },
+          {
+            "id": "s_4_7",
+            "label": "H5",
+            "embedding": [
+              4,
+              7
+            ]
+          },
+          {
+            "id": "s_5_7",
+            "label": "H6",
+            "embedding": [
+              5,
+              7
+            ]
+          },
+          {
+            "id": "s_6_7",
+            "label": "H7",
+            "embedding": [
+              6,
+              7
+            ]
+          },
+          {
+            "id": "s_7_7",
+            "label": "G",
+            "embedding": [
+              7,
+              7
+            ]
+          }
+        ],
+        "transitions": [
+          {
+            "id": "t4_0_0_1_1",
+            "from": "s_0_0",
+            "to": "s_1_1",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t4_0_0_1_0",
+            "from": "s_0_0",
+            "to": "s_1_0",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t4_0_0_0_1",
+            "from": "s_0_0",
+            "to": "s_0_1",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t4_1_1_2_2",
+            "from": "s_1_1",
+            "to": "s_2_2",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t4_1_1_2_1",
+            "from": "s_1_1",
+            "to": "s_2_1",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t4_1_1_1_2",
+            "from": "s_1_1",
+            "to": "s_1_2",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t4_2_2_3_3",
+            "from": "s_2_2",
+            "to": "s_3_3",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t4_2_2_3_2",
+            "from": "s_2_2",
+            "to": "s_3_2",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t4_2_2_2_3",
+            "from": "s_2_2",
+            "to": "s_2_3",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t4_3_3_4_4",
+            "from": "s_3_3",
+            "to": "s_4_4",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t4_3_3_4_3",
+            "from": "s_3_3",
+            "to": "s_4_3",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t4_3_3_3_4",
+            "from": "s_3_3",
+            "to": "s_3_4",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t4_4_4_5_5",
+            "from": "s_4_4",
+            "to": "s_5_5",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t4_4_4_5_4",
+            "from": "s_4_4",
+            "to": "s_5_4",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t4_4_4_4_5",
+            "from": "s_4_4",
+            "to": "s_4_5",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t4_5_5_6_6",
+            "from": "s_5_5",
+            "to": "s_6_6",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t4_5_5_6_5",
+            "from": "s_5_5",
+            "to": "s_6_5",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t4_5_5_5_6",
+            "from": "s_5_5",
+            "to": "s_5_6",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t4_6_6_7_7",
+            "from": "s_6_6",
+            "to": "s_7_7",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t4_6_6_7_6",
+            "from": "s_6_6",
+            "to": "s_7_6",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t4_6_6_6_7",
+            "from": "s_6_6",
+            "to": "s_6_7",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t4_1_0_2_1",
+            "from": "s_1_0",
+            "to": "s_2_1",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t4_2_1_3_2",
+            "from": "s_2_1",
+            "to": "s_3_2",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t4_3_2_4_3",
+            "from": "s_3_2",
+            "to": "s_4_3",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t4_4_3_5_4",
+            "from": "s_4_3",
+            "to": "s_5_4",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t4_5_4_6_5",
+            "from": "s_5_4",
+            "to": "s_6_5",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t4_6_5_7_6",
+            "from": "s_6_5",
+            "to": "s_7_6",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t4_7_6_7_7",
+            "from": "s_7_6",
+            "to": "s_7_7",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t4_0_1_1_2",
+            "from": "s_0_1",
+            "to": "s_1_2",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t4_1_2_2_3",
+            "from": "s_1_2",
+            "to": "s_2_3",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t4_2_3_3_4",
+            "from": "s_2_3",
+            "to": "s_3_4",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t4_3_4_4_5",
+            "from": "s_3_4",
+            "to": "s_4_5",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t4_4_5_5_6",
+            "from": "s_4_5",
+            "to": "s_5_6",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t4_5_6_6_7",
+            "from": "s_5_6",
+            "to": "s_6_7",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t4_6_7_7_7",
+            "from": "s_6_7",
+            "to": "s_7_7",
+            "cost": 1,
+            "reliability": 0.95
+          }
+        ]
+      }
+    },
+    {
+      "id": "TC5",
+      "name": "TC5: Transposed Goal Shift",
+      "description": "Shifting destination goal state maps to movable start in transposed D* Lite, requiring only minimal vertex pops.",
+      "triggerLabel": "Shift Destination Goal (G1 ↔ G2)",
+      "triggerDescription": "Switches goalState between G1 and G2 with low expansion overhead.",
+      "triggerAction": {
+        "type": "shift_goal",
+        "goals": [
+          "s_8_8",
+          "s_8_6"
+        ],
+        "displayText": "Goal shifted to {goal}"
+      },
+      "weights": {
+        "alpha": 1,
+        "beta": 1,
+        "gamma": 1,
+        "delta": 0.1,
+        "r": 0
+      },
+      "problem": {
+        "initialState": "s_0_0",
+        "goalState": "s_8_8",
+        "badStates": [],
+        "states": [
+          {
+            "id": "s_0_0",
+            "label": "S",
+            "embedding": [
+              0,
+              0
+            ]
+          },
+          {
+            "id": "s_1_1",
+            "label": "A",
+            "embedding": [
+              1,
+              1
+            ]
+          },
+          {
+            "id": "s_2_2",
+            "label": "B",
+            "embedding": [
+              2,
+              2
+            ]
+          },
+          {
+            "id": "s_3_3",
+            "label": "C",
+            "embedding": [
+              3,
+              3
+            ]
+          },
+          {
+            "id": "s_4_4",
+            "label": "D",
+            "embedding": [
+              4,
+              4
+            ]
+          },
+          {
+            "id": "s_5_5",
+            "label": "E",
+            "embedding": [
+              5,
+              5
+            ]
+          },
+          {
+            "id": "s_6_6",
+            "label": "F",
+            "embedding": [
+              6,
+              6
+            ]
+          },
+          {
+            "id": "s_7_7",
+            "label": "H",
+            "embedding": [
+              7,
+              7
+            ]
+          },
+          {
+            "id": "s_8_8",
+            "label": "G1",
+            "embedding": [
+              8,
+              8
+            ]
+          },
+          {
+            "id": "s_8_6",
+            "label": "G2",
+            "embedding": [
+              8,
+              6
+            ]
+          },
+          {
+            "id": "s_8_7",
+            "label": "I1",
+            "embedding": [
+              8,
+              7
+            ]
+          },
+          {
+            "id": "s_7_6",
+            "label": "I2",
+            "embedding": [
+              7,
+              6
+            ]
+          }
+        ],
+        "transitions": [
+          {
+            "id": "t5_0",
+            "from": "s_0_0",
+            "to": "s_1_1",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t5_1",
+            "from": "s_1_1",
+            "to": "s_2_2",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t5_2",
+            "from": "s_2_2",
+            "to": "s_3_3",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t5_3",
+            "from": "s_3_3",
+            "to": "s_4_4",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t5_4",
+            "from": "s_4_4",
+            "to": "s_5_5",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t5_5",
+            "from": "s_5_5",
+            "to": "s_6_6",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t5_6",
+            "from": "s_6_6",
+            "to": "s_7_7",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t5_7",
+            "from": "s_7_7",
+            "to": "s_8_8",
+            "cost": 1.414,
+            "reliability": 0.9
+          },
+          {
+            "id": "t5_8",
+            "from": "s_7_7",
+            "to": "s_8_7",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t5_9",
+            "from": "s_8_7",
+            "to": "s_8_8",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t5_10",
+            "from": "s_6_6",
+            "to": "s_7_6",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t5_11",
+            "from": "s_7_6",
+            "to": "s_8_6",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t5_12",
+            "from": "s_8_6",
+            "to": "s_8_7",
+            "cost": 1,
+            "reliability": 0.95
+          }
+        ]
+      }
+    },
+    {
+      "id": "TC6",
+      "name": "TC6: Safety Barrier & Disconnect",
+      "description": "Hazard states X1, X2, X3 form a complete cordon wall. Expanding safety radius r cleanly triggers unreachability detection.",
+      "triggerLabel": "Toggle Barrier Wall / Safety Radius (r: 1.50 ↔ 0.20)",
+      "triggerDescription": "Expands safety radius to sever all corridors, verifying clean unsolvable status reporting without hanging.",
+      "triggerAction": {
+        "type": "toggle_radius",
+        "radii": [
+          1.5,
+          0.2
+        ],
+        "displayText": "Barrier safety radius toggled to {r} u"
+      },
+      "weights": {
+        "alpha": 1,
+        "beta": 1,
+        "gamma": 1,
+        "delta": 0.1,
+        "r": 1.5
+      },
+      "problem": {
+        "initialState": "start",
+        "goalState": "dest",
+        "badStates": [
+          "hazard_top",
+          "hazard_mid",
+          "hazard_bot"
+        ],
+        "states": [
+          {
+            "id": "start",
+            "label": "S",
+            "embedding": [
+              0,
+              1.5
+            ]
+          },
+          {
+            "id": "mid_left",
+            "label": "A",
+            "embedding": [
+              1,
+              1.5
+            ]
+          },
+          {
+            "id": "hazard_top",
+            "label": "X1",
+            "embedding": [
+              2.5,
+              3
+            ]
+          },
+          {
+            "id": "hazard_mid",
+            "label": "X2",
+            "embedding": [
+              2.5,
+              1.5
+            ]
+          },
+          {
+            "id": "hazard_bot",
+            "label": "X3",
+            "embedding": [
+              2.5,
+              0
+            ]
+          },
+          {
+            "id": "corridor_top",
+            "label": "B",
+            "embedding": [
+              2.5,
+              2.5
+            ]
+          },
+          {
+            "id": "corridor_bot",
+            "label": "C",
+            "embedding": [
+              2.5,
+              0.5
+            ]
+          },
+          {
+            "id": "mid_right",
+            "label": "D",
+            "embedding": [
+              4,
+              1.5
+            ]
+          },
+          {
+            "id": "dest",
+            "label": "G",
+            "embedding": [
+              5,
+              1.5
+            ]
+          }
+        ],
+        "transitions": [
+          {
+            "id": "t6_1",
+            "from": "start",
+            "to": "mid_left",
+            "cost": 1,
+            "reliability": 0.95
+          },
+          {
+            "id": "t6_2",
+            "from": "mid_left",
+            "to": "corridor_top",
+            "cost": 1.8,
+            "reliability": 0.9
+          },
+          {
+            "id": "t6_3",
+            "from": "mid_left",
+            "to": "corridor_bot",
+            "cost": 1.8,
+            "reliability": 0.9
+          },
+          {
+            "id": "t6_4",
+            "from": "corridor_top",
+            "to": "mid_right",
+            "cost": 1.8,
+            "reliability": 0.9
+          },
+          {
+            "id": "t6_5",
+            "from": "corridor_bot",
+            "to": "mid_right",
+            "cost": 1.8,
+            "reliability": 0.9
+          },
+          {
+            "id": "t6_6",
+            "from": "mid_right",
+            "to": "dest",
+            "cost": 1,
+            "reliability": 0.95
+          }
+        ]
+      }
+    },
+    {
+      "id": "SANDBOX",
+      "name": "Sandbox: Dynamic Semantic Grid",
+      "description": "Rich 8x8 multi-hazard semantic environment with sequential labels N1..N64, hazard clusters X1, X2, X3, and real-time interactive tuning.",
+      "triggerLabel": "Toggle Random Edge Degradation",
+      "triggerDescription": "Toggles random edge degradation and tests dynamic online replanning.",
+      "triggerAction": {
+        "type": "random_perturbation",
+        "displayText": "Random transition perturbation applied"
+      },
+      "weights": {
+        "alpha": 1,
+        "beta": 1,
+        "gamma": 1,
+        "delta": 0.15,
+        "r": 0.8
+      },
+      "problem": {
+        "initialState": "s_0_0",
+        "goalState": "s_7_7",
+        "badStates": [
+          "s_3_2",
+          "s_4_5",
+          "s_2_6"
+        ],
+        "states": [
+          {
+            "id": "s_0_0",
+            "label": "S",
+            "embedding": [
+              0,
+              0
+            ]
+          },
+          {
+            "id": "s_1_0",
+            "label": "N2",
+            "embedding": [
+              1,
+              0
+            ]
+          },
+          {
+            "id": "s_2_0",
+            "label": "N3",
+            "embedding": [
+              2,
+              0
+            ]
+          },
+          {
+            "id": "s_3_0",
+            "label": "N4",
+            "embedding": [
+              3,
+              0
+            ]
+          },
+          {
+            "id": "s_4_0",
+            "label": "N5",
+            "embedding": [
+              4,
+              0
+            ]
+          },
+          {
+            "id": "s_5_0",
+            "label": "N6",
+            "embedding": [
+              5,
+              0
+            ]
+          },
+          {
+            "id": "s_6_0",
+            "label": "N7",
+            "embedding": [
+              6,
+              0
+            ]
+          },
+          {
+            "id": "s_7_0",
+            "label": "N8",
+            "embedding": [
+              7,
+              0
+            ]
+          },
+          {
+            "id": "s_0_1",
+            "label": "N9",
+            "embedding": [
+              0,
+              1
+            ]
+          },
+          {
+            "id": "s_1_1",
+            "label": "N10",
+            "embedding": [
+              1,
+              1
+            ]
+          },
+          {
+            "id": "s_2_1",
+            "label": "N11",
+            "embedding": [
+              2,
+              1
+            ]
+          },
+          {
+            "id": "s_3_1",
+            "label": "N12",
+            "embedding": [
+              3,
+              1
+            ]
+          },
+          {
+            "id": "s_4_1",
+            "label": "N13",
+            "embedding": [
+              4,
+              1
+            ]
+          },
+          {
+            "id": "s_5_1",
+            "label": "N14",
+            "embedding": [
+              5,
+              1
+            ]
+          },
+          {
+            "id": "s_6_1",
+            "label": "N15",
+            "embedding": [
+              6,
+              1
+            ]
+          },
+          {
+            "id": "s_7_1",
+            "label": "N16",
+            "embedding": [
+              7,
+              1
+            ]
+          },
+          {
+            "id": "s_0_2",
+            "label": "N17",
+            "embedding": [
+              0,
+              2
+            ]
+          },
+          {
+            "id": "s_1_2",
+            "label": "N18",
+            "embedding": [
+              1,
+              2
+            ]
+          },
+          {
+            "id": "s_2_2",
+            "label": "N19",
+            "embedding": [
+              2,
+              2
+            ]
+          },
+          {
+            "id": "s_3_2",
+            "label": "X1",
+            "embedding": [
+              3,
+              2
+            ]
+          },
+          {
+            "id": "s_4_2",
+            "label": "N21",
+            "embedding": [
+              4,
+              2
+            ]
+          },
+          {
+            "id": "s_5_2",
+            "label": "N22",
+            "embedding": [
+              5,
+              2
+            ]
+          },
+          {
+            "id": "s_6_2",
+            "label": "N23",
+            "embedding": [
+              6,
+              2
+            ]
+          },
+          {
+            "id": "s_7_2",
+            "label": "N24",
+            "embedding": [
+              7,
+              2
+            ]
+          },
+          {
+            "id": "s_0_3",
+            "label": "N25",
+            "embedding": [
+              0,
+              3
+            ]
+          },
+          {
+            "id": "s_1_3",
+            "label": "N26",
+            "embedding": [
+              1,
+              3
+            ]
+          },
+          {
+            "id": "s_2_3",
+            "label": "N27",
+            "embedding": [
+              2,
+              3
+            ]
+          },
+          {
+            "id": "s_3_3",
+            "label": "N28",
+            "embedding": [
+              3,
+              3
+            ]
+          },
+          {
+            "id": "s_4_3",
+            "label": "N29",
+            "embedding": [
+              4,
+              3
+            ]
+          },
+          {
+            "id": "s_5_3",
+            "label": "N30",
+            "embedding": [
+              5,
+              3
+            ]
+          },
+          {
+            "id": "s_6_3",
+            "label": "N31",
+            "embedding": [
+              6,
+              3
+            ]
+          },
+          {
+            "id": "s_7_3",
+            "label": "N32",
+            "embedding": [
+              7,
+              3
+            ]
+          },
+          {
+            "id": "s_0_4",
+            "label": "N33",
+            "embedding": [
+              0,
+              4
+            ]
+          },
+          {
+            "id": "s_1_4",
+            "label": "N34",
+            "embedding": [
+              1,
+              4
+            ]
+          },
+          {
+            "id": "s_2_4",
+            "label": "N35",
+            "embedding": [
+              2,
+              4
+            ]
+          },
+          {
+            "id": "s_3_4",
+            "label": "N36",
+            "embedding": [
+              3,
+              4
+            ]
+          },
+          {
+            "id": "s_4_4",
+            "label": "N37",
+            "embedding": [
+              4,
+              4
+            ]
+          },
+          {
+            "id": "s_5_4",
+            "label": "N38",
+            "embedding": [
+              5,
+              4
+            ]
+          },
+          {
+            "id": "s_6_4",
+            "label": "N39",
+            "embedding": [
+              6,
+              4
+            ]
+          },
+          {
+            "id": "s_7_4",
+            "label": "N40",
+            "embedding": [
+              7,
+              4
+            ]
+          },
+          {
+            "id": "s_0_5",
+            "label": "N41",
+            "embedding": [
+              0,
+              5
+            ]
+          },
+          {
+            "id": "s_1_5",
+            "label": "N42",
+            "embedding": [
+              1,
+              5
+            ]
+          },
+          {
+            "id": "s_2_5",
+            "label": "N43",
+            "embedding": [
+              2,
+              5
+            ]
+          },
+          {
+            "id": "s_3_5",
+            "label": "N44",
+            "embedding": [
+              3,
+              5
+            ]
+          },
+          {
+            "id": "s_4_5",
+            "label": "X2",
+            "embedding": [
+              4,
+              5
+            ]
+          },
+          {
+            "id": "s_5_5",
+            "label": "N46",
+            "embedding": [
+              5,
+              5
+            ]
+          },
+          {
+            "id": "s_6_5",
+            "label": "N47",
+            "embedding": [
+              6,
+              5
+            ]
+          },
+          {
+            "id": "s_7_5",
+            "label": "N48",
+            "embedding": [
+              7,
+              5
+            ]
+          },
+          {
+            "id": "s_0_6",
+            "label": "N49",
+            "embedding": [
+              0,
+              6
+            ]
+          },
+          {
+            "id": "s_1_6",
+            "label": "N50",
+            "embedding": [
+              1,
+              6
+            ]
+          },
+          {
+            "id": "s_2_6",
+            "label": "X3",
+            "embedding": [
+              2,
+              6
+            ]
+          },
+          {
+            "id": "s_3_6",
+            "label": "N52",
+            "embedding": [
+              3,
+              6
+            ]
+          },
+          {
+            "id": "s_4_6",
+            "label": "N53",
+            "embedding": [
+              4,
+              6
+            ]
+          },
+          {
+            "id": "s_5_6",
+            "label": "N54",
+            "embedding": [
+              5,
+              6
+            ]
+          },
+          {
+            "id": "s_6_6",
+            "label": "N55",
+            "embedding": [
+              6,
+              6
+            ]
+          },
+          {
+            "id": "s_7_6",
+            "label": "N56",
+            "embedding": [
+              7,
+              6
+            ]
+          },
+          {
+            "id": "s_0_7",
+            "label": "N57",
+            "embedding": [
+              0,
+              7
+            ]
+          },
+          {
+            "id": "s_1_7",
+            "label": "N58",
+            "embedding": [
+              1,
+              7
+            ]
+          },
+          {
+            "id": "s_2_7",
+            "label": "N59",
+            "embedding": [
+              2,
+              7
+            ]
+          },
+          {
+            "id": "s_3_7",
+            "label": "N60",
+            "embedding": [
+              3,
+              7
+            ]
+          },
+          {
+            "id": "s_4_7",
+            "label": "N61",
+            "embedding": [
+              4,
+              7
+            ]
+          },
+          {
+            "id": "s_5_7",
+            "label": "N62",
+            "embedding": [
+              5,
+              7
+            ]
+          },
+          {
+            "id": "s_6_7",
+            "label": "N63",
+            "embedding": [
+              6,
+              7
+            ]
+          },
+          {
+            "id": "s_7_7",
+            "label": "G",
+            "embedding": [
+              7,
+              7
+            ]
+          }
+        ],
+        "transitions": [
+          {
+            "id": "sb_e_1",
+            "from": "s_0_0",
+            "to": "s_1_0",
+            "cost": 0.95,
+            "reliability": 0.98,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_2",
+            "from": "s_0_0",
+            "to": "s_0_1",
+            "cost": 1.15,
+            "reliability": 0.99,
+            "safetyScore": 1
+          },
+          {
+            "id": "sb_e_3",
+            "from": "s_0_0",
+            "to": "s_1_1",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_4",
+            "from": "s_1_0",
+            "to": "s_2_0",
+            "cost": 0.95,
+            "reliability": 0.98,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_5",
+            "from": "s_1_0",
+            "to": "s_1_1",
+            "cost": 1.15,
+            "reliability": 0.99,
+            "safetyScore": 1
+          },
+          {
+            "id": "sb_e_6",
+            "from": "s_1_0",
+            "to": "s_2_1",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_7",
+            "from": "s_2_0",
+            "to": "s_3_0",
+            "cost": 0.95,
+            "reliability": 0.98,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_8",
+            "from": "s_2_0",
+            "to": "s_2_1",
+            "cost": 1,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_9",
+            "from": "s_2_0",
+            "to": "s_3_1",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_10",
+            "from": "s_3_0",
+            "to": "s_4_0",
+            "cost": 0.95,
+            "reliability": 0.98,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_11",
+            "from": "s_3_0",
+            "to": "s_3_1",
+            "cost": 1,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_12",
+            "from": "s_3_0",
+            "to": "s_4_1",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_13",
+            "from": "s_4_0",
+            "to": "s_5_0",
+            "cost": 0.95,
+            "reliability": 0.98,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_14",
+            "from": "s_4_0",
+            "to": "s_4_1",
+            "cost": 1,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_15",
+            "from": "s_4_0",
+            "to": "s_5_1",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_16",
+            "from": "s_5_0",
+            "to": "s_6_0",
+            "cost": 0.95,
+            "reliability": 0.98,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_17",
+            "from": "s_5_0",
+            "to": "s_5_1",
+            "cost": 1,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_18",
+            "from": "s_5_0",
+            "to": "s_6_1",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_19",
+            "from": "s_6_0",
+            "to": "s_7_0",
+            "cost": 0.95,
+            "reliability": 0.98,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_20",
+            "from": "s_6_0",
+            "to": "s_6_1",
+            "cost": 0.95,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_21",
+            "from": "s_6_0",
+            "to": "s_7_1",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_22",
+            "from": "s_7_0",
+            "to": "s_7_1",
+            "cost": 0.95,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_23",
+            "from": "s_0_1",
+            "to": "s_1_1",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_24",
+            "from": "s_0_1",
+            "to": "s_0_2",
+            "cost": 1.15,
+            "reliability": 0.99,
+            "safetyScore": 1
+          },
+          {
+            "id": "sb_e_25",
+            "from": "s_0_1",
+            "to": "s_1_2",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_26",
+            "from": "s_1_1",
+            "to": "s_2_1",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_27",
+            "from": "s_1_1",
+            "to": "s_1_2",
+            "cost": 1.15,
+            "reliability": 0.99,
+            "safetyScore": 1
+          },
+          {
+            "id": "sb_e_28",
+            "from": "s_1_1",
+            "to": "s_2_2",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_29",
+            "from": "s_2_1",
+            "to": "s_3_1",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_30",
+            "from": "s_2_1",
+            "to": "s_2_2",
+            "cost": 1,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_31",
+            "from": "s_2_1",
+            "to": "s_3_2",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_32",
+            "from": "s_3_1",
+            "to": "s_4_1",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_33",
+            "from": "s_3_1",
+            "to": "s_3_2",
+            "cost": 1,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_34",
+            "from": "s_3_1",
+            "to": "s_4_2",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_35",
+            "from": "s_4_1",
+            "to": "s_5_1",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_36",
+            "from": "s_4_1",
+            "to": "s_4_2",
+            "cost": 1,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_37",
+            "from": "s_4_1",
+            "to": "s_5_2",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_38",
+            "from": "s_5_1",
+            "to": "s_6_1",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_39",
+            "from": "s_5_1",
+            "to": "s_5_2",
+            "cost": 1,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_40",
+            "from": "s_5_1",
+            "to": "s_6_2",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_41",
+            "from": "s_6_1",
+            "to": "s_7_1",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_42",
+            "from": "s_6_1",
+            "to": "s_6_2",
+            "cost": 0.95,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_43",
+            "from": "s_6_1",
+            "to": "s_7_2",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_44",
+            "from": "s_7_1",
+            "to": "s_7_2",
+            "cost": 0.95,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_45",
+            "from": "s_0_2",
+            "to": "s_1_2",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_46",
+            "from": "s_0_2",
+            "to": "s_0_3",
+            "cost": 1.15,
+            "reliability": 0.99,
+            "safetyScore": 1
+          },
+          {
+            "id": "sb_e_47",
+            "from": "s_0_2",
+            "to": "s_1_3",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_48",
+            "from": "s_1_2",
+            "to": "s_2_2",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_49",
+            "from": "s_1_2",
+            "to": "s_1_3",
+            "cost": 1.15,
+            "reliability": 0.99,
+            "safetyScore": 1
+          },
+          {
+            "id": "sb_e_50",
+            "from": "s_1_2",
+            "to": "s_2_3",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_51",
+            "from": "s_2_2",
+            "to": "s_3_2",
+            "cost": 0.85,
+            "reliability": 0.92,
+            "safetyScore": 0.85
+          },
+          {
+            "id": "sb_e_52",
+            "from": "s_2_2",
+            "to": "s_2_3",
+            "cost": 1,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_53",
+            "from": "s_2_2",
+            "to": "s_3_3",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_54",
+            "from": "s_3_2",
+            "to": "s_4_2",
+            "cost": 0.85,
+            "reliability": 0.92,
+            "safetyScore": 0.85
+          },
+          {
+            "id": "sb_e_55",
+            "from": "s_3_2",
+            "to": "s_3_3",
+            "cost": 1,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_56",
+            "from": "s_3_2",
+            "to": "s_4_3",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_57",
+            "from": "s_4_2",
+            "to": "s_5_2",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_58",
+            "from": "s_4_2",
+            "to": "s_4_3",
+            "cost": 1,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_59",
+            "from": "s_4_2",
+            "to": "s_5_3",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_60",
+            "from": "s_5_2",
+            "to": "s_6_2",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_61",
+            "from": "s_5_2",
+            "to": "s_5_3",
+            "cost": 1,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_62",
+            "from": "s_5_2",
+            "to": "s_6_3",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_63",
+            "from": "s_6_2",
+            "to": "s_7_2",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_64",
+            "from": "s_6_2",
+            "to": "s_6_3",
+            "cost": 0.95,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_65",
+            "from": "s_6_2",
+            "to": "s_7_3",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_66",
+            "from": "s_7_2",
+            "to": "s_7_3",
+            "cost": 0.95,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_67",
+            "from": "s_0_3",
+            "to": "s_1_3",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_68",
+            "from": "s_0_3",
+            "to": "s_0_4",
+            "cost": 1.15,
+            "reliability": 0.99,
+            "safetyScore": 1
+          },
+          {
+            "id": "sb_e_69",
+            "from": "s_0_3",
+            "to": "s_1_4",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_70",
+            "from": "s_1_3",
+            "to": "s_2_3",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_71",
+            "from": "s_1_3",
+            "to": "s_1_4",
+            "cost": 1.15,
+            "reliability": 0.99,
+            "safetyScore": 1
+          },
+          {
+            "id": "sb_e_72",
+            "from": "s_1_3",
+            "to": "s_2_4",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_73",
+            "from": "s_2_3",
+            "to": "s_3_3",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_74",
+            "from": "s_2_3",
+            "to": "s_2_4",
+            "cost": 1,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_75",
+            "from": "s_2_3",
+            "to": "s_3_4",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_76",
+            "from": "s_3_3",
+            "to": "s_4_3",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_77",
+            "from": "s_3_3",
+            "to": "s_3_4",
+            "cost": 1,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_78",
+            "from": "s_3_3",
+            "to": "s_4_4",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_79",
+            "from": "s_4_3",
+            "to": "s_5_3",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_80",
+            "from": "s_4_3",
+            "to": "s_4_4",
+            "cost": 1,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_81",
+            "from": "s_4_3",
+            "to": "s_5_4",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_82",
+            "from": "s_5_3",
+            "to": "s_6_3",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_83",
+            "from": "s_5_3",
+            "to": "s_5_4",
+            "cost": 1,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_84",
+            "from": "s_5_3",
+            "to": "s_6_4",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_85",
+            "from": "s_6_3",
+            "to": "s_7_3",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_86",
+            "from": "s_6_3",
+            "to": "s_6_4",
+            "cost": 0.95,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_87",
+            "from": "s_6_3",
+            "to": "s_7_4",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_88",
+            "from": "s_7_3",
+            "to": "s_7_4",
+            "cost": 0.95,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_89",
+            "from": "s_0_4",
+            "to": "s_1_4",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_90",
+            "from": "s_0_4",
+            "to": "s_0_5",
+            "cost": 1.15,
+            "reliability": 0.99,
+            "safetyScore": 1
+          },
+          {
+            "id": "sb_e_91",
+            "from": "s_0_4",
+            "to": "s_1_5",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_92",
+            "from": "s_1_4",
+            "to": "s_2_4",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_93",
+            "from": "s_1_4",
+            "to": "s_1_5",
+            "cost": 1.15,
+            "reliability": 0.99,
+            "safetyScore": 1
+          },
+          {
+            "id": "sb_e_94",
+            "from": "s_1_4",
+            "to": "s_2_5",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_95",
+            "from": "s_2_4",
+            "to": "s_3_4",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_96",
+            "from": "s_2_4",
+            "to": "s_2_5",
+            "cost": 1,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_97",
+            "from": "s_2_4",
+            "to": "s_3_5",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_98",
+            "from": "s_3_4",
+            "to": "s_4_4",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_99",
+            "from": "s_3_4",
+            "to": "s_3_5",
+            "cost": 1,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_100",
+            "from": "s_3_4",
+            "to": "s_4_5",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_101",
+            "from": "s_4_4",
+            "to": "s_5_4",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_102",
+            "from": "s_4_4",
+            "to": "s_4_5",
+            "cost": 1,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_103",
+            "from": "s_4_4",
+            "to": "s_5_5",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_104",
+            "from": "s_5_4",
+            "to": "s_6_4",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_105",
+            "from": "s_5_4",
+            "to": "s_5_5",
+            "cost": 1,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_106",
+            "from": "s_5_4",
+            "to": "s_6_5",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_107",
+            "from": "s_6_4",
+            "to": "s_7_4",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_108",
+            "from": "s_6_4",
+            "to": "s_6_5",
+            "cost": 0.95,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_109",
+            "from": "s_6_4",
+            "to": "s_7_5",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_110",
+            "from": "s_7_4",
+            "to": "s_7_5",
+            "cost": 0.95,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_111",
+            "from": "s_0_5",
+            "to": "s_1_5",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_112",
+            "from": "s_0_5",
+            "to": "s_0_6",
+            "cost": 1.15,
+            "reliability": 0.99,
+            "safetyScore": 1
+          },
+          {
+            "id": "sb_e_113",
+            "from": "s_0_5",
+            "to": "s_1_6",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_114",
+            "from": "s_1_5",
+            "to": "s_2_5",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_115",
+            "from": "s_1_5",
+            "to": "s_1_6",
+            "cost": 1.15,
+            "reliability": 0.99,
+            "safetyScore": 1
+          },
+          {
+            "id": "sb_e_116",
+            "from": "s_1_5",
+            "to": "s_2_6",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_117",
+            "from": "s_2_5",
+            "to": "s_3_5",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_118",
+            "from": "s_2_5",
+            "to": "s_2_6",
+            "cost": 1,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_119",
+            "from": "s_2_5",
+            "to": "s_3_6",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_120",
+            "from": "s_3_5",
+            "to": "s_4_5",
+            "cost": 0.85,
+            "reliability": 0.92,
+            "safetyScore": 0.85
+          },
+          {
+            "id": "sb_e_121",
+            "from": "s_3_5",
+            "to": "s_3_6",
+            "cost": 1,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_122",
+            "from": "s_3_5",
+            "to": "s_4_6",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_123",
+            "from": "s_4_5",
+            "to": "s_5_5",
+            "cost": 0.85,
+            "reliability": 0.92,
+            "safetyScore": 0.85
+          },
+          {
+            "id": "sb_e_124",
+            "from": "s_4_5",
+            "to": "s_4_6",
+            "cost": 1,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_125",
+            "from": "s_4_5",
+            "to": "s_5_6",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_126",
+            "from": "s_5_5",
+            "to": "s_6_5",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_127",
+            "from": "s_5_5",
+            "to": "s_5_6",
+            "cost": 1,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_128",
+            "from": "s_5_5",
+            "to": "s_6_6",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_129",
+            "from": "s_6_5",
+            "to": "s_7_5",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_130",
+            "from": "s_6_5",
+            "to": "s_6_6",
+            "cost": 0.95,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_131",
+            "from": "s_6_5",
+            "to": "s_7_6",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_132",
+            "from": "s_7_5",
+            "to": "s_7_6",
+            "cost": 0.95,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_133",
+            "from": "s_0_6",
+            "to": "s_1_6",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_134",
+            "from": "s_0_6",
+            "to": "s_0_7",
+            "cost": 1.15,
+            "reliability": 0.99,
+            "safetyScore": 1
+          },
+          {
+            "id": "sb_e_135",
+            "from": "s_0_6",
+            "to": "s_1_7",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_136",
+            "from": "s_1_6",
+            "to": "s_2_6",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_137",
+            "from": "s_1_6",
+            "to": "s_1_7",
+            "cost": 1.15,
+            "reliability": 0.99,
+            "safetyScore": 1
+          },
+          {
+            "id": "sb_e_138",
+            "from": "s_1_6",
+            "to": "s_2_7",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_139",
+            "from": "s_2_6",
+            "to": "s_3_6",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_140",
+            "from": "s_2_6",
+            "to": "s_2_7",
+            "cost": 1,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_141",
+            "from": "s_2_6",
+            "to": "s_3_7",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_142",
+            "from": "s_3_6",
+            "to": "s_4_6",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_143",
+            "from": "s_3_6",
+            "to": "s_3_7",
+            "cost": 1,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_144",
+            "from": "s_3_6",
+            "to": "s_4_7",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_145",
+            "from": "s_4_6",
+            "to": "s_5_6",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_146",
+            "from": "s_4_6",
+            "to": "s_4_7",
+            "cost": 1,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_147",
+            "from": "s_4_6",
+            "to": "s_5_7",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_148",
+            "from": "s_5_6",
+            "to": "s_6_6",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_149",
+            "from": "s_5_6",
+            "to": "s_5_7",
+            "cost": 1,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_150",
+            "from": "s_5_6",
+            "to": "s_6_7",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_151",
+            "from": "s_6_6",
+            "to": "s_7_6",
+            "cost": 1,
+            "reliability": 0.96,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_152",
+            "from": "s_6_6",
+            "to": "s_6_7",
+            "cost": 0.95,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_153",
+            "from": "s_6_6",
+            "to": "s_7_7",
+            "cost": 1.414,
+            "reliability": 0.94,
+            "safetyScore": 0.92
+          },
+          {
+            "id": "sb_e_154",
+            "from": "s_7_6",
+            "to": "s_7_7",
+            "cost": 0.95,
+            "reliability": 0.95,
+            "safetyScore": 0.95
+          },
+          {
+            "id": "sb_e_155",
+            "from": "s_0_7",
+            "to": "s_1_7",
+            "cost": 0.95,
+            "reliability": 0.98,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_156",
+            "from": "s_1_7",
+            "to": "s_2_7",
+            "cost": 0.95,
+            "reliability": 0.98,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_157",
+            "from": "s_2_7",
+            "to": "s_3_7",
+            "cost": 0.95,
+            "reliability": 0.98,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_158",
+            "from": "s_3_7",
+            "to": "s_4_7",
+            "cost": 0.95,
+            "reliability": 0.98,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_159",
+            "from": "s_4_7",
+            "to": "s_5_7",
+            "cost": 0.95,
+            "reliability": 0.98,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_160",
+            "from": "s_5_7",
+            "to": "s_6_7",
+            "cost": 0.95,
+            "reliability": 0.98,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_e_161",
+            "from": "s_6_7",
+            "to": "s_7_7",
+            "cost": 0.95,
+            "reliability": 0.98,
+            "safetyScore": 0.98
+          },
+          {
+            "id": "sb_discover_1",
+            "from": "s_1_1",
+            "to": "s_3_3",
+            "cost": 2.83,
+            "reliability": 0.92,
+            "safetyScore": 0.94,
+            "available": false
+          },
+          {
+            "id": "sb_discover_2",
+            "from": "s_2_3",
+            "to": "s_4_4",
+            "cost": 2.24,
+            "reliability": 0.94,
+            "safetyScore": 0.96,
+            "available": false
+          },
+          {
+            "id": "sb_discover_3",
+            "from": "s_4_4",
+            "to": "s_6_6",
+            "cost": 2.83,
+            "reliability": 0.9,
+            "safetyScore": 0.93,
+            "available": false
+          },
+          {
+            "id": "sb_discover_4",
+            "from": "s_5_1",
+            "to": "s_7_3",
+            "cost": 2.83,
+            "reliability": 0.93,
+            "safetyScore": 0.95,
+            "available": false
+          },
+          {
+            "id": "sb_discover_5",
+            "from": "s_1_4",
+            "to": "s_3_6",
+            "cost": 2.83,
+            "reliability": 0.89,
+            "safetyScore": 0.91,
+            "available": false
+          },
+          {
+            "id": "sb_discover_6",
+            "from": "s_0_3",
+            "to": "s_3_7",
+            "cost": 4.24,
+            "reliability": 0.96,
+            "safetyScore": 0.98,
+            "available": false
+          }
+        ]
+      }
+    }
+  ]
+}

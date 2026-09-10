@@ -1,0 +1,270 @@
+SAFE SEMANTIC PLANNER USING LIFELONG PLANNING A*
+
+Machine Learning – Assignment 1
+
+PCCST503
+
+1. INTRODUCTION
+
+The objective of this assignment is to implement a Safe Semantic Planner using the Lifelong Planning A* (LPA*) algorithm. The planner is designed to find a path between an initial state and a goal state while considering both path cost and safety constraints.
+
+Unlike conventional shortest-path planning, the proposed planner also considers changes in the planning environment. Transition costs, transition availability and goal conditions can change during execution. LPA* is suitable for such environments because it can reuse previously computed information instead of calculating the complete path from scratch after every change.
+
+The implementation is developed in C++ using a modular structure consisting of state and transition models, the planner implementation and a main program for executing the required test cases.
+
+2. OBJECTIVES
+
+The main objectives of the assignment are:
+
+• Implement a planner based on the Lifelong Planning A* algorithm.
+• Represent states and transitions in a planning environment.
+• Find a valid path from the initial state to the goal state.
+• Consider safety constraints while selecting a path.
+• Avoid states or transitions that violate safety requirements.
+• Handle dynamic changes in transition costs.
+• Handle changes in the goal state.
+• Handle addition of new transitions.
+• Evaluate the planner using the required test cases.
+• Record the experimental results.
+
+3. LIFELONG PLANNING A*
+
+Lifelong Planning A* is an incremental search algorithm designed for problems in which the environment can change over time.
+
+LPA* maintains two values for each state:
+
+g(s)
+
+and
+
+rhs(s)
+
+The g-value represents the current best known cost associated with a state, while rhs(s) represents a one-step look-ahead value.
+
+A state is locally consistent when:
+
+g(s) = rhs(s)
+
+When the environment changes, only the states affected by the change need to be updated. This allows LPA* to reuse information obtained during previous searches.
+
+The priority of a state is determined using a key consisting of the minimum of its g-value and rhs-value together with the heuristic estimate. States with the smallest priority are processed first.
+
+4. SAFE SEMANTIC PLANNING
+
+The planner extends path planning by incorporating safety information.
+
+Each transition has an associated cost and safety information. During path generation, transitions that violate the required safety condition are rejected.
+
+Therefore, the selected path should satisfy two important conditions:
+
+1. The goal should be reachable.
+2. The selected path should satisfy the safety constraints.
+
+When multiple safe paths are available, the planner selects an appropriate path based on the planning cost.
+
+5. SYSTEM STRUCTURE
+
+The project is organized into separate files for modularity.
+
+SafeSemanticPlanner/
+
+```
+include/
+    model.h
+    planner.h
+
+src/
+    main.cpp
+    planner.cpp
+
+results/
+    experimental_results.csv
+
+algorithm.txt
+
+report.pdf
+```
+
+The main components are:
+
+model.h
+Contains the data structures used to represent states, transitions and planning problems.
+
+planner.h
+Contains the Planner class declaration and the definitions required by the planner.
+
+planner.cpp
+Contains the implementation of the planning algorithm, including LPA* operations and dynamic updates.
+
+main.cpp
+Creates the planning problems and executes the required test cases.
+
+results/experimental_results.csv
+Stores the experimental results produced by the program.
+
+6. ALGORITHM
+
+The planner follows these major steps:
+
+1. Initialize the planning environment.
+2. Define states and transitions.
+3. Specify the initial and goal states.
+4. Initialize g-values and rhs-values.
+5. Insert the goal into the priority queue.
+6. Calculate priority keys.
+7. Process inconsistent states using LPA*.
+8. Update affected states whenever a transition changes.
+9. Check safety constraints during path generation.
+10. Construct the final path.
+11. Calculate path cost and safety information.
+12. Repeat the process for dynamic changes.
+13. Record the results.
+
+The complete pseudocode is provided in algorithm.txt.
+
+7. IMPLEMENTATION
+
+The implementation uses C++ and is divided into header and source files.
+
+The program uses a priority queue for selecting states according to their LPA* priority. The planner maintains state information and updates affected states when changes occur.
+
+The implementation also includes safety-aware path selection. Before a transition is included in the final path, its safety condition is considered.
+
+The modular implementation makes the program easier to understand, test and extend.
+
+8. TEST CASES
+
+The implementation is designed to evaluate the following six scenarios.
+
+TEST CASE 1 – BASIC REACHABILITY
+
+The first test checks whether the planner can successfully find a path from the initial state to the goal state in a basic planning environment.
+
+Expected evaluation:
+• Goal reachability
+• Generated path
+• Total path cost
+• Safety information
+
+TEST CASE 2 – AVOID BAD STATE
+
+The second test introduces a state or transition that should not be selected because of its undesirable or unsafe condition.
+
+The planner should avoid the bad state and select a suitable alternative path if one exists.
+
+Expected evaluation:
+• Avoidance of the bad state
+• Valid alternative path
+• Path cost
+• Safety condition
+
+TEST CASE 3 – SAFETY-AWARE PATH
+
+The third test evaluates whether the planner considers safety while selecting between possible paths.
+
+A path with lower cost may not necessarily be selected if it violates the required safety condition. The planner should select a safe and valid path.
+
+Expected evaluation:
+• Safety-aware path selection
+• Minimum safety distance/margin
+• Total path cost
+
+TEST CASE 4 – TRANSITION UPDATE
+
+The fourth test evaluates the incremental property of LPA*.
+
+A transition cost or condition is changed after an initial plan has been generated. The planner should update the affected states and determine the new path without rebuilding the complete search from scratch.
+
+Expected evaluation:
+• Updated path
+• Updated cost
+• Correct handling of the transition change
+
+TEST CASE 5 – GOAL UPDATE
+
+The fifth test evaluates the planner when the goal condition changes.
+
+The planner should update the affected planning information and determine a valid path to the new goal.
+
+Expected evaluation:
+• New goal
+• New path
+• Path cost
+• Safety condition
+
+TEST CASE 6 – TRANSITION ADDITION
+
+The sixth test evaluates the addition of a new transition to the planning environment.
+
+The new transition may provide a better or safer route. The planner should incorporate the new transition and update the resulting plan.
+
+Expected evaluation:
+• New transition incorporation
+• Updated path
+• Path cost
+• Safety information
+
+9. FEATURE IMPORTANCE / PLANNING ANALYSIS
+
+The planner does not use conventional machine-learning feature importance because this assignment is primarily a search and planning problem.
+
+Instead, the important factors influencing the selected path are:
+
+• Transition cost
+• Heuristic distance
+• Safety constraint
+• State connectivity
+• Transition availability
+• Goal condition
+
+Among these, safety is particularly important because a lower-cost path should not be selected when it violates the specified safety requirement.
+
+The LPA* structure also makes the effect of environmental changes easier to understand because only affected states need to be reconsidered.
+
+10. COMPLEXITY AND EFFICIENCY
+
+LPA* improves efficiency in dynamic environments by reusing information from previous searches.
+
+A conventional A* implementation may need to perform a new search after an environmental change. LPA* instead identifies inconsistent states and updates the affected portion of the search.
+
+Therefore, the main advantage of LPA* in this assignment is incremental replanning.
+
+The priority queue allows states to be processed according to their priority, while the g and rhs values allow the algorithm to identify states whose values need to be updated.
+
+11. RESULTS
+
+The program is designed to execute six test cases and record the corresponding experimental information.
+
+The results include:
+
+• Whether the goal is reachable.
+• The generated path.
+• Total path cost.
+• Minimum safety distance/margin.
+• Results associated with dynamic changes.
+
+The experimental results are stored in:
+
+results/experimental_results.csv
+
+The results can be used to compare the planner's behaviour across the different scenarios.
+
+12. DISCUSSION
+
+The test cases demonstrate the usefulness of incremental planning in a changing environment.
+
+The basic reachability test verifies the fundamental planning capability. The bad-state and safety-aware tests demonstrate that safety constraints influence path selection.
+
+The transition-update, goal-update and transition-addition tests demonstrate the ability of the planner to adapt to changes in the planning environment.
+
+LPA* is particularly appropriate for this type of problem because previously calculated information can be reused when the environment changes.
+
+13. CONCLUSION
+
+A Safe Semantic Planner based on Lifelong Planning A* was implemented using C++. The system represents states and transitions, performs path planning, considers safety constraints and supports dynamic changes.
+
+The six test cases are designed to evaluate basic reachability, bad-state avoidance, safety-aware planning, transition updates, goal updates and transition additions.
+
+The major advantage of the approach is its incremental replanning capability. Instead of completely rebuilding the search after every change, LPA* updates the affected states and reuses previously calculated information.
+
+The project demonstrates the application of heuristic search and incremental planning concepts to a safety-aware dynamic planning problem.

@@ -1,0 +1,18 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug safe_planner_test",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/safe_planner_test.exe",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "preLaunchTask": "Build safe_planner_test"
+    }
+  ]
+}

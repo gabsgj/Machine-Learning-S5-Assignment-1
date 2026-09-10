@@ -1,0 +1,2017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PCCST503 — Safe Semantic Planner Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #0a0d14;
+      --bg-surface: #111726;
+      --bg-card: rgba(18, 24, 38, 0.85);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(99, 102, 241, 0.5);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent: #6366f1;
+      --accent-glow: rgba(99, 102, 241, 0.25);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --danger-glow: rgba(239, 68, 68, 0.2);
+      --path-gold: #fbbf24;
+      --path-glow: rgba(251, 191, 36, 0.4);
+      --hazard-fill: rgba(239, 68, 68, 0.12);
+      --hazard-stroke: #ef4444;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-base);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Header */
+    header {
+      background: rgba(17, 23, 38, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .brand-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .badge-primary { background: rgba(99, 102, 241, 0.2); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.3); }
+    .badge-success { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .badge-danger { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+
+    /* Layout */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 340px 1fr 340px;
+      gap: 1.25rem;
+      padding: 1.25rem 2rem;
+      flex: 1;
+      max-width: 1920px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    @media (max-width: 1280px) {
+      .dashboard-grid { grid-template-columns: 300px 1fr; }
+      .metrics-column { grid-column: span 2; }
+    }
+    @media (max-width: 900px) {
+      .dashboard-grid { grid-template-columns: 1fr; }
+      .metrics-column { grid-column: span 1; }
+    }
+
+    /* Cards */
+    .card {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    }
+    .card-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* TC Runner Panel */
+    .tc-buttons-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+    }
+    .tc-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      padding: 0.65rem 0.75rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .tc-btn:hover {
+      background: rgba(99, 102, 241, 0.12);
+      border-color: rgba(99, 102, 241, 0.4);
+      color: var(--text-primary);
+      transform: translateY(-1px);
+    }
+    .tc-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      box-shadow: 0 0 16px var(--accent-glow);
+    }
+    .tc-btn-desc {
+      font-size: 0.68rem;
+      font-weight: 400;
+      opacity: 0.75;
+    }
+
+    .tc-info-banner {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.85rem;
+      font-size: 0.8rem;
+      line-height: 1.4;
+      color: var(--text-secondary);
+    }
+    .tc-info-banner strong {
+      color: var(--text-primary);
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+
+    .event-log-banner {
+      background: rgba(99, 102, 241, 0.1);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      border-radius: 8px;
+      padding: 0.65rem 0.85rem;
+      font-size: 0.75rem;
+      color: #c7d2fe;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .action-btn {
+      background: linear-gradient(135deg, #4f46e5, #6366f1);
+      color: #fff;
+      border: none;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+      box-shadow: 0 4px 14px var(--accent-glow);
+    }
+    .action-btn:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
+    .action-btn:active {
+      transform: translateY(0);
+    }
+
+    /* Weight Tuning Sliders */
+    .slider-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+    .slider-val {
+      font-family: 'Fira Code', monospace;
+      font-weight: 600;
+      color: var(--accent);
+    }
+    input[type=range] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.1);
+      outline: none;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+      box-shadow: 0 0 8px var(--accent-glow);
+      transition: transform 0.1s;
+    }
+    input[type=range]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    .validation-box {
+      font-size: 0.75rem;
+      padding: 0.6rem 0.75rem;
+      border-radius: 6px;
+      font-family: 'Fira Code', monospace;
+      display: none;
+    }
+    .validation-box.valid {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #34d399;
+      display: block;
+    }
+    .validation-box.invalid {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #f87171;
+      display: block;
+    }
+
+    /* Graph Canvas (Center) */
+    .canvas-container {
+      position: relative;
+      background: #0d121f;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.6);
+    }
+    .canvas-toolbar {
+      padding: 0.75rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(17, 24, 39, 0.6);
+    }
+    .legend {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    svg#graphSvg {
+      width: 100%;
+      height: 100%;
+      min-height: 520px;
+      display: block;
+      user-select: none;
+    }
+
+    /* Metrics Grid */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.65rem;
+    }
+    .metric-card {
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .metric-label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .metric-val {
+      font-family: 'Fira Code', monospace;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .metric-val.highlight { color: var(--accent); }
+    .metric-val.gold { color: var(--path-gold); }
+    .metric-val.green { color: var(--success); }
+    .metric-val.red { color: var(--danger); }
+
+    .status-pill {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.5rem;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+    .status-pill.success { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .status-pill.failure { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .status-pill.solving { background: rgba(99, 102, 241, 0.16); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.35); }
+    .status-pill.solving::before { content: ''; width: 8px; height: 8px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; display: inline-block; margin-right: 0.45rem; animation: planner-spin 700ms linear infinite; vertical-align: -1px; }
+    @keyframes planner-spin { to { transform: rotate(360deg); } }
+
+    /* SVG Styling Elements */
+    .svg-edge {
+      stroke: rgba(148, 163, 184, 0.25);
+      stroke-width: 1.5;
+      transition: stroke 0.3s, stroke-width 0.3s;
+    }
+    .svg-edge.path {
+      stroke: var(--path-gold);
+      stroke-width: 3.5;
+      stroke-linecap: round;
+      filter: drop-shadow(0 0 6px var(--path-glow));
+    }
+    .svg-edge.disabled {
+      stroke: rgba(239, 68, 68, 0.35);
+      stroke-dasharray: 4 4;
+    }
+    .svg-edge.dormant {
+      stroke: rgba(56, 189, 248, 0.55);
+      stroke-dasharray: 5 5;
+      stroke-width: 2;
+    }
+    .svg-edge-dormant-glow {
+      stroke: rgba(56, 189, 248, 0.35);
+      stroke-width: 10;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .svg-dormant-icon {
+      fill: rgba(56, 189, 248, 0.85);
+      font-family: monospace;
+      font-size: 11px;
+      text-anchor: middle;
+      dominant-baseline: central;
+      pointer-events: none;
+      user-select: none;
+      cursor: pointer;
+    }
+    .svg-dormant-badge {
+      fill: rgba(12, 74, 110, 0.80);
+      stroke: rgba(56, 189, 248, 0.6);
+      stroke-width: 1;
+      pointer-events: none;
+    }
+    .svg-edge.severed {
+      stroke: rgba(239, 68, 68, 0.70);
+      stroke-dasharray: 6 3;
+      stroke-width: 2.5;
+      filter: drop-shadow(0 0 4px rgba(239,68,68,0.5));
+    }
+    .svg-edge.clickable:hover ~ .svg-edge-hit,
+    .svg-edge-hit:hover {
+      /* hit-target hover glow applied to sibling via JS */
+    }
+    .svg-edge-hit {
+      stroke: transparent;
+      stroke-width: 14;
+      cursor: pointer;
+      fill: none;
+    }
+    .svg-edge-hit:hover + .svg-edge-hit-glow {
+      opacity: 1;
+    }
+    .svg-edge-hit-glow {
+      stroke: rgba(251,191,36,0.22);
+      stroke-width: 8;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    /* Sandbox restore panel */
+    .sandbox-restore-panel {
+      font-family: 'Fira Code', monospace;
+      font-size: 11px;
+    }
+    .sandbox-restore-bg {
+      fill: rgba(15,23,42,0.88);
+      rx: 8;
+      stroke: rgba(251,191,36,0.3);
+      stroke-width: 1;
+    }
+    .sandbox-restore-title {
+      fill: #fbbf24;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .sandbox-restore-row {
+      fill: #e2e8f0;
+      font-size: 10px;
+      cursor: pointer;
+    }
+    .sandbox-restore-btn {
+      fill: rgba(239,68,68,0.18);
+      cursor: pointer;
+    }
+    .sandbox-restore-x {
+      fill: #f87171;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .sandbox-hint {
+      fill: rgba(148,163,184,0.6);
+      font-size: 9px;
+      font-style: italic;
+    }
+    .svg-node {
+      fill: #1e293b;
+      stroke: #475569;
+      stroke-width: 1.5;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .svg-node.path {
+      fill: #d97706;
+      stroke: var(--path-gold);
+      stroke-width: 2.5;
+      filter: drop-shadow(0 0 8px var(--path-glow));
+    }
+    .svg-node.start {
+      fill: #059669;
+      stroke: #34d399;
+      stroke-width: 2.5;
+      filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.5));
+    }
+    .svg-node.goal {
+      fill: #7c3aed;
+      stroke: #a78bfa;
+      stroke-width: 2.5;
+      filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.5));
+    }
+    .svg-node.bad {
+      fill: #b91c1c;
+      stroke: #ef4444;
+      stroke-width: 2.5;
+      filter: drop-shadow(0 0 8px var(--danger-glow));
+    }
+    .svg-node.sandbox-hazard-toggle { cursor: pointer; }
+    .svg-node.sandbox-hazard-toggle:hover { stroke: #fca5a5; stroke-width: 3; }
+    .svg-node.sandbox-goal-selectable:not(.bad):hover { stroke: #c4b5fd; stroke-width: 3; }
+    /* Sandbox node action popup */
+    #sandboxNodePopup {
+      position: fixed;
+      background: rgba(15,23,42,0.96);
+      border: 1px solid rgba(148,163,184,0.25);
+      border-radius: 10px;
+      padding: 6px 4px;
+      display: none;
+      flex-direction: column;
+      gap: 3px;
+      z-index: 9999;
+      min-width: 140px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      backdrop-filter: blur(8px);
+      pointer-events: auto;
+    }
+    #sandboxNodePopup.visible { display: flex; }
+    .snp-header {
+      font-family: 'Fira Code', monospace;
+      font-size: 10px;
+      color: rgba(148,163,184,0.7);
+      padding: 2px 8px 4px;
+      border-bottom: 1px solid rgba(148,163,184,0.12);
+      letter-spacing: 0.04em;
+    }
+    .snp-btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: #e2e8f0;
+      padding: 5px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s;
+    }
+    .snp-btn:hover { background: rgba(99,102,241,0.22); color: #a5b4fc; }
+    .snp-btn.goal { color: #c4b5fd; }
+    .snp-btn.goal:hover { background: rgba(139,92,246,0.2); }
+    .snp-btn.hazard { color: #fca5a5; }
+    .snp-btn.hazard:hover { background: rgba(239,68,68,0.18); }
+    .snp-btn.clear-hazard { color: #6ee7b7; }
+    .snp-btn.clear-hazard:hover { background: rgba(16,185,129,0.18); }
+    .svg-node.excluded {
+      fill: #18181b;
+      stroke: #3f3f46;
+      opacity: 0.45;
+    }
+    .svg-node-label {
+      font-family: 'Fira Code', monospace;
+      font-size: 10px;
+      font-weight: 600;
+      fill: #ffffff;
+      pointer-events: none;
+      text-anchor: middle;
+      dominant-baseline: central;
+    }
+    .svg-hazard-shield {
+      fill: var(--hazard-fill);
+      stroke: var(--hazard-stroke);
+      stroke-width: 1.5;
+      stroke-dasharray: 4 4;
+      pointer-events: none;
+      transition: all 0.3s;
+    }
+    .route-replanned { animation: route-replanned 520ms ease-out; }
+    .metric-replanned { animation: metric-replanned 520ms ease-out; }
+    @keyframes route-replanned {
+      0% { stroke-dasharray: 2 10; opacity: 0.35; }
+      100% { opacity: 1; }
+    }
+    @keyframes metric-replanned {
+      0% { transform: scale(1); color: #fef3c7; }
+      45% { transform: scale(1.08); color: var(--path-gold); }
+      100% { transform: scale(1); }
+    }
+  </style>
+  <!-- Sandbox node action popup (DOM-level, not SVG, for easy CSS layout) -->
+  <div id="sandboxNodePopup">
+    <div class="snp-header" id="snpLabel">—</div>
+    <div class="snp-btn goal" id="snpGoalBtn">
+      <span>⊙</span><span>Set as Goal</span>
+    </div>
+    <div class="snp-btn hazard" id="snpHazardBtn">
+      <span>⚠</span><span>Mark as Hazard</span>
+    </div>
+  </div>
+</head>
+<body>
+
+  <header>
+    <div class="brand-title">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" color="#6366f1">
+        <circle cx="12" cy="12" r="10"></circle>
+        <polygon points="12 8 8 12 12 16 16 12 12 8"></polygon>
+      </svg>
+      Safe Semantic Planner
+      <span class="badge badge-primary">PCCST503</span>
+    </div>
+    <div style="display: flex; gap: 0.75rem; align-items: center;">
+      <span id="engineBadge" class="badge badge-success">Stateful Engine Ready</span>
+      <span class="badge" style="background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid var(--border);">Transposed D* Lite</span>
+    </div>
+  </header>
+
+  <main class="dashboard-grid">
+
+    <!-- LEFT COLUMN: TC Selector & Weight Tuning -->
+    <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+      
+      <!-- TC Selector Card -->
+      <section class="card">
+        <h2 class="card-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Preset Scenarios
+        </h2>
+
+        <div class="tc-buttons-grid" id="tcButtonsContainer">
+          <!-- Buttons dynamically injected -->
+        </div>
+
+        <div class="tc-info-banner" id="tcBanner">
+          <strong id="tcName">Loading scenario...</strong>
+          <span id="tcDescription"></span>
+        </div>
+
+        <div class="event-log-banner" id="eventLogBanner">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <span id="eventLogText">Initial solve ready</span>
+        </div>
+
+        <button class="action-btn" id="triggerBtn" onclick="handleTriggerClick()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <span id="triggerBtnLabel">Trigger Dynamic Event</span>
+        </button>
+      </section>
+
+      <!-- Weight Parameters Tuning Card -->
+      <section class="card">
+        <h2 class="card-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Multi-Objective Weights
+        </h2>
+
+        <!-- Cost weight beta -->
+        <div class="slider-group">
+          <div class="slider-header">
+            <span>Cost Weight (β)</span>
+            <span class="slider-val" id="valBeta">1.00</span>
+          </div>
+          <input type="range" id="sliderBeta" min="0.10" max="5.00" step="0.10" value="1.00" oninput="onWeightSliderChange()">
+        </div>
+
+        <!-- Reliability weight delta -->
+        <div class="slider-group">
+          <div class="slider-header">
+            <span>Reliability Weight (δ)</span>
+            <span class="slider-val" id="valDelta">0.10</span>
+          </div>
+          <input type="range" id="sliderDelta" min="0.00" max="2.00" step="0.05" value="0.10" oninput="onWeightSliderChange()">
+        </div>
+
+        <!-- Safety exclusion radius r -->
+        <div class="slider-group">
+          <div class="slider-header">
+            <span>Exclusion Radius (r)</span>
+            <span class="slider-val" id="valR">0.00</span>
+          </div>
+          <input type="range" id="sliderR" min="0.00" max="2.50" step="0.05" value="0.00" oninput="onWeightSliderChange()">
+        </div>
+
+        <!-- Semantic alignment alpha -->
+        <div class="slider-group">
+          <div class="slider-header">
+            <span>Semantic Alignment (α)</span>
+            <span class="slider-val" id="valAlpha">1.00</span>
+          </div>
+          <input type="range" id="sliderAlpha" min="0.10" max="3.00" step="0.10" value="1.00" oninput="onWeightSliderChange()">
+        </div>
+
+        <div id="validationBox" class="validation-box"></div>
+      </section>
+
+    </div>
+
+    <!-- CENTER COLUMN: SVG Graph Canvas -->
+    <div class="canvas-container">
+      <div class="canvas-toolbar">
+        <div style="font-size: 0.85rem; font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 0.5rem;">
+          <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--path-gold); box-shadow:0 0 8px var(--path-gold)"></span>
+          Topological Cartesian Graph
+        </div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#34d399"></div> Start (S)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#a78bfa"></div> Goal (G)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div> Hazard (X)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--path-gold)"></div> Optimal Route</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#3f3f46"></div> Excluded (r)</div>
+          <div class="legend-item" id="legendDormant" style="display:none"><div class="legend-dot" style="background:rgba(56,189,248,0.7); border-radius:2px; height:3px; width:14px; margin-top:1px"></div> ⚡ Shortcut</div>
+        </div>
+      </div>
+
+      <svg id="graphSvg" viewBox="0 0 800 600">
+        <!-- SVG content rendered via JS -->
+      </svg>
+    </div>
+
+    <!-- RIGHT COLUMN: Metrics Panel -->
+    <div class="metrics-column" style="display: flex; flex-direction: column; gap: 1.25rem;">
+      
+      <section class="card">
+        <h2 class="card-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          Planner Metrics HUD
+        </h2>
+
+        <div id="statusPill" class="status-pill success">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          <span id="statusText">Optimal Route Active</span>
+        </div>
+
+        <div class="metrics-grid">
+          
+          <div class="metric-card">
+            <span class="metric-label">Total Cost</span>
+            <span class="metric-val gold" id="metricCost">0.00</span>
+          </div>
+
+          <div class="metric-card">
+            <span class="metric-label">Bad States Visited</span>
+            <span class="metric-val" id="metricBadVisited">0 / 0</span>
+          </div>
+
+          <div class="metric-card">
+            <span class="metric-label">Min Clearance</span>
+            <span class="metric-val green" id="metricClearance">0.00 u</span>
+          </div>
+
+          <div class="metric-card">
+            <span class="metric-label">States Explored</span>
+            <span class="metric-val highlight" id="metricExplored">0</span>
+          </div>
+
+          <div class="metric-card">
+            <span class="metric-label">Initial Planning</span>
+            <span class="metric-val" id="metricPlanTime">0.00 ms</span>
+          </div>
+
+          <div class="metric-card">
+            <span class="metric-label">Replan Time</span>
+            <span class="metric-val" id="metricReplanTime">0.00 ms</span>
+          </div>
+
+          <div class="metric-card">
+            <span class="metric-label">Memory Footprint</span>
+            <span class="metric-val" id="metricMemory">0 B</span>
+          </div>
+
+          <div class="metric-card">
+            <span class="metric-label">Session Success Rate</span>
+            <span class="metric-val green" id="metricSuccessRate">0 / 0 (0.00%)</span>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Path Inspection Details -->
+      <section class="card" style="flex: 1;">
+        <h2 class="card-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Active Route Breakdown
+        </h2>
+
+        <div style="font-size: 0.78rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.5rem;">
+          <div><strong>State Path:</strong> <span id="routeStates" style="font-family:'Fira Code', monospace; color: var(--path-gold); word-break: break-all;">None</span></div>
+          <div><strong>Transitions:</strong> <span id="routeTransitions" style="font-family:'Fira Code', monospace; color: var(--text-muted); word-break: break-all;">None</span></div>
+          <div><strong>Hop Count:</strong> <span id="routeHops" style="font-family:'Fira Code', monospace;">0</span></div>
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+
+  <script>
+    /**
+     * PCCST503 Safe Semantic Planner — JavaScript & WASM Engine Core
+     */
+
+    // ── Global State ──
+    let scenariosData = [];
+    let currentScenarioIndex = 0;
+    let currentResult = null;
+    let currentMetrics = null;
+    let triggerState = 0; // For cycling multi-step actions
+    let lastEventText = "Initial solve ready";
+    let sandboxSeveredEdges = new Set(); // tIds manually severed in sandbox mode
+    let animateReplanUpdate = false;
+    let pendingHazardReplan = 0;
+    let wasmWorker = null;
+    let wasmWorkerAvailable = true;
+    let wasmRequestId = 0;
+    const wasmRequests = new Map();
+
+    // The compiled planner is hosted exclusively in planner_worker.js. The JS
+    // mirror remains a lightweight rendering fallback when the WASM artefact is
+    // not present (for example, before build_wasm.sh has been run).
+    function setSolving(isSolving) {
+      const statusPill = document.getElementById('statusPill');
+      const statusText = document.getElementById('statusText');
+      if (!statusPill || !statusText || !isSolving) return;
+      statusPill.className = 'status-pill solving';
+      statusText.textContent = 'Solving…';
+    }
+
+    function getWasmWorker() {
+      if (wasmWorker || !wasmWorkerAvailable || !window.Worker) return wasmWorker;
+      wasmWorker = new Worker('planner_worker.js');
+      wasmWorker.onmessage = ({ data }) => {
+        const pending = wasmRequests.get(data.id);
+        if (!pending) return;
+        wasmRequests.delete(data.id);
+        pending.resolve(data);
+      };
+      wasmWorker.onerror = () => { wasmWorkerAvailable = false; };
+      return wasmWorker;
+    }
+
+    function callWasmWorker(type, payload) {
+      const worker = getWasmWorker();
+      if (!worker) return Promise.resolve(null);
+      setSolving(true);
+      const id = ++wasmRequestId;
+      return new Promise(resolve => {
+        wasmRequests.set(id, { resolve });
+        worker.postMessage({ id, type, payload });
+      });
+    }
+
+    function snapshotPlannerProblem() {
+      const problem = JSON.parse(JSON.stringify(plannerInstance.problem));
+      problem.badStates = [...plannerInstance.badStates];
+      problem.transitions = Array.from(plannerInstance.transitions.values()).map(({ weight, ...edge }) => ({ ...edge }));
+      return problem;
+    }
+
+    function syncWasmPlanner() {
+      if (!wasmWorkerAvailable || !plannerInstance.problem) return;
+      callWasmWorker('initialize', { problem: snapshotPlannerProblem(), weights: plannerInstance.weights })
+        .then(reply => {
+          if (!reply) return;
+          if (!reply.ok) {
+            document.getElementById('engineBadge').textContent = 'Worker Fallback Ready';
+            renderMetrics();
+            return;
+          }
+          // Results arrived asynchronously from the worker thread
+          currentResult = reply.result;
+          currentMetrics = reply.metrics;
+          document.getElementById('engineBadge').textContent = reply.engine === 'wasm' ? 'WASM Worker Active' : 'Worker Thread Active';
+          renderSVG();
+          renderMetrics();
+        });
+    }
+
+    function isSandboxMode() {
+      if (!scenariosData.length) return false;
+      return scenariosData[currentScenarioIndex].id === 'SANDBOX';
+    }
+
+    // ── Pure JS D* Lite Implementation Mirror (1:1 with C++ WASM Engine) ──
+    class JsDStarLitePlanner {
+      constructor() {
+        this.attemptCount = 0;
+        this.goalSuccessCount = 0;
+        this.reset();
+      }
+
+      reset() {
+        this.states = new Map();
+        this.transitions = new Map();
+        this.successors = new Map();
+        this.predecessors = new Map();
+        this.edgeLookup = new Map();
+        this.g = new Map();
+        this.rhs = new Map();
+        this.inOpenList = new Map();
+        this.openList = [];
+        this.km = 0.0;
+        this.cMin = 1.0;
+        this.currentCallExpansions = 0;
+        this.isInitialSolve = true;
+        this.lastPlanningTimeMs = 0.0;
+        this.lastReplanningTimeMs = 0.0;
+        this.sInit = '';
+        this.sGoal = '';
+        this.sLastGoal = '';
+        this.badStates = [];
+        this.weights = { alpha: 1.0, beta: 1.0, gamma: 1.0, delta: 0.1, r: 0.0 };
+      }
+
+      dist(a, b) {
+        let dx = a[0] - b[0];
+        let dy = a[1] - b[1];
+        return Math.sqrt(dx * dx + dy * dy);
+      }
+
+      computeHeuristic(u, target) {
+        if (!this.states.has(u) || !this.states.has(target)) return 0.0;
+        let d = this.dist(this.states.get(u).embedding, this.states.get(target).embedding);
+        return this.cMin * d;
+      }
+
+      calculateKey(u) {
+        let gVal = this.g.get(u) ?? Infinity;
+        let rhsVal = this.rhs.get(u) ?? Infinity;
+        let m = Math.min(gVal, rhsVal);
+        if (m >= 1e9) return { k1: Infinity, k2: Infinity };
+        return {
+          k1: m + this.computeHeuristic(u, this.sGoal) + this.km,
+          k2: m
+        };
+      }
+
+      keyLess(a, b) {
+        if (!a || !b) return false;
+        let sameK1 = (a.k1 === b.k1) || Math.abs(a.k1 - b.k1) < 1e-9;
+        if (!sameK1) return a.k1 < b.k1;
+        let sameK2 = (a.k2 === b.k2) || Math.abs(a.k2 - b.k2) < 1e-9;
+        return !sameK2 && a.k2 < b.k2;
+      }
+
+      initialize(problem, weights) {
+        this.problem = JSON.parse(JSON.stringify(problem));
+        this.weights = { ...weights };
+        this.sInit = problem.initialState;
+        this.sGoal = problem.goalState;
+        this.sLastGoal = this.sGoal;
+        this.km = 0.0;
+        this.currentCallExpansions = 0;
+        this.isInitialSolve = true;
+        this.lastPlanningTimeMs = 0.0;
+        this.lastReplanningTimeMs = 0.0;
+        this.badStates = problem.badStates || [];
+
+        this.states.clear();
+        this.transitions.clear();
+        this.successors.clear();
+        this.predecessors.clear();
+        this.edgeLookup.clear();
+        this.g.clear();
+        this.rhs.clear();
+        this.inOpenList.clear();
+        this.openList = [];
+
+        // Identify states & compute distance to bad states
+        const badSet = new Set(this.badStates);
+        for (let s of problem.states) {
+          let st = {
+            id: s.id,
+            label: s.label || s.id,
+            embedding: s.embedding || [0, 0],
+            isBadState: badSet.has(s.id),
+            distanceToNearestBadState: Infinity,
+            isExcluded: false
+          };
+
+          if (this.badStates.length > 0) {
+            if (st.isBadState) {
+              st.distanceToNearestBadState = 0.0;
+            } else {
+              let minDist = Infinity;
+              for (let bId of this.badStates) {
+                let bs = problem.states.find(x => x.id === bId);
+                if (bs) {
+                  let d = this.dist(st.embedding, bs.embedding);
+                  if (d < minDist) minDist = d;
+                }
+              }
+              st.distanceToNearestBadState = minDist;
+            }
+          }
+          st.isExcluded = (st.distanceToNearestBadState <= this.weights.r);
+          this.states.set(s.id, st);
+          this.g.set(s.id, Infinity);
+          this.rhs.set(s.id, Infinity);
+          this.successors.set(s.id, []);
+          this.predecessors.set(s.id, []);
+        }
+
+        // Transitions
+        let minCost = Infinity;
+        let maxReliability = 0;
+        this.cMin = Infinity;
+
+        for (let t of problem.transitions) {
+          let weight = this.weights.beta * t.cost - this.weights.delta * (t.reliability ?? 1.0);
+          let edge = { ...t, weight, available: t.available !== false };
+          this.transitions.set(t.id, edge);
+          this.edgeLookup.set(`${t.from}->${t.to}`, t.id);
+          this.successors.get(t.from)?.push(t.to);
+          this.predecessors.get(t.to)?.push(t.from);
+
+          let fromS = this.states.get(t.from);
+          let toS = this.states.get(t.to);
+          if (edge.available && fromS && toS && !fromS.isExcluded && !toS.isExcluded) {
+            minCost = Math.min(minCost, t.cost);
+            maxReliability = Math.max(maxReliability, t.reliability ?? 1.0);
+            let d = this.dist(fromS.embedding, toS.embedding);
+            if (d > 1e-9) {
+              this.cMin = Math.min(this.cMin, weight / d);
+            }
+          }
+        }
+
+        if (this.cMin === Infinity) this.cMin = 1.0;
+
+        // Set initial state rhs = 0.0 (D* Lite transposed goal)
+        let initS = this.states.get(this.sInit);
+        if (initS && !initS.isExcluded) {
+          this.rhs.set(this.sInit, 0.0);
+          let key = this.calculateKey(this.sInit);
+          this.inOpenList.set(this.sInit, key);
+          this.openList.push({ stateId: this.sInit, key });
+        }
+      }
+
+      updateVertex(u) {
+        let st = this.states.get(u);
+        if (!st) return;
+
+        if (st.isExcluded) {
+          this.rhs.set(u, Infinity);
+          this.g.set(u, Infinity);
+          this.inOpenList.delete(u);
+          return;
+        }
+
+        if (u !== this.sInit) {
+          let minRhs = Infinity;
+          let preds = this.predecessors.get(u) || [];
+          for (let p of preds) {
+            let pState = this.states.get(p);
+            if (pState && !pState.isExcluded) {
+              let tId = this.edgeLookup.get(`${p}->${u}`);
+              let edge = this.transitions.get(tId);
+              if (edge && edge.available) {
+                let gP = this.g.get(p) ?? Infinity;
+                if (gP < 1e9) {
+                  let val = gP + edge.weight;
+                  if (val < minRhs) minRhs = val;
+                }
+              }
+            }
+          }
+          this.rhs.set(u, minRhs);
+        }
+
+        let gVal = this.g.get(u) ?? Infinity;
+        let rhsVal = this.rhs.get(u) ?? Infinity;
+        let consistent = Math.abs(gVal - rhsVal) < 1e-9;
+
+        if (consistent) {
+          this.inOpenList.delete(u);
+        } else {
+          let key = this.calculateKey(u);
+          this.inOpenList.set(u, key);
+          this.openList.push({ stateId: u, key });
+        }
+      }
+
+      computeShortestPath() {
+        let t0 = performance.now();
+        this.currentCallExpansions = 0;
+        this.attemptCount++;
+
+        let initS = this.states.get(this.sInit);
+        let goalS = this.states.get(this.sGoal);
+
+        if (!initS || !goalS || initS.isExcluded || goalS.isExcluded) {
+          let res = { success: false, errorMessage: "Initial or goal state is excluded by safety exclusion radius.", statePath: [], transitionPath: [], totalCost: 0, safetyScore: 0 };
+          this.recordTiming(t0, false);
+          return res;
+        }
+
+        while (true) {
+          const openEmpty = this.openList.length === 0;
+          let topKey = { k1: Infinity, k2: Infinity };
+          let topEntry = null;
+          let u = null;
+
+          if (!openEmpty) {
+            this.openList.sort((a, b) => this.keyLess(a.key, b.key) ? -1 : 1);
+            topEntry = this.openList[0];
+            topKey = topEntry.key;
+            u = topEntry.stateId;
+          }
+
+          let goalKey = this.calculateKey(this.sGoal);
+          let gGoal = this.g.get(this.sGoal) ?? Infinity;
+          let rhsGoal = this.rhs.get(this.sGoal) ?? Infinity;
+
+          let goalConsistent = (gGoal === rhsGoal) || (Math.abs(gGoal - rhsGoal) < 1e-9);
+          let topLess = this.keyLess(topKey, goalKey);
+
+          if (!topLess && goalConsistent) break;
+          if (openEmpty) break;
+
+          this.openList.shift();
+
+          let storedKey = this.inOpenList.get(u);
+          if (!storedKey) continue;
+          if (Math.abs(storedKey.k1 - topKey.k1) > 1e-9 || Math.abs(storedKey.k2 - topKey.k2) > 1e-9) continue;
+
+          let curKey = this.calculateKey(u);
+          let gU = this.g.get(u) ?? Infinity;
+          let rhsU = this.rhs.get(u) ?? Infinity;
+
+          if (this.keyLess(topKey, curKey)) {
+            this.inOpenList.set(u, curKey);
+            this.openList.push({ stateId: u, key: curKey });
+          } else if (gU > rhsU) {
+            this.inOpenList.delete(u);
+            this.currentCallExpansions++;
+            this.g.set(u, rhsU);
+            let succs = this.successors.get(u) || [];
+            for (let s of succs) this.updateVertex(s);
+          } else {
+            this.currentCallExpansions++;
+            this.g.set(u, Infinity);
+            this.updateVertex(u);
+            let succs = this.successors.get(u) || [];
+            for (let s of succs) this.updateVertex(s);
+          }
+        }
+
+        let res = this.extractPath();
+        if (res.success) this.goalSuccessCount++;
+        this.recordTiming(t0, res.success);
+        return res;
+      }
+
+      extractPath() {
+        let gGoal = this.g.get(this.sGoal) ?? Infinity;
+        if (gGoal >= 1e9) {
+          return { success: false, errorMessage: "No valid path found to destination goal.", statePath: [], transitionPath: [], totalCost: 0, safetyScore: 0 };
+        }
+
+        let pathStates = [this.sGoal];
+        let pathTransitions = [];
+        let curr = this.sGoal;
+        let visited = new Set([curr]);
+        let totalCost = 0;
+        let totalSafety = 0;
+
+        while (curr !== this.sInit) {
+          let bestPred = '';
+          let bestTransId = '';
+          let bestVal = Infinity;
+
+          let preds = this.predecessors.get(curr) || [];
+          for (let p of preds) {
+            let pState = this.states.get(p);
+            if (pState && !pState.isExcluded) {
+              let tId = this.edgeLookup.get(`${p}->${curr}`);
+              let edge = this.transitions.get(tId);
+              if (edge && edge.available) {
+                let gP = this.g.get(p) ?? Infinity;
+                if (gP < 1e9) {
+                  let val = gP + edge.weight;
+                  if (val < bestVal) {
+                    bestVal = val;
+                    bestPred = p;
+                    bestTransId = tId;
+                  }
+                }
+              }
+            }
+          }
+
+          if (!bestPred || visited.has(bestPred)) {
+            return { success: false, errorMessage: "Disconnected predecessor or loop encountered.", statePath: [], transitionPath: [], totalCost: 0, safetyScore: 0 };
+          }
+
+          let edge = this.transitions.get(bestTransId);
+          totalCost += edge.cost;
+          totalSafety += (edge.safetyScore ?? 1.0);
+          pathTransitions.push(bestTransId);
+          curr = bestPred;
+          pathStates.push(curr);
+          visited.add(curr);
+        }
+
+        pathStates.reverse();
+        pathTransitions.reverse();
+        return {
+          success: true,
+          errorMessage: "",
+          statePath: pathStates,
+          transitionPath: pathTransitions,
+          totalCost: totalCost,
+          safetyScore: pathTransitions.length > 0 ? (totalSafety / pathTransitions.length) : 1.0
+        };
+      }
+
+      recordTiming(t0, success) {
+        let elapsed = performance.now() - t0;
+        if (this.isInitialSolve) {
+          this.lastPlanningTimeMs = elapsed;
+          this.isInitialSolve = false;
+        } else {
+          this.lastReplanningTimeMs = elapsed;
+        }
+      }
+
+      notifyEdgeChanged(transitionId, newCost, newAvailability) {
+        let edge = this.transitions.get(transitionId);
+        if (!edge) return;
+        edge.cost = newCost;
+        edge.available = newAvailability;
+        edge.weight = this.weights.beta * newCost - this.weights.delta * (edge.reliability ?? 1.0);
+        this.updateVertex(edge.to);
+      }
+
+      notifyGoalChanged(newGoalStateId) {
+        if (newGoalStateId === this.sGoal) return;
+        this.km += this.computeHeuristic(this.sLastGoal, newGoalStateId);
+        this.sGoal = newGoalStateId;
+        this.sLastGoal = this.sGoal;
+        if (this.states.has(this.sGoal)) {
+          this.updateVertex(this.sGoal);
+        }
+      }
+
+      notifySafetyRadiusChanged(newRadius) {
+        this.weights.r = newRadius;
+        this.updateSafetyExclusions();
+      }
+
+      notifyBadStatesChanged(newBadStates) {
+        this.badStates = [...newBadStates];
+        this.problem.badStates = [...newBadStates];
+        const badSet = new Set(this.badStates);
+        for (let s of this.states.values()) {
+          s.isBadState = badSet.has(s.id);
+          if (this.badStates.length === 0) s.distanceToNearestBadState = Infinity;
+          else if (s.isBadState) s.distanceToNearestBadState = 0.0;
+          else {
+            let minDist = Infinity;
+            for (const badId of this.badStates) {
+              const bad = this.states.get(badId);
+              if (bad) minDist = Math.min(minDist, this.dist(s.embedding, bad.embedding));
+            }
+            s.distanceToNearestBadState = minDist;
+          }
+        }
+        this.updateSafetyExclusions();
+      }
+
+      updateSafetyExclusions() {
+        let changed = [];
+        for (let [id, s] of this.states) {
+          let prev = s.isExcluded;
+          s.isExcluded = (s.distanceToNearestBadState <= this.weights.r);
+          if (prev !== s.isExcluded) changed.push(id);
+        }
+        for (let sId of changed) {
+          this.updateVertex(sId);
+          let succs = this.successors.get(sId) || [];
+          for (let succ of succs) this.updateVertex(succ);
+        }
+      }
+
+      getMetrics() {
+        let activeCount = 0;
+        for (let [_, s] of this.states) {
+          if (!s.isExcluded) activeCount++;
+        }
+
+        // Exact sizeof matching formula:
+        let sizeofGRhs = 48;
+        let sizeofHeap = 40;
+        let sizeofKdNode = 72;
+        let memBytes = (sizeofGRhs * activeCount) + (sizeofHeap * this.openList.length) + (sizeofKdNode * this.badStates.length);
+
+        let res = this.extractPath();
+        let badVisited = 0;
+        let minClear = Infinity;
+
+        if (res.success && res.statePath.length > 0) {
+          for (let sId of res.statePath) {
+            let s = this.states.get(sId);
+            if (s) {
+              if (s.isBadState) badVisited++;
+              if (s.distanceToNearestBadState < minClear) minClear = s.distanceToNearestBadState;
+            }
+          }
+        }
+
+        return {
+          statesExplored: this.currentCallExpansions,
+          planningTimeMs: this.lastPlanningTimeMs,
+          replanningTimeMs: this.lastReplanningTimeMs,
+          memoryBytes: memBytes,
+          totalCost: res.success ? res.totalCost : 0.0,
+          minClearance: minClear === Infinity ? 0.0 : minClear,
+          badStatesVisited: badVisited,
+          goalSuccessCount: this.goalSuccessCount,
+          attemptCount: this.attemptCount,
+          goalSuccessRate: this.attemptCount > 0 ? (this.goalSuccessCount / this.attemptCount) : 0.0
+        };
+      }
+    }
+
+    // Instance of the planner
+    const plannerInstance = new JsDStarLitePlanner();
+
+    function getLabel(stateId) {
+      const s = plannerInstance.states.get(stateId);
+      return s ? s.label : stateId;
+    }
+
+    // ── Application Initialization & Scenario Loading ──
+    async function initDashboard() {
+      try {
+        const response = await fetch('scenarios.json');
+        const data = await response.json();
+        scenariosData = data.scenarios;
+        renderScenarioButtons();
+        selectScenario(0);
+      } catch (err) {
+        console.error('Failed to load scenarios.json:', err);
+      }
+    }
+
+    function renderScenarioButtons() {
+      const container = document.getElementById('tcButtonsContainer');
+      container.innerHTML = '';
+      scenariosData.forEach((sc, idx) => {
+        const btn = document.createElement('button');
+        btn.className = `tc-btn ${idx === 0 ? 'active' : ''}`;
+        btn.id = `btn_${sc.id}`;
+        btn.onclick = () => selectScenario(idx);
+        btn.innerHTML = `<span>${sc.name.split(':')[0]}</span><span class="tc-btn-desc">${sc.name.split(':')[1] || ''}</span>`;
+        container.appendChild(btn);
+      });
+    }
+
+    function selectScenario(index) {
+      currentScenarioIndex = index;
+      triggerState = 0;
+      sandboxSeveredEdges.clear(); // reset manual severings when switching scenarios
+      hideSandboxNodePopup();
+      const sc = scenariosData[index];
+
+      // Update active button styling
+      document.querySelectorAll('.tc-btn').forEach((b, i) => b.classList.toggle('active', i === index));
+
+      // Update banner & event log
+      document.getElementById('tcName').textContent = sc.name;
+      document.getElementById('tcDescription').textContent = sc.description;
+      document.getElementById('triggerBtnLabel').textContent = sc.triggerLabel;
+      lastEventText = `Loaded scenario ${sc.name.split(':')[0]}: Initial solve computed.`;
+
+      // Update sliders
+      document.getElementById('sliderAlpha').value = sc.weights.alpha.toFixed(2);
+      document.getElementById('sliderBeta').value = sc.weights.beta.toFixed(2);
+      document.getElementById('sliderDelta').value = sc.weights.delta.toFixed(2);
+      document.getElementById('sliderR').value = sc.weights.r.toFixed(2);
+      updateSliderDisplays();
+
+      // Initialize planner
+      plannerInstance.initialize(sc.problem, sc.weights);
+      currentResult = plannerInstance.computeShortestPath();
+      currentMetrics = plannerInstance.getMetrics();
+
+      updateUI();
+    }
+
+    function onWeightSliderChange() {
+      updateSliderDisplays();
+      const weights = {
+        alpha: parseFloat(document.getElementById('sliderAlpha').value),
+        beta: parseFloat(document.getElementById('sliderBeta').value),
+        delta: parseFloat(document.getElementById('sliderDelta').value),
+        gamma: 1.0,
+        r: parseFloat(document.getElementById('sliderR').value)
+      };
+
+      // Validate w_min
+      let minCost = Infinity;
+      let maxRel = 0;
+      for (let t of plannerInstance.transitions.values()) {
+        minCost = Math.min(minCost, t.cost);
+        maxRel = Math.max(maxRel, t.reliability ?? 1.0);
+      }
+      let wMin = weights.beta * minCost - weights.delta * maxRel;
+      const vBox = document.getElementById('validationBox');
+
+      if (wMin < 0) {
+        vBox.className = 'validation-box invalid';
+        vBox.textContent = `w_min = ${weights.beta.toFixed(2)} · ${minCost.toFixed(2)} - ${weights.delta.toFixed(2)} · ${maxRel.toFixed(2)} = ${wMin.toFixed(2)} < 0.00 (Violates Non-Negative Weight Assumption!)`;
+        return;
+      } else {
+        vBox.className = 'validation-box valid';
+        vBox.textContent = `w_min = ${weights.beta.toFixed(2)} · ${minCost.toFixed(2)} - ${weights.delta.toFixed(2)} · ${maxRel.toFixed(2)} = ${wMin.toFixed(2)} ≥ 0.00 (Valid Multi-Objective Weights)`;
+      }
+
+      plannerInstance.weights = weights;
+      plannerInstance.notifySafetyRadiusChanged(weights.r);
+      currentResult = plannerInstance.computeShortestPath();
+      currentMetrics = plannerInstance.getMetrics();
+      lastEventText = `Weights updated: β=${weights.beta.toFixed(2)}, δ=${weights.delta.toFixed(2)}, r=${weights.r.toFixed(2)} u.`;
+      updateUI();
+    }
+
+    function updateSliderDisplays() {
+      document.getElementById('valAlpha').textContent = parseFloat(document.getElementById('sliderAlpha').value).toFixed(2);
+      document.getElementById('valBeta').textContent = parseFloat(document.getElementById('sliderBeta').value).toFixed(2);
+      document.getElementById('valDelta').textContent = parseFloat(document.getElementById('sliderDelta').value).toFixed(2);
+      document.getElementById('valR').textContent = parseFloat(document.getElementById('sliderR').value).toFixed(2);
+    }
+
+    function handleTriggerClick() {
+      const sc = scenariosData[currentScenarioIndex];
+      const action = sc.triggerAction;
+      if (!action) return;
+
+      if (action.type === 'recompute') {
+        currentResult = plannerInstance.computeShortestPath();
+        lastEventText = `Re-verified baseline path from ${getLabel(plannerInstance.sInit)} to ${getLabel(plannerInstance.sGoal)}.`;
+      } else if (action.type === 'cycle_radius') {
+        triggerState = (triggerState + 1) % action.radii.length;
+        const nextR = action.radii[triggerState];
+        document.getElementById('sliderR').value = nextR.toFixed(2);
+        updateSliderDisplays();
+        plannerInstance.notifySafetyRadiusChanged(nextR);
+        currentResult = plannerInstance.computeShortestPath();
+        lastEventText = `Safety exclusion radius updated to ${nextR.toFixed(2)} u (path detours around hazard X).`;
+      } else if (action.type === 'toggle_delta') {
+        triggerState = (triggerState + 1) % action.deltaValues.length;
+        const nextDelta = action.deltaValues[triggerState];
+        document.getElementById('sliderDelta').value = nextDelta.toFixed(2);
+        updateSliderDisplays();
+        onWeightSliderChange();
+        lastEventText = `Reliability weight δ switched to ${nextDelta.toFixed(2)} (${nextDelta > 0.5 ? 'switched to high-reliability route B' : 'switched to lower-cost route A'}).`;
+        return;
+      } else if (action.type === 'sever_current_path_mid') {
+        if (currentResult && currentResult.transitionPath.length > 0) {
+          const midIdx = Math.floor(currentResult.transitionPath.length / 2);
+          const tId = currentResult.transitionPath[midIdx];
+          const edge = plannerInstance.transitions.get(tId);
+          const fromLbl = getLabel(edge.from);
+          const toLbl = getLabel(edge.to);
+          plannerInstance.notifyEdgeChanged(tId, 100.0, false);
+          currentResult = plannerInstance.computeShortestPath();
+          lastEventText = `Edge ${fromLbl} → ${toLbl} severed (marked unavailable). Local subtree repaired.`;
+        }
+      } else if (action.type === 'shift_goal') {
+        triggerState = (triggerState + 1) % action.goals.length;
+        const targetGoal = action.goals[triggerState];
+        const oldGoalLbl = getLabel(plannerInstance.sGoal);
+        plannerInstance.notifyGoalChanged(targetGoal);
+        currentResult = plannerInstance.computeShortestPath();
+        const newGoalLbl = getLabel(targetGoal);
+        lastEventText = `Destination goal shifted from ${oldGoalLbl} to ${newGoalLbl}.`;
+      } else if (action.type === 'toggle_radius') {
+        triggerState = (triggerState + 1) % action.radii.length;
+        const nextR = action.radii[triggerState];
+        document.getElementById('sliderR').value = nextR.toFixed(2);
+        updateSliderDisplays();
+        plannerInstance.notifySafetyRadiusChanged(nextR);
+        currentResult = plannerInstance.computeShortestPath();
+        lastEventText = `Safety barrier exclusion radius set to ${nextR.toFixed(2)} u (${nextR > 1.0 ? 'corridor blocked, unreachability detected' : 'corridors clear'}).`;
+      } else if (action.type === 'random_perturbation') {
+        const tKeys = Array.from(plannerInstance.transitions.keys());
+        const randomKey = tKeys[Math.floor(Math.random() * tKeys.length)];
+        const edge = plannerInstance.transitions.get(randomKey);
+        const fromLbl = getLabel(edge.from);
+        const toLbl = getLabel(edge.to);
+        const newAvail = !edge.available;
+        plannerInstance.notifyEdgeChanged(randomKey, edge.cost * 1.5, newAvail);
+        currentResult = plannerInstance.computeShortestPath();
+        lastEventText = `Transition ${fromLbl} → ${toLbl} ${newAvail ? 'restored' : 'degraded/severed'}. Replan executed.`;
+      }
+
+      currentMetrics = plannerInstance.getMetrics();
+      updateUI();
+    }
+
+    // ── UI & SVG Rendering ──
+    function updateUI() {
+      renderSVG();
+      if (isSandboxMode()) renderSandboxRestorePanel();
+      renderMetrics();
+      syncWasmPlanner();
+    }
+
+    // ── Sandbox Edge Toggle ──
+    function toggleSandboxEdge(tId) {
+      const edge = plannerInstance.transitions.get(tId);
+      if (!edge) return;
+      const fromLbl = getLabel(edge.from);
+      const toLbl   = getLabel(edge.to);
+
+      if (!edge.available && !sandboxSeveredEdges.has(tId)) {
+        // Dormant scenario transitions are deliberately visible: clicking one
+        // discovers the predefined shortcut and makes it available to D* Lite.
+        plannerInstance.notifyEdgeChanged(tId, edge.cost, true);
+        currentResult  = plannerInstance.computeShortestPath();
+        currentMetrics = plannerInstance.getMetrics();
+        lastEventText  = `Discoverable shortcut ${fromLbl} \u2192 ${toLbl} activated. Incremental replan executed.`;
+        // Send the incremental TC6-style update before updateUI snapshots the
+        // new graph, so this invokes notify_edge_changed in the WASM worker.
+        callWasmWorker('edge', {
+          transitionId: tId,
+          newCost: edge.cost,
+          newAvailability: true
+        }).then(reply => {
+          if (!reply || !reply.ok) return;
+          currentResult = reply.result;
+          currentMetrics = reply.metrics;
+          renderSVG();
+          renderMetrics();
+        });
+      } else if (sandboxSeveredEdges.has(tId)) {
+        // Restore
+        sandboxSeveredEdges.delete(tId);
+        plannerInstance.notifyEdgeChanged(tId, edge.cost, true);
+        currentResult  = plannerInstance.computeShortestPath();
+        currentMetrics = plannerInstance.getMetrics();
+        lastEventText  = `Edge ${fromLbl} \u2192 ${toLbl} restored. Replan executed.`;
+      } else {
+        // Sever
+        sandboxSeveredEdges.add(tId);
+        plannerInstance.notifyEdgeChanged(tId, 100.0, false);
+        currentResult  = plannerInstance.computeShortestPath();
+        currentMetrics = plannerInstance.getMetrics();
+        lastEventText  = `Edge ${fromLbl} \u2192 ${toLbl} severed (click restore badge to undo).`;
+      }
+      updateUI();
+    }
+
+    // Right-click is intentionally separate from the normal sandbox click,
+    // which toggles a hazard. It makes every non-hazard state a destination
+    // candidate without introducing another control layer over the graph.
+    function setSandboxGoal(stateId) {
+      if (!isSandboxMode() || plannerInstance.badStates.includes(stateId)) return;
+
+      const oldGoalId = plannerInstance.sGoal;
+      if (stateId === oldGoalId) return;
+      const oldGoalLbl = getLabel(oldGoalId);
+      const newGoalLbl = getLabel(stateId);
+
+      plannerInstance.notifyGoalChanged(stateId);
+      currentResult = plannerInstance.computeShortestPath();
+      currentMetrics = plannerInstance.getMetrics();
+      lastEventText = `Destination goal shifted from ${oldGoalLbl} to ${newGoalLbl}. Incremental replan executed.`;
+      // Post this before updateUI's snapshot initialization, preserving the
+      // previous goal in the worker and exercising notify_goal_changed (TC5).
+      const wasmGoalReplan = callWasmWorker('goal', { newGoalStateId: stateId });
+      animateReplanUpdate = true;
+      updateUI();
+      animateReplanUpdate = false;
+
+      // Exercise the TC5 WASM notification path as well. The JS mirror makes
+      // the interaction immediate; the worker result replaces it when ready.
+      wasmGoalReplan.then(reply => {
+        if (!reply || !reply.ok) return;
+        currentResult = reply.result;
+        currentMetrics = reply.metrics;
+        animateReplanUpdate = true;
+        renderSVG();
+        renderMetrics();
+        animateReplanUpdate = false;
+      });
+    }
+
+    // Paint the Stage 1 hazard/exclusion update before deferring the replan so
+    // a slow WASM notification never makes the click feel unresponsive.
+    function toggleSandboxHazard(stateId) {
+      if (!isSandboxMode() || stateId === plannerInstance.sInit || stateId === plannerInstance.sGoal) return;
+
+      const state = plannerInstance.states.get(stateId);
+      if (!state) return;
+      const nextBadStates = new Set(plannerInstance.badStates);
+      const becomesHazard = !nextBadStates.has(stateId);
+      if (becomesHazard) nextBadStates.add(stateId);
+      else nextBadStates.delete(stateId);
+
+      // This mirrors the native notify_bad_states_changed path: recompute
+      // nearest-bad distances, then repair every changed exclusion vertex.
+      plannerInstance.notifyBadStatesChanged([...nextBadStates]);
+      scenariosData[currentScenarioIndex].problem.badStates = [...nextBadStates];
+      lastEventText = `${getLabel(stateId)} ${becomesHazard ? 'marked as a hazard' : 'cleared as a hazard'}. Updating safety exclusions…`;
+      renderSVG();
+      renderMetrics();
+
+      const requestId = ++pendingHazardReplan;
+      requestAnimationFrame(() => window.setTimeout(() => {
+        if (requestId !== pendingHazardReplan) return;
+        currentResult = plannerInstance.computeShortestPath();
+        currentMetrics = plannerInstance.getMetrics();
+        lastEventText = `${getLabel(stateId)} ${becomesHazard ? 'marked as a hazard' : 'cleared as a hazard'}. Stage 1 exclusions recomputed; incremental replan complete.`;
+        animateReplanUpdate = true;
+        updateUI();
+        animateReplanUpdate = false;
+      }, 0));
+    }
+
+    // ── Sandbox Node Action Popup ──
+    // Popup state
+    let popupTargetStateId = null;
+
+    function showSandboxNodePopup(stateId, clientX, clientY) {
+      const popup = document.getElementById('sandboxNodePopup');
+      const state = plannerInstance.states.get(stateId);
+      if (!state) return;
+      popupTargetStateId = stateId;
+
+      const lbl = state.label || stateId;
+      document.getElementById('snpLabel').textContent = lbl;
+
+      const goalBtn  = document.getElementById('snpGoalBtn');
+      const hazBtn   = document.getElementById('snpHazardBtn');
+
+      // Configure goal button
+      const isCurrentGoal = (stateId === plannerInstance.sGoal);
+      goalBtn.style.display = (state.isBadState || isCurrentGoal) ? 'none' : 'flex';
+      goalBtn.onclick = () => { hideSandboxNodePopup(); setSandboxGoal(stateId); };
+
+      // Configure hazard button
+      if (state.isBadState) {
+        hazBtn.className = 'snp-btn clear-hazard';
+        hazBtn.innerHTML = '<span>\u2713</span><span>Clear Hazard</span>';
+      } else {
+        hazBtn.className = 'snp-btn hazard';
+        hazBtn.innerHTML = '<span>\u26a0</span><span>Mark as Hazard</span>';
+      }
+      hazBtn.onclick = () => { hideSandboxNodePopup(); toggleSandboxHazard(stateId); };
+
+      // Position near click with viewport clamping
+      const popupW = 150, popupH = (state.isBadState || isCurrentGoal) ? 68 : 100;
+      let px = clientX + 10;
+      let py = clientY - 8;
+      if (px + popupW > window.innerWidth - 8) px = clientX - popupW - 10;
+      if (py + popupH > window.innerHeight - 8) py = clientY - popupH - 8;
+      popup.style.left = px + 'px';
+      popup.style.top  = py + 'px';
+      popup.classList.add('visible');
+    }
+
+    function hideSandboxNodePopup() {
+      const popup = document.getElementById('sandboxNodePopup');
+      popup.classList.remove('visible');
+      popupTargetStateId = null;
+    }
+
+    // Close popup on outside click or Escape
+    document.addEventListener('click', (e) => {
+      const popup = document.getElementById('sandboxNodePopup');
+      if (popup && !popup.contains(e.target)) hideSandboxNodePopup();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') hideSandboxNodePopup();
+    });
+
+    // Also hide popup when switching scenarios
+    const _origSelectScenario = typeof selectScenario !== 'undefined' ? selectScenario : null;
+
+    // ── Sandbox Restore Panel (SVG overlay) ──
+    function renderSandboxRestorePanel() {
+      const svg = document.getElementById('graphSvg');
+
+      // Hint text at bottom
+      let hint = svg.querySelector('.sandbox-hint-el');
+      if (!hint) {
+        hint = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        hint.setAttribute('class', 'sandbox-hint sandbox-hint-el');
+        hint.setAttribute('x', 400);
+        hint.setAttribute('y', 592);
+        hint.setAttribute('text-anchor', 'middle');
+        svg.appendChild(hint);
+      }
+      hint.textContent = sandboxSeveredEdges.size === 0
+        ? 'Click nodes to set goal / toggle hazards · Click edges to sever · Click ⚡ shortcuts to discover'
+        : `${sandboxSeveredEdges.size} edge(s) severed — click a severed edge or badge \u00d7 to restore`;
+
+      // Remove old restore panel if present
+      const oldPanel = svg.querySelector('.sandbox-restore-group');
+      if (oldPanel) oldPanel.remove();
+
+      if (sandboxSeveredEdges.size === 0) return;
+
+      const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      g.setAttribute('class', 'sandbox-restore-group sandbox-restore-panel');
+
+      const rowH = 18;
+      const panelW = 160;
+      const panelH = 24 + sandboxSeveredEdges.size * rowH + 6;
+      const px = 10, py = 10;
+
+      const bg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      bg.setAttribute('x', px); bg.setAttribute('y', py);
+      bg.setAttribute('width', panelW); bg.setAttribute('height', panelH);
+      bg.setAttribute('rx', 7);
+      bg.setAttribute('class', 'sandbox-restore-bg');
+      g.appendChild(bg);
+
+      const title = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      title.setAttribute('x', px + 8); title.setAttribute('y', py + 15);
+      title.setAttribute('class', 'sandbox-restore-title');
+      title.textContent = 'Severed Edges';
+      g.appendChild(title);
+
+      let row = 0;
+      for (const tId of sandboxSeveredEdges) {
+        const edge = plannerInstance.transitions.get(tId);
+        if (!edge) continue;
+        const ry = py + 24 + row * rowH;
+        const fromLbl = getLabel(edge.from);
+        const toLbl   = getLabel(edge.to);
+
+        // Row background (clickable hit area)
+        const rowBg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        rowBg.setAttribute('x', px + 4); rowBg.setAttribute('y', ry - 1);
+        rowBg.setAttribute('width', panelW - 8); rowBg.setAttribute('height', rowH - 2);
+        rowBg.setAttribute('rx', 3);
+        rowBg.setAttribute('class', 'sandbox-restore-btn');
+        rowBg.style.cursor = 'pointer';
+        rowBg.addEventListener('click', (e) => { e.stopPropagation(); toggleSandboxEdge(tId); });
+        g.appendChild(rowBg);
+
+        // Label text
+        const lbl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        lbl.setAttribute('x', px + 10); lbl.setAttribute('y', ry + 11);
+        lbl.setAttribute('class', 'sandbox-restore-row');
+        lbl.textContent = `${fromLbl} \u2192 ${toLbl}`;
+        lbl.style.pointerEvents = 'none';
+        g.appendChild(lbl);
+
+        // X restore button
+        const xBtn = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        xBtn.setAttribute('x', px + panelW - 16); xBtn.setAttribute('y', ry + 12);
+        xBtn.setAttribute('class', 'sandbox-restore-x');
+        xBtn.textContent = '\u00d7';
+        xBtn.style.cursor = 'pointer';
+        xBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleSandboxEdge(tId); });
+        g.appendChild(xBtn);
+
+        row++;
+      }
+
+      svg.appendChild(g);
+    }
+
+    function renderMetrics() {
+      if (!currentMetrics) return;
+
+      const sc = scenariosData[currentScenarioIndex];
+      const badTotal = sc.problem.badStates ? sc.problem.badStates.length : 0;
+
+      document.getElementById('eventLogText').textContent = lastEventText;
+
+      document.getElementById('metricCost').textContent = currentResult.success ? currentResult.totalCost.toFixed(2) : '0.00';
+      document.getElementById('metricBadVisited').textContent = `${currentMetrics.badStatesVisited} / ${badTotal}`;
+      document.getElementById('metricBadVisited').className = `metric-val ${currentMetrics.badStatesVisited === 0 ? 'green' : 'red'}`;
+
+      document.getElementById('metricClearance').textContent = currentResult.success ? `${currentMetrics.minClearance.toFixed(2)} u` : '0.00 u';
+      document.getElementById('metricExplored').textContent = currentMetrics.statesExplored;
+      document.getElementById('metricPlanTime').textContent = `${currentMetrics.planningTimeMs.toFixed(2)} ms`;
+      document.getElementById('metricReplanTime').textContent = `${currentMetrics.replanningTimeMs.toFixed(2)} ms`;
+      
+      const kb = (currentMetrics.memoryBytes / 1024).toFixed(2);
+      document.getElementById('metricMemory').textContent = `${currentMetrics.memoryBytes.toLocaleString()} B (${kb} KB)`;
+
+      const pct = (currentMetrics.goalSuccessRate * 100).toFixed(2);
+      document.getElementById('metricSuccessRate').textContent = `${currentMetrics.goalSuccessCount} / ${currentMetrics.attemptCount} (${pct}%)`;
+
+      const statusPill = document.getElementById('statusPill');
+      const statusText = document.getElementById('statusText');
+      if (currentResult.success) {
+        statusPill.className = 'status-pill success';
+        statusText.textContent = 'Optimal Route Active';
+      } else {
+        statusPill.className = 'status-pill failure';
+        statusText.textContent = currentResult.errorMessage || 'No Safe Route Available';
+      }
+
+      // Convert internal state ids to labels
+      if (currentResult.statePath && currentResult.statePath.length > 0) {
+        const labeledStates = currentResult.statePath.map(id => getLabel(id));
+        document.getElementById('routeStates').textContent = labeledStates.join(' → ');
+      } else {
+        document.getElementById('routeStates').textContent = 'None';
+      }
+
+      // Convert transitions to human readable format
+      if (currentResult.transitionPath && currentResult.transitionPath.length > 0) {
+        const labeledTrans = currentResult.transitionPath.map(tId => {
+          const edge = plannerInstance.transitions.get(tId);
+          if (edge) {
+            return `${getLabel(edge.from)} → ${getLabel(edge.to)}`;
+          }
+          return tId;
+        });
+        document.getElementById('routeTransitions').textContent = labeledTrans.join(', ');
+      } else {
+        document.getElementById('routeTransitions').textContent = 'None';
+      }
+
+      document.getElementById('routeHops').textContent = currentResult.statePath ? Math.max(0, currentResult.statePath.length - 1) : 0;
+
+      if (animateReplanUpdate) {
+        document.querySelectorAll('.metric-val').forEach(el => el.classList.add('metric-replanned'));
+      }
+    }
+
+    function renderSVG() {
+      const legDormant = document.getElementById('legendDormant');
+      if (legDormant) legDormant.style.display = isSandboxMode() ? 'flex' : 'none';
+
+      const svg = document.getElementById('graphSvg');
+      svg.innerHTML = '';
+
+      const states = Array.from(plannerInstance.states.values());
+      if (states.length === 0) return;
+
+      // Coordinate scaling & auto-centering
+      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+      states.forEach(s => {
+        minX = Math.min(minX, s.embedding[0]);
+        maxX = Math.max(maxX, s.embedding[0]);
+        minY = Math.min(minY, s.embedding[1]);
+        maxY = Math.max(maxY, s.embedding[1]);
+      });
+
+      const spanX = Math.max(0.1, maxX - minX);
+      const spanY = Math.max(0.1, maxY - minY);
+      const padding = 70;
+      const width = 800 - 2 * padding;
+      const height = 600 - 2 * padding;
+
+      const scale = Math.min(width / spanX, height / spanY);
+      const offsetX = padding + (width - spanX * scale) / 2;
+      const offsetY = padding + (height - spanY * scale) / 2;
+
+      function toSvgX(x) { return offsetX + (x - minX) * scale; }
+      function toSvgY(y) { return 600 - (offsetY + (y - minY) * scale); } // Invert Y for Cartesian upward axis
+
+      const pathEdgeSet = new Set(currentResult && currentResult.success ? currentResult.transitionPath : []);
+      const pathNodeSet = new Set(currentResult && currentResult.success ? currentResult.statePath : []);
+
+      // 1. Draw Safety Exclusion Radius Circles around Bad States
+      states.forEach(s => {
+        if (s.isBadState && plannerInstance.weights.r > 0) {
+          const cx = toSvgX(s.embedding[0]);
+          const cy = toSvgY(s.embedding[1]);
+          const rPx = plannerInstance.weights.r * scale;
+
+          const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          circle.setAttribute('cx', cx);
+          circle.setAttribute('cy', cy);
+          circle.setAttribute('r', rPx);
+          circle.setAttribute('class', 'svg-hazard-shield');
+          svg.appendChild(circle);
+        }
+      });
+
+      // 2. Draw Transitions / Edges
+      const sandbox = isSandboxMode();
+      for (let [tId, edge] of plannerInstance.transitions) {
+        const fromS = plannerInstance.states.get(edge.from);
+        const toS = plannerInstance.states.get(edge.to);
+        if (!fromS || !toS) continue;
+
+        const x1 = toSvgX(fromS.embedding[0]);
+        const y1 = toSvgY(fromS.embedding[1]);
+        const x2 = toSvgX(toS.embedding[0]);
+        const y2 = toSvgY(toS.embedding[1]);
+
+        const isPath    = pathEdgeSet.has(tId);
+        const isSevered = sandboxSeveredEdges.has(tId);
+        const isDormant = sandbox && !edge.available && !isSevered;
+
+        // Visible edge line
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+        line.setAttribute('x2', x2); line.setAttribute('y2', y2);
+
+        let cls = 'svg-edge';
+        if (isPath)         cls += ' path';
+        else if (isSevered) cls += ' severed';
+        else if (isDormant) cls += ' dormant';
+        else if (!edge.available) cls += ' disabled';
+        line.setAttribute('class', cls);
+        if (isPath && animateReplanUpdate) line.classList.add('route-replanned');
+        svg.appendChild(line);
+
+        if (sandbox) {
+          // Invisible wide hit-target for easy clicking
+          const hit = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+          hit.setAttribute('x1', x1); hit.setAttribute('y1', y1);
+          hit.setAttribute('x2', x2); hit.setAttribute('y2', y2);
+          hit.setAttribute('class', 'svg-edge-hit');
+
+          // Hover glow line (shown via JS mouseenter/leave)
+          const glow = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+          glow.setAttribute('x1', x1); glow.setAttribute('y1', y1);
+          glow.setAttribute('x2', x2); glow.setAttribute('y2', y2);
+          glow.setAttribute('class', 'svg-edge-hit-glow');
+
+          // Tooltip title
+          const titleEl = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+          const fromLbl = getLabel(edge.from);
+          const toLbl   = getLabel(edge.to);
+          titleEl.textContent = isDormant
+            ? `${fromLbl} -> ${toLbl}  [DISCOVERABLE SHORTCUT - click to activate]`
+            : isSevered
+            ? `${fromLbl} \u2192 ${toLbl}  [SEVERED — click to restore]`
+            : `${fromLbl} \u2192 ${toLbl}  [click to sever]`;
+          hit.appendChild(titleEl);
+
+          if (isDormant) {
+            // Use distinct cyan glow for discoverable shortcuts
+            glow.setAttribute('class', 'svg-edge-dormant-glow');
+            hit.addEventListener('mouseenter', () => { glow.style.opacity = '1'; });
+            hit.addEventListener('mouseleave', () => { glow.style.opacity = '0'; });
+          } else {
+            hit.addEventListener('mouseenter', () => { glow.style.opacity = '1'; });
+            hit.addEventListener('mouseleave', () => { glow.style.opacity = '0'; });
+          }
+          hit.addEventListener('click', () => toggleSandboxEdge(tId));
+
+          svg.appendChild(glow);
+          svg.appendChild(hit);
+
+          // Midpoint lightning icon on dormant edges
+          if (isDormant) {
+            const mx = (x1 + x2) / 2;
+            const my = (y1 + y2) / 2;
+            // Small pill background
+            const badgeR = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            badgeR.setAttribute('x', mx - 9); badgeR.setAttribute('y', my - 7);
+            badgeR.setAttribute('width', 18); badgeR.setAttribute('height', 14);
+            badgeR.setAttribute('rx', 4);
+            badgeR.setAttribute('class', 'svg-dormant-badge');
+            svg.appendChild(badgeR);
+            const icon = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            icon.setAttribute('x', mx); icon.setAttribute('y', my);
+            icon.setAttribute('class', 'svg-dormant-icon');
+            icon.textContent = '⚡';
+            svg.appendChild(icon);
+          }
+        }
+      }
+
+      // 3. Draw State Nodes
+      states.forEach(s => {
+        const cx = toSvgX(s.embedding[0]);
+        const cy = toSvgY(s.embedding[1]);
+        const isInit = (s.id === plannerInstance.sInit);
+        const isGoal = (s.id === plannerInstance.sGoal);
+        const isPath = pathNodeSet.has(s.id);
+
+        let cls = 'svg-node';
+        if (s.isBadState) cls += ' bad';
+        else if (isInit) cls += ' start';
+        else if (isGoal) cls += ' goal';
+        else if (isPath) cls += ' path';
+        else if (s.isExcluded) cls += ' excluded';
+        if (sandbox && !isInit && !isGoal) cls += ' sandbox-hazard-toggle';
+        if (sandbox && !s.isBadState) cls += ' sandbox-goal-selectable';
+
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('cx', cx);
+        circle.setAttribute('cy', cy);
+        circle.setAttribute('r', isInit || isGoal || s.isBadState ? 14 : 10);
+        circle.setAttribute('class', cls);
+
+        if (sandbox && !isInit && !isGoal) {
+          // Click shows the action popup (goal / hazard / clear-hazard)
+          circle.style.cursor = 'pointer';
+          circle.addEventListener('click', (event) => {
+            event.stopPropagation();
+            showSandboxNodePopup(s.id, event.clientX, event.clientY);
+          });
+          // Right-click still works as a fast-path to set-goal
+          if (!s.isBadState) {
+            circle.addEventListener('contextmenu', (event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              setSandboxGoal(s.id);
+            });
+          }
+        }
+        svg.appendChild(circle);
+
+        // State Label (Exclusively render label!)
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('x', cx);
+        text.setAttribute('y', cy + (isInit || isGoal ? 22 : 18));
+        text.setAttribute('class', 'svg-node-label');
+        text.textContent = s.label || s.id;
+        svg.appendChild(text);
+      });
+    }
+
+    // Run on load
+    window.addEventListener('DOMContentLoaded', initDashboard);
+  </script>
+</body>
+</html>

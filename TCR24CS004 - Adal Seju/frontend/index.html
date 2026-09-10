@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safe Semantic Planner — Finite Cartesian State Space Visualizer</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Top Navigation Header -->
+    <header>
+        <div class="logo-group">
+            <div class="logo-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+            </div>
+            <div>
+                <div class="brand-title">Safe Semantic Planner</div>
+                <div class="brand-subtitle">PCCST503 • Lifelong Planning A* (LPA*) Visualizer</div>
+            </div>
+        </div>
+
+        <div class="header-badges">
+            <div class="badge badge-lpa">
+                <span>Algorithm:</span> <strong>LPA* Incremental</strong>
+            </div>
+            <div class="badge badge-status">
+                <div class="pulse-dot"></div>
+                <span id="engineStatus">Ready</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Application Grid -->
+    <main class="main-container">
+        
+        <!-- Left Panel: Problem Config & Controls -->
+        <aside class="panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                    Environment & Planner Controls
+                </div>
+            </div>
+
+            <div class="panel-body">
+                <!-- Scenario Selector -->
+                <div class="control-group">
+                    <label class="control-label" for="scenarioSelect">
+                        <span>Select Test Scenario</span>
+                    </label>
+                    <select id="scenarioSelect">
+                        <option value="tc1">Test Case 1: Basic Reachability</option>
+                        <option value="tc2" selected>Test Case 2: Bad State Avoidance</option>
+                        <option value="tc3">Test Case 3: Safety Margin & Tradeoff</option>
+                        <option value="tc4">Test Case 4: Dynamic Transition Failure</option>
+                        <option value="tc5">Test Case 5: Dynamic Goal Update</option>
+                        <option value="tc6">Test Case 6: Shortcut Addition</option>
+                        <option value="kg">Bonus: Semantic Knowledge Graph</option>
+                        <option value="drone">Bonus: Urban Drone Obstacle Corridor</option>
+                    </select>
+                    <div id="scenarioDescription" style="font-size:0.75rem; color:var(--text-secondary); line-height:1.4;"></div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="btn-row">
+                    <button class="btn btn-primary" id="btnPlanCold">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        Cold Plan
+                    </button>
+                    <button class="btn btn-accent" id="btnReplanInc">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                        LPA* Replan
+                    </button>
+                </div>
+
+                <div class="btn-row">
+                    <button class="btn btn-outline" id="btnStep">Step Forward</button>
+                    <button class="btn btn-outline" id="btnPlay">▶ Auto Step</button>
+                </div>
+
+                <!-- Interactive Graph Toolbox -->
+                <div class="control-group">
+                    <div class="control-label">Interactive Canvas Tools</div>
+                    <div class="tools-grid">
+                        <button class="tool-btn active" data-tool="select">✋ Drag / Move</button>
+                        <button class="tool-btn" data-tool="addState">➕ Add State</button>
+                        <button class="tool-btn" data-tool="addTransition">➔ Add Edge</button>
+                        <button class="tool-btn" data-tool="toggleBad">⚠️ Toggle Bad</button>
+                        <button class="tool-btn" data-tool="toggleEdge">⚡ Toggle Edge</button>
+                        <button class="tool-btn" data-tool="setStart">🟢 Set Start</button>
+                        <button class="tool-btn" data-tool="setGoal">🟡 Set Goal</button>
+                    </div>
+                </div>
+
+                <!-- Multi-Objective Optimization Tuner -->
+                <div class="control-group">
+                    <div class="control-label">
+                        <span>Objective Weights (α, β, γ, δ)</span>
+                    </div>
+                    
+                    <div style="display:flex; flex-direction:column; gap:10px;">
+                        <div>
+                            <div class="control-label">Goal Completion Weight (α) <span class="value-pill" id="valAlpha">100</span></div>
+                            <input type="range" id="sliderAlpha" min="0" max="200" value="100" step="5">
+                        </div>
+                        <div>
+                            <div class="control-label">Transition Cost Weight (β) <span class="value-pill" id="valBeta">1.0</span></div>
+                            <input type="range" id="sliderBeta" min="0.1" max="10.0" value="1.0" step="0.1">
+                        </div>
+                        <div>
+                            <div class="control-label">Safety Clearance Weight (γ) <span class="value-pill" id="valGamma">2.0</span></div>
+                            <input type="range" id="sliderGamma" min="0.0" max="20.0" value="2.0" step="0.5">
+                        </div>
+                        <div>
+                            <div class="control-label">Safety Buffer Distance <span class="value-pill" id="valSafetyMargin">100</span></div>
+                            <input type="range" id="sliderSafetyMargin" min="0" max="250" value="100" step="10">
+                        </div>
+                        <div>
+                            <div class="control-label">Reliability Weight (δ) <span class="value-pill" id="valDelta">5.0</span></div>
+                            <input type="range" id="sliderDelta" min="0.0" max="25.0" value="5.0" step="0.5">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Import / Export / Reset -->
+                <div class="btn-row">
+                    <button class="btn btn-outline" id="btnReset">Reset Preset</button>
+                    <button class="btn btn-danger" id="btnClear">Clear All</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Center: Visual Canvas Area -->
+        <section class="panel canvas-panel">
+            <div class="canvas-toolbar">
+                <div class="scenario-pill">
+                    <span id="currentScenarioBadge">Test Case 2: Bad State Avoidance</span>
+                </div>
+                <div style="font-size:0.75rem; color:var(--text-muted);">
+                    Scroll: Zoom | Middle-Click / Shift-Drag: Pan
+                </div>
+            </div>
+
+            <div class="canvas-container">
+                <canvas id="graphCanvas"></canvas>
+            </div>
+
+            <!-- Legend Overlay -->
+            <div class="canvas-legend">
+                <div class="legend-item">
+                    <div class="legend-dot" style="background:#10b981;"></div>
+                    <span>Start State</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background:#f59e0b;"></div>
+                    <span>Goal State</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background:#f43f5e;"></div>
+                    <span>Bad State (Hazard)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background:#38bdf8;"></div>
+                    <span>Optimal Path</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Panel: Telemetry, Metrics & LPA* Priority Queue Inspector -->
+        <aside class="panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="20" x2="18" y2="10"></line>
+                        <line x1="12" y1="20" x2="12" y2="4"></line>
+                        <line x1="6" y1="20" x2="6" y2="14"></line>
+                    </svg>
+                    Real-Time Telemetry & Search State
+                </div>
+            </div>
+
+            <div class="panel-body">
+                <!-- Status & Path Display -->
+                <div class="control-group">
+                    <div class="control-label">Computed Safe Path Sequence</div>
+                    <div class="path-display" id="pathText">Loading...</div>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Plan Status</div>
+                        <div class="stat-value highlight-green" id="statStatus">OPTIMAL</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Total Cost (C)</div>
+                        <div class="stat-value highlight-cyan" id="statCost">0.00</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Min Safety Dist (D)</div>
+                        <div class="stat-value highlight-green" id="statSafety">0.00</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Reliability (R)</div>
+                        <div class="stat-value highlight-amber" id="statReliability">100%</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Objective Score</div>
+                        <div class="stat-value highlight-purple" id="statScore">0.0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Explored States</div>
+                        <div class="stat-value" id="statExplored">0</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">Execution Time</div>
+                    <div class="stat-value highlight-cyan" id="statTime">0.0 μs</div>
+                </div>
+
+                <!-- Priority Queue & Vertex Inspector -->
+                <div class="control-group" style="flex:1; display:flex; flex-direction:column;">
+                    <div class="control-label">
+                        <span>LPA* Inconsistent Queue (Top Keys)</span>
+                    </div>
+                    <div style="flex:1; max-height:220px; overflow-y:auto; border:1px solid var(--border-color); border-radius:var(--radius-sm);">
+                        <table class="queue-table">
+                            <thead>
+                                <tr>
+                                    <th>Vertex</th>
+                                    <th>Key [k1, k2]</th>
+                                    <th>g / rhs</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="queueTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- JSON Import / Export -->
+                <div class="btn-row">
+                    <button class="btn btn-outline" id="btnExportJson">Export JSON</button>
+                    <label class="btn btn-outline" style="cursor:pointer;">
+                        Import JSON
+                        <input type="file" id="fileImportInput" accept=".json" style="display:none;">
+                    </label>
+                </div>
+            </div>
+        </aside>
+
+    </main>
+
+    <script src="engine.js"></script>
+    <script src="scenarios.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

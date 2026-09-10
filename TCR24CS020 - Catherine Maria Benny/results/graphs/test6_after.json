@@ -1,0 +1,31 @@
+{
+  "label": "Test Case 6 (after: shortcut added)",
+  "states": [
+    {"id": 0, "embedding": [0, 0], "bad": false, "onPath": true},
+    {"id": 1, "embedding": [1, 0], "bad": false, "onPath": false},
+    {"id": 2, "embedding": [2, 1], "bad": false, "onPath": false},
+    {"id": 3, "embedding": [3, 0], "bad": false, "onPath": true}
+  ],
+  "transitions": [
+    {"id": 0, "from": 0, "to": 1, "cost": 1, "safety": 0.9, "reliability": 0.95, "available": true, "onPath": false},
+    {"id": 1, "from": 1, "to": 2, "cost": 1.5, "safety": 0.9, "reliability": 0.95, "available": true, "onPath": false},
+    {"id": 2, "from": 2, "to": 3, "cost": 1.5, "safety": 0.9, "reliability": 0.95, "available": true, "onPath": false},
+    {"id": 10, "from": 0, "to": 3, "cost": 3, "safety": 0.9, "reliability": 0.9, "available": true, "onPath": true}
+  ],
+  "initialState": 0,
+  "goalState": 3,
+  "badStates": [],
+  "statePath": [0, 3],
+  "transitionPath": [10],
+  "metrics": {
+    "success": true,
+    "totalCost": 3,
+    "minimumSafetyDistance": null,
+    "reliability": 0.9,
+    "objectiveScore": 2106,
+    "badStatesVisited": 0,
+    "exploredStates": 1,
+    "planningTimeMs": 0.002909,
+    "errorMessage": ""
+  }
+}

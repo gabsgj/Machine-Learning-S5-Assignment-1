@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safe Semantic Planner - Visual Demonstration</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #ffffff;
+            color: #111111;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            border-bottom: 2px solid #111;
+            padding: 30px 40px;
+            text-align: center;
+        }
+        .header h1 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+        .header p { font-size: 14px; color: #555; }
+
+        /* Navigation */
+        .nav-wrapper {
+            border-bottom: 1px solid #e0e0e0;
+            background: #fafafa;
+            padding: 12px 20px;
+        }
+        .nav-group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+        .nav-group:last-child {
+            margin-bottom: 0;
+        }
+        .nav-group-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #666;
+            margin-right: 8px;
+        }
+        .nav button {
+            padding: 6px 14px;
+            border: 1px solid #bbb;
+            border-radius: 4px;
+            background: #fff;
+            color: #222;
+            cursor: pointer;
+            font-size: 12px;
+            font-family: inherit;
+            transition: all 0.15s;
+        }
+        .nav button:hover { background: #f0f0f0; border-color: #333; }
+        .nav button.active {
+            background: #111;
+            border-color: #111;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        /* Main layout */
+        .main {
+            display: flex;
+            max-width: 1240px;
+            margin: 20px auto;
+            gap: 20px;
+            padding: 0 20px;
+        }
+
+        /* Canvas panel */
+        .canvas-panel {
+            flex: 1;
+            border: 1px solid #d0d0d0;
+            border-radius: 6px;
+            background: #fff;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+            overflow: hidden;
+        }
+        .canvas-panel h2 {
+            padding: 12px 18px;
+            font-size: 15px;
+            font-weight: 600;
+            border-bottom: 1px solid #e0e0e0;
+            background: #fafafa;
+            color: #111;
+        }
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding: 10px 18px;
+            font-size: 11.5px;
+            color: #444;
+            border-bottom: 1px solid #eee;
+            background: #ffffff;
+        }
+        .legend-item { display: flex; align-items: center; gap: 6px; }
+        .legend-dot { width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid #222; }
+        .legend-line { width: 22px; height: 2.5px; }
+        canvas { display: block; width: 100%; background: #fff; }
+
+        /* Info panel */
+        .info-panel {
+            width: 360px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .card {
+            border: 1px solid #d0d0d0;
+            border-radius: 6px;
+            background: #fff;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+            overflow: hidden;
+        }
+        .card h3 {
+            padding: 9px 14px;
+            font-size: 12px;
+            font-weight: 700;
+            background: #fafafa;
+            border-bottom: 1px solid #e5e5e5;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: #222;
+        }
+        .card-body { padding: 12px 14px; }
+
+        .description { font-size: 12.5px; color: #222; line-height: 1.5; }
+
+        /* Metrics */
+        .metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .metric {
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 8px 10px;
+            text-align: center;
+            background: #fafafa;
+        }
+        .metric-label {
+            font-size: 9.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #666;
+        }
+        .metric-value {
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 2px;
+            color: #111;
+        }
+
+        /* Path display */
+        .path-display {
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 10px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 13.5px;
+            text-align: center;
+            color: #111;
+            font-weight: 600;
+            background: #fbfbfb;
+            letter-spacing: 0.5px;
+            word-break: break-word;
+        }
+
+        /* Phase buttons */
+        .phase-btns {
+            display: flex;
+            gap: 6px;
+            padding: 0 14px 12px;
+        }
+        .phase-btns button {
+            flex: 1;
+            padding: 7px;
+            border: 1px solid #999;
+            border-radius: 4px;
+            background: #fff;
+            color: #222;
+            cursor: pointer;
+            font-size: 11.5px;
+            font-family: inherit;
+            transition: all 0.15s;
+        }
+        .phase-btns button:hover { background: #f0f0f0; border-color: #333; }
+        .phase-btns button.active { background: #111; color: #fff; border-color: #111; font-weight: 600; }
+
+        /* Footer tip */
+        .footer-tip {
+            text-align: center;
+            font-size: 11.5px;
+            color: #777;
+            padding: 10px 20px 24px;
+        }
+        .footer-tip kbd {
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 2px 6px;
+            font-size: 10.5px;
+            font-family: monospace;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Safe Semantic Planner &mdash; Interactive Visualizer</h1>
+        <p>PCCST503 Machine Learning &mdash; Multi-Objective Path Planning &amp; D* Lite Incremental Replanning</p>
+    </div>
+    
+    <div class="nav-wrapper">
+        <div class="nav-group nav" id="navGroup1">
+            <span class="nav-group-label">Core Tests:</span>
+        </div>
+        <div class="nav-group nav" id="navGroup2">
+            <span class="nav-group-label">Real-World Demos:</span>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="canvas-panel">
+            <h2 id="canvasTitle">Graph Visualization</h2>
+            <div class="legend">
+                <div class="legend-item"><div class="legend-dot" style="background:#fff;border-color:#111"></div>Normal State</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#111"></div>Start (S)</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#fff;border:2.5px solid #111"></div>Goal (G)</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#eee;border-color:#777"></div>Bad State</div>
+                <div class="legend-item"><div class="legend-line" style="background:#111"></div>Solution Path</div>
+                <div class="legend-item"><div class="legend-line" style="background:#ddd"></div>Unused Edge</div>
+            </div>
+            <canvas id="graphCanvas" width="800" height="520"></canvas>
+        </div>
+        <div class="info-panel">
+            <div class="card">
+                <h3 id="tcTitle">Test Case</h3>
+                <div class="card-body">
+                    <p class="description" id="tcDesc"></p>
+                </div>
+                <div class="phase-btns" id="phaseBtns"></div>
+            </div>
+            <div class="card">
+                <h3>Optimal Trajectory</h3>
+                <div class="card-body">
+                    <div class="path-display" id="pathDisplay">-</div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Search Telemetry</h3>
+                <div class="card-body">
+                    <div class="metric-grid">
+                        <div class="metric"><div class="metric-label">Status</div><div class="metric-value" id="mStatus">-</div></div>
+                        <div class="metric"><div class="metric-label">Total Cost</div><div class="metric-value" id="mCost">-</div></div>
+                        <div class="metric"><div class="metric-label">Safety Clearance</div><div class="metric-value" id="mSafety">-</div></div>
+                        <div class="metric"><div class="metric-label">States Explored</div><div class="metric-value" id="mExplored">-</div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Algorithmic Explanation</h3>
+                <div class="card-body">
+                    <p class="description" id="tcExplain"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-tip">
+        Navigation: Click buttons above or use <kbd>&larr;</kbd> <kbd>&rarr;</kbd> arrow keys to switch test cases, and <kbd>&uarr;</kbd> <kbd>&darr;</kbd> or <kbd>Space</kbd> to switch phases.
+    </div>
+
+<script>
+const TC = [
+  { name: "TC1: Basic Reachability",
+    desc: "The simplest case: a linear chain S \u2192 A \u2192 B \u2192 G. The planner must find the only available path from start to goal.",
+    phases: [{
+      label: "Plan",
+      states: [
+        {id:0, x:100, y:260, name:"S",  type:"start"},
+        {id:1, x:300, y:260, name:"A",  type:"normal"},
+        {id:2, x:500, y:260, name:"B",  type:"normal"},
+        {id:3, x:700, y:260, name:"G",  type:"goal"},
+      ],
+      edges: [
+        {from:0,to:1,cost:1.0,avail:true},
+        {from:1,to:2,cost:1.0,avail:true},
+        {from:2,to:3,cost:1.0,avail:true},
+      ],
+      bad: [], path: [0,1,2,3],
+      metrics: {success:true, cost:"3.00", safety:"\u221E", explored:3},
+      explain: "D* Lite searches backward from G. It makes G consistent (g=0), then expands B, A, and finally S. The unique path S\u2192A\u2192B\u2192G is found with total cost 3.0."
+    }]
+  },
+  { name: "TC2: Bad State Avoidance",
+    desc: "Two paths exist: S\u2192A\u2192X\u2192G (through bad state X) and S\u2192C\u2192D\u2192G (safe). The planner must strictly avoid X.",
+    phases: [{
+      label: "Plan",
+      states: [
+        {id:0, x:100, y:260, name:"S",  type:"start"},
+        {id:1, x:300, y:120, name:"A",  type:"normal"},
+        {id:2, x:500, y:120, name:"X",  type:"bad"},
+        {id:3, x:300, y:400, name:"C",  type:"normal"},
+        {id:5, x:500, y:400, name:"D",  type:"normal"},
+        {id:4, x:700, y:260, name:"G",  type:"goal"},
+      ],
+      edges: [
+        {from:0,to:1,cost:1.0,avail:true}, {from:1,to:2,cost:1.0,avail:true},
+        {from:2,to:4,cost:1.0,avail:true}, {from:0,to:3,cost:1.0,avail:true},
+        {from:3,to:5,cost:1.0,avail:true}, {from:5,to:4,cost:1.0,avail:true},
+      ],
+      bad: [2], path: [0,3,5,4],
+      metrics: {success:true, cost:"3.00", safety:"1.4142", explored:3},
+      explain: "Bad state X has infinite effective cost. The planner never routes through it. The safe path S\u2192C\u2192D\u2192G is selected with cost 3.0. The minimum distance from any path state to X is 1.41 units."
+    }]
+  },
+  { name: "TC3: Safety Margin Tradeoff",
+    desc: "Path 1 (S\u2192A\u2192G) is cheap but passes near bad state X. Path 2 (S\u2192B\u2192C\u2192G) is expensive but far away. Weight configuration determines the choice.",
+    phases: [
+      { label: "Default Weights (\u03b2=1, \u03b3=0.5)",
+        states: [
+          {id:0, x:100, y:300, name:"S", type:"start"}, {id:1, x:350, y:200, name:"A", type:"normal"},
+          {id:5, x:450, y:110, name:"X", type:"bad"}, {id:2, x:150, y:460, name:"B", type:"normal"},
+          {id:3, x:500, y:460, name:"C", type:"normal"}, {id:4, x:700, y:300, name:"G", type:"goal"},
+        ],
+        edges: [
+          {from:0,to:1,cost:1.0,avail:true}, {from:1,to:4,cost:1.0,avail:true},
+          {from:0,to:2,cost:2.0,avail:true}, {from:2,to:3,cost:2.0,avail:true}, {from:3,to:4,cost:2.0,avail:true},
+        ],
+        bad: [5], path: [0,1,4],
+        metrics: {success:true, cost:"2.00", safety:"0.7071", explored:3},
+        explain: "With default weights, the cost penalty dominates. Path 1 (cost=2) is chosen even though it passes only 0.71 units from X. The planner prioritizes lower cost over safety distance."
+      },
+      { label: "High Safety (\u03b2=1, \u03b3=3.0)",
+        states: [
+          {id:0, x:100, y:300, name:"S", type:"start"}, {id:1, x:350, y:200, name:"A", type:"normal"},
+          {id:5, x:450, y:110, name:"X", type:"bad"}, {id:2, x:150, y:460, name:"B", type:"normal"},
+          {id:3, x:500, y:460, name:"C", type:"normal"}, {id:4, x:700, y:300, name:"G", type:"goal"},
+        ],
+        edges: [
+          {from:0,to:1,cost:1.0,avail:true}, {from:1,to:4,cost:1.0,avail:true},
+          {from:0,to:2,cost:2.0,avail:true}, {from:2,to:3,cost:2.0,avail:true}, {from:3,to:4,cost:2.0,avail:true},
+        ],
+        bad: [5], path: [0,2,3,4],
+        metrics: {success:true, cost:"6.00", safety:"3.5355", explored:4},
+        explain: "With high safety weight (\u03b3=3.0), the safety distance reward outweighs extra cost. Path 2 (cost=6, safety=3.54) is chosen. The planner accepts 3\u00d7 higher cost for 5\u00d7 more safety distance."
+      }
+    ]
+  },
+  { name: "TC4: Dynamic Transition",
+    desc: "Initially the short path S\u2192A\u2192G works. Then transition A\u2192G is disabled at runtime. The planner must replan to find an alternative.",
+    phases: [
+      { label: "Phase 1: All Available",
+        states: [
+          {id:0, x:100, y:260, name:"S", type:"start"}, {id:1, x:350, y:150, name:"A", type:"normal"},
+          {id:3, x:350, y:380, name:"B", type:"normal"}, {id:4, x:550, y:380, name:"C", type:"normal"},
+          {id:2, x:700, y:260, name:"G", type:"goal"},
+        ],
+        edges: [
+          {from:0,to:1,cost:1.0,avail:true}, {from:1,to:2,cost:1.0,avail:true},
+          {from:0,to:3,cost:1.5,avail:true}, {from:3,to:4,cost:1.5,avail:true}, {from:4,to:2,cost:1.5,avail:true},
+        ],
+        bad: [], path: [0,1,2],
+        metrics: {success:true, cost:"2.00", safety:"\u221E", explored:3},
+        explain: "With all transitions available, D* Lite finds the shortest path S\u2192A\u2192G with cost 2.0."
+      },
+      { label: "Phase 2: A\u2192G Disabled",
+        states: [
+          {id:0, x:100, y:260, name:"S", type:"start"}, {id:1, x:350, y:150, name:"A", type:"normal"},
+          {id:3, x:350, y:380, name:"B", type:"normal"}, {id:4, x:550, y:380, name:"C", type:"normal"},
+          {id:2, x:700, y:260, name:"G", type:"goal"},
+        ],
+        edges: [
+          {from:0,to:1,cost:1.0,avail:true}, {from:1,to:2,cost:1.0,avail:false},
+          {from:0,to:3,cost:1.5,avail:true}, {from:3,to:4,cost:1.5,avail:true}, {from:4,to:2,cost:1.5,avail:true},
+        ],
+        bad: [], path: [0,3,4,2],
+        metrics: {success:true, cost:"4.50", safety:"\u221E", explored:4},
+        explain: "After A\u2192G is disabled (dashed line with \u2718), the planner replans and finds S\u2192B\u2192C\u2192G with cost 4.5. Data structures are reused."
+      }
+    ]
+  },
+  { name: "TC5: Goal Update",
+    desc: "The goal changes from G1 to G2 during execution. The planner produces a revised path without rebuilding adjacency lists.",
+    phases: [
+      { label: "Goal = G1",
+        states: [
+          {id:0, x:100, y:260, name:"S", type:"start"}, {id:1, x:300, y:260, name:"A", type:"normal"},
+          {id:2, x:500, y:260, name:"B", type:"normal"}, {id:3, x:700, y:260, name:"G1", type:"goal"},
+          {id:4, x:500, y:420, name:"G2", type:"normal"},
+        ],
+        edges: [
+          {from:0,to:1,cost:1.0,avail:true}, {from:1,to:2,cost:1.0,avail:true}, {from:2,to:3,cost:1.0,avail:true},
+          {from:1,to:4,cost:1.5,avail:true}, {from:2,to:4,cost:1.0,avail:true},
+        ],
+        bad: [], path: [0,1,2,3],
+        metrics: {success:true, cost:"3.00", safety:"\u221E", explored:4},
+        explain: "With goal G1, the planner finds S\u2192A\u2192B\u2192G1 with cost 3.0."
+      },
+      { label: "Goal = G2",
+        states: [
+          {id:0, x:100, y:260, name:"S", type:"start"}, {id:1, x:300, y:260, name:"A", type:"normal"},
+          {id:2, x:500, y:260, name:"B", type:"normal"}, {id:3, x:700, y:260, name:"G1", type:"normal"},
+          {id:4, x:500, y:420, name:"G2", type:"goal"},
+        ],
+        edges: [
+          {from:0,to:1,cost:1.0,avail:true}, {from:1,to:2,cost:1.0,avail:true}, {from:2,to:3,cost:1.0,avail:true},
+          {from:1,to:4,cost:1.5,avail:true}, {from:2,to:4,cost:1.0,avail:true},
+        ],
+        bad: [], path: [0,1,4],
+        metrics: {success:true, cost:"2.50", safety:"\u221E", explored:3},
+        explain: "After the goal changes to G2, the planner re-initializes backward search from G2 and finds S\u2192A\u2192G2 with cost 2.5."
+      }
+    ]
+  },
+  { name: "TC6: Shortcut Addition",
+    desc: "A long path S\u2192A\u2192B\u2192C\u2192G exists. Then a shortcut A\u2192G (cost=1) is inserted. The planner discovers the improved route.",
+    phases: [
+      { label: "Before Shortcut",
+        states: [
+          {id:0, x:100, y:260, name:"S", type:"start"}, {id:1, x:275, y:260, name:"A", type:"normal"},
+          {id:2, x:450, y:260, name:"B", type:"normal"}, {id:3, x:575, y:260, name:"C", type:"normal"},
+          {id:4, x:700, y:260, name:"G", type:"goal"},
+        ],
+        edges: [
+          {from:0,to:1,cost:1.0,avail:true}, {from:1,to:2,cost:1.0,avail:true},
+          {from:2,to:3,cost:1.0,avail:true}, {from:3,to:4,cost:1.0,avail:true},
+        ],
+        bad: [], path: [0,1,2,3,4],
+        metrics: {success:true, cost:"4.00", safety:"\u221E", explored:5},
+        explain: "Without the shortcut, the only path is the full chain S\u2192A\u2192B\u2192C\u2192G with cost 4.0."
+      },
+      { label: "After Shortcut A\u2192G",
+        states: [
+          {id:0, x:100, y:260, name:"S", type:"start"}, {id:1, x:275, y:260, name:"A", type:"normal"},
+          {id:2, x:450, y:260, name:"B", type:"normal"}, {id:3, x:575, y:260, name:"C", type:"normal"},
+          {id:4, x:700, y:260, name:"G", type:"goal"},
+        ],
+        edges: [
+          {from:0,to:1,cost:1.0,avail:true}, {from:1,to:2,cost:1.0,avail:true},
+          {from:2,to:3,cost:1.0,avail:true}, {from:3,to:4,cost:1.0,avail:true},
+          {from:1,to:4,cost:1.0,avail:true,shortcut:true},
+        ],
+        bad: [], path: [0,1,4],
+        metrics: {success:true, cost:"2.00", safety:"\u221E", explored:7},
+        explain: "After the shortcut A\u2192G (cost=1, dashed line) is added, the planner discovers S\u2192A\u2192G with cost 2.0 \u2014 a 50% reduction."
+      }
+    ]
+  },
+  // =================== REAL-WORLD DEMOS ===================
+  { name: "A: Campus Navigation",
+    desc: "A student walks from the Library to the Cafeteria. The direct route goes through the Courtyard, but it is FLOODED (bad state). The planner must find a safe detour.",
+    phases: [{
+      label: "Plan",
+      states: [
+        {id:0, x:100, y:160, name:"Library",   type:"start"},
+        {id:1, x:350, y:160, name:"Hallway",   type:"normal"},
+        {id:2, x:600, y:160, name:"Courtyard", type:"bad"},
+        {id:3, x:100, y:400, name:"Lab",       type:"normal"},
+        {id:4, x:350, y:400, name:"Bridge",    type:"normal"},
+        {id:5, x:600, y:400, name:"Cafeteria", type:"goal"},
+      ],
+      edges: [
+        {from:0,to:1,cost:1.0,avail:true}, {from:1,to:2,cost:1.0,avail:true},
+        {from:2,to:5,cost:1.0,avail:true}, {from:0,to:3,cost:1.5,avail:true},
+        {from:3,to:4,cost:1.5,avail:true}, {from:4,to:5,cost:1.0,avail:true},
+      ],
+      bad: [2], path: [0,3,4,5],
+      metrics: {success:true, cost:"4.00", safety:"2.0000", explored:4},
+      explain: "The Courtyard is flooded (bad state), so the planner routes through Lab \u2192 Bridge \u2192 Cafeteria instead. Cost is slightly higher (4.0 vs 3.0) but the path is completely safe."
+    }]
+  },
+  { name: "B: Warehouse Robot",
+    desc: "A warehouse robot must navigate from the Loading Dock to the Shipping Bay through a 5\u00d73 grid. Two chemical spill zones block the middle column. The robot must avoid BOTH.",
+    phases: [{
+      label: "Navigate Grid",
+      states: [
+        {id:0, x:80, y:100, name:"Dock", type:"start"},
+        {id:1, x:230, y:100, name:"R1",  type:"normal"},
+        {id:2, x:380, y:100, name:"SPILL",type:"bad"},
+        {id:3, x:530, y:100, name:"R3",  type:"normal"},
+        {id:4, x:680, y:100, name:"Ship",type:"goal"},
+        {id:5, x:80, y:260, name:"R5",  type:"normal"},
+        {id:6, x:230, y:260, name:"R6",  type:"normal"},
+        {id:7, x:380, y:260, name:"SPILL",type:"bad"},
+        {id:8, x:530, y:260, name:"R8",  type:"normal"},
+        {id:9, x:680, y:260, name:"R9",  type:"normal"},
+        {id:10,x:80, y:420, name:"R10", type:"normal"},
+        {id:11,x:230, y:420, name:"R11", type:"normal"},
+        {id:12,x:380, y:420, name:"R12", type:"normal"},
+        {id:13,x:530, y:420, name:"R13", type:"normal"},
+        {id:14,x:680, y:420, name:"R14", type:"normal"},
+      ],
+      edges: [
+        {from:0,to:1,cost:1,avail:true},{from:1,to:2,cost:1,avail:true},
+        {from:2,to:3,cost:1,avail:true},{from:3,to:4,cost:1,avail:true},
+        {from:5,to:6,cost:1,avail:true},{from:6,to:7,cost:1,avail:true},
+        {from:7,to:8,cost:1,avail:true},{from:8,to:9,cost:1,avail:true},
+        {from:10,to:11,cost:1,avail:true},{from:11,to:12,cost:1,avail:true},
+        {from:12,to:13,cost:1,avail:true},{from:13,to:14,cost:1,avail:true},
+        {from:0,to:5,cost:1,avail:true},{from:1,to:6,cost:1,avail:true},
+        {from:3,to:8,cost:1,avail:true},{from:4,to:9,cost:1,avail:true},
+        {from:5,to:10,cost:1,avail:true},{from:6,to:11,cost:1,avail:true},
+        {from:8,to:13,cost:1,avail:true},{from:9,to:14,cost:1,avail:true},
+        {from:8,to:3,cost:1,avail:true},{from:14,to:9,cost:1,avail:true},
+      ],
+      bad: [2,7], path: [0,5,10,11,12,13,14,9,4],
+      metrics: {success:true, cost:"8.00", safety:"1.0000", explored:12},
+      explain: "The robot avoids BOTH chemical spills by routing along the bottom perimeter (0\u21925\u219210\u219211\u219212\u219213\u219214\u21929\u21924). The path is longer (cost=8.0) but completely safe. Zero bad states visited."
+    }]
+  },
+  { name: "C: Delivery Route",
+    desc: "A delivery driver goes from the Depot to a Customer. Three routes exist. Roads close one by one due to accidents. Watch how the planner adapts each time.",
+    phases: [
+      { label: "All Roads Open",
+        states: [
+          {id:0, x:80, y:260, name:"Depot",    type:"start"},
+          {id:1, x:280, y:120, name:"Highway",  type:"normal"},
+          {id:2, x:500, y:120, name:"Mall",      type:"normal"},
+          {id:3, x:280, y:400, name:"Market",    type:"normal"},
+          {id:4, x:430, y:400, name:"Park",      type:"normal"},
+          {id:5, x:430, y:480, name:"School",    type:"normal"},
+          {id:6, x:680, y:260, name:"Customer",  type:"goal"},
+        ],
+        edges: [
+          {from:0,to:1,cost:1,avail:true},{from:1,to:2,cost:1,avail:true},{from:2,to:6,cost:1,avail:true},
+          {from:0,to:3,cost:2,avail:true},{from:3,to:4,cost:1,avail:true},{from:4,to:6,cost:2,avail:true},
+          {from:4,to:5,cost:1,avail:true},{from:5,to:6,cost:3,avail:true},
+        ],
+        bad: [], path: [0,1,2,6],
+        metrics: {success:true, cost:"3.00", safety:"\u221E", explored:4},
+        explain: "With all roads open, the fastest route is Depot \u2192 Highway \u2192 Mall \u2192 Customer with cost 3."
+      },
+      { label: "Highway Closed",
+        states: [
+          {id:0, x:80, y:260, name:"Depot",    type:"start"},
+          {id:1, x:280, y:120, name:"Highway",  type:"normal"},
+          {id:2, x:500, y:120, name:"Mall",      type:"normal"},
+          {id:3, x:280, y:400, name:"Market",    type:"normal"},
+          {id:4, x:430, y:400, name:"Park",      type:"normal"},
+          {id:5, x:430, y:480, name:"School",    type:"normal"},
+          {id:6, x:680, y:260, name:"Customer",  type:"goal"},
+        ],
+        edges: [
+          {from:0,to:1,cost:1,avail:true},{from:1,to:2,cost:1,avail:false},{from:2,to:6,cost:1,avail:true},
+          {from:0,to:3,cost:2,avail:true},{from:3,to:4,cost:1,avail:true},{from:4,to:6,cost:2,avail:true},
+          {from:4,to:5,cost:1,avail:true},{from:5,to:6,cost:3,avail:true},
+        ],
+        bad: [], path: [0,3,4,6],
+        metrics: {success:true, cost:"5.00", safety:"\u221E", explored:5},
+        explain: "Highway \u2192 Mall is closed (accident). The planner reroutes through Market \u2192 Park \u2192 Customer with cost 5."
+      },
+      { label: "Park Also Closed",
+        states: [
+          {id:0, x:80, y:260, name:"Depot",    type:"start"},
+          {id:1, x:280, y:120, name:"Highway",  type:"normal"},
+          {id:2, x:500, y:120, name:"Mall",      type:"normal"},
+          {id:3, x:280, y:400, name:"Market",    type:"normal"},
+          {id:4, x:430, y:400, name:"Park",      type:"normal"},
+          {id:5, x:430, y:480, name:"School",    type:"normal"},
+          {id:6, x:680, y:260, name:"Customer",  type:"goal"},
+        ],
+        edges: [
+          {from:0,to:1,cost:1,avail:true},{from:1,to:2,cost:1,avail:false},{from:2,to:6,cost:1,avail:true},
+          {from:0,to:3,cost:2,avail:true},{from:3,to:4,cost:1,avail:true},{from:4,to:6,cost:2,avail:false},
+          {from:4,to:5,cost:1,avail:true},{from:5,to:6,cost:3,avail:true},
+        ],
+        bad: [], path: [0,3,4,5,6],
+        metrics: {success:true, cost:"7.00", safety:"\u221E", explored:6},
+        explain: "Park \u2192 Customer also closed (construction). Last resort: Depot \u2192 Market \u2192 Park \u2192 School \u2192 Customer with cost 7."
+      }
+    ]
+  },
+  { name: "D: Hospital Weights",
+    desc: "Same hospital map, different weight settings. FAST path (cost=2) runs next to Quarantine. SAFE path (cost=4) stays far away. Weights determine which path is chosen.",
+    phases: [
+      { label: "Fastest (\u03b2=2, \u03b3=0)",
+        states: [
+          {id:0, x:80, y:300, name:"Entrance",   type:"start"},
+          {id:1, x:300, y:200, name:"Ward-A",    type:"normal"},
+          {id:4, x:340, y:130, name:"Quarantine", type:"bad"},
+          {id:2, x:200, y:460, name:"Stairs",     type:"normal"},
+          {id:5, x:470, y:460, name:"Ward-B",     type:"normal"},
+          {id:3, x:680, y:300, name:"ICU",        type:"goal"},
+        ],
+        edges: [
+          {from:0,to:1,cost:1,avail:true},{from:1,to:3,cost:1,avail:true},
+          {from:0,to:2,cost:2,avail:true},{from:2,to:5,cost:1,avail:true},{from:5,to:3,cost:1,avail:true},
+        ],
+        bad: [4], path: [0,1,3],
+        metrics: {success:true, cost:"2.00", safety:"0.2000", explored:3},
+        explain: "With FASTEST weights (\u03b2=2, \u03b3=0), the planner minimizes cost and picks the short path through Ward-A. Safety distance is only 0.2 units from Quarantine \u2014 very close!"
+      },
+      { label: "Safest (\u03b2=0.5, \u03b3=3)",
+        states: [
+          {id:0, x:80, y:300, name:"Entrance",   type:"start"},
+          {id:1, x:300, y:200, name:"Ward-A",    type:"normal"},
+          {id:4, x:340, y:130, name:"Quarantine", type:"bad"},
+          {id:2, x:200, y:460, name:"Stairs",     type:"normal"},
+          {id:5, x:470, y:460, name:"Ward-B",     type:"normal"},
+          {id:3, x:680, y:300, name:"ICU",        type:"goal"},
+        ],
+        edges: [
+          {from:0,to:1,cost:1,avail:true},{from:1,to:3,cost:1,avail:true},
+          {from:0,to:2,cost:2,avail:true},{from:2,to:5,cost:1,avail:true},{from:5,to:3,cost:1,avail:true},
+        ],
+        bad: [4], path: [0,2,5,3],
+        metrics: {success:true, cost:"4.00", safety:"2.0100", explored:5},
+        explain: "With SAFEST weights (\u03b2=0.5, \u03b3=3), the planner heavily penalizes proximity to Quarantine. It takes the longer path through Stairs \u2192 Ward-B, staying 2+ units away from danger."
+      },
+      { label: "Reliable (\u03b4=3)",
+        states: [
+          {id:0, x:80, y:300, name:"Entrance",   type:"start"},
+          {id:1, x:300, y:200, name:"Ward-A",    type:"normal"},
+          {id:4, x:340, y:130, name:"Quarantine", type:"bad"},
+          {id:2, x:200, y:460, name:"Stairs",     type:"normal"},
+          {id:5, x:470, y:460, name:"Ward-B",     type:"normal"},
+          {id:3, x:680, y:300, name:"ICU",        type:"goal"},
+        ],
+        edges: [
+          {from:0,to:1,cost:1,avail:true},{from:1,to:3,cost:1,avail:true},
+          {from:0,to:2,cost:2,avail:true},{from:2,to:5,cost:1,avail:true},{from:5,to:3,cost:1,avail:true},
+        ],
+        bad: [4], path: [0,2,5,3],
+        metrics: {success:true, cost:"4.00", safety:"2.0100", explored:5},
+        explain: "With RELIABILITY weights (\u03b4=3), the planner penalizes unreliable transitions. Ward-A path has 50% reliability per edge vs 99% for Stairs/Ward-B. The reliable path is chosen despite costing 2\u00d7 more."
+      }
+    ]
+  }
+];
+
+let currentTC = 0, currentPhase = 0, animProgress = 0, animId = null;
+let hoveredState = null, hoveredEdge = null;
+
+function setupCanvas() {
+    const canvas = document.getElementById("graphCanvas");
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = 800 * dpr;
+    canvas.height = 520 * dpr;
+    canvas.style.width = "100%";
+    canvas.style.height = "520px";
+    const ctx = canvas.getContext("2d");
+    ctx.setTransform(1, 0, 0, 1, 0, 0); // reset
+    ctx.scale(dpr, dpr);
+}
+
+function init() {
+    setupCanvas();
+    window.addEventListener("resize", () => { setupCanvas(); render(); });
+
+    const g1 = document.getElementById("navGroup1");
+    const g2 = document.getElementById("navGroup2");
+    
+    TC.forEach((tc, i) => {
+        const btn = document.createElement("button");
+        btn.textContent = tc.name;
+        btn.onclick = () => selectTC(i);
+        btn.id = "nav" + i;
+        if (i < 6) {
+            g1.appendChild(btn);
+        } else {
+            g2.appendChild(btn);
+        }
+    });
+
+    const canvas = document.getElementById("graphCanvas");
+    canvas.addEventListener("mousemove", onCanvasMouseMove);
+    canvas.addEventListener("mouseleave", () => { hoveredState = null; hoveredEdge = null; });
+
+    window.addEventListener("keydown", onKeyDown);
+
+    selectTC(0);
+}
+
+function onKeyDown(e) {
+    if (e.key === "ArrowRight") {
+        selectTC((currentTC + 1) % TC.length);
+    } else if (e.key === "ArrowLeft") {
+        selectTC((currentTC - 1 + TC.length) % TC.length);
+    } else if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === " ") {
+        const tc = TC[currentTC];
+        if (tc.phases.length > 1) {
+            e.preventDefault();
+            selectPhase((currentPhase + 1) % tc.phases.length);
+        }
+    }
+}
+
+function onCanvasMouseMove(e) {
+    const canvas = document.getElementById("graphCanvas");
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = 800 / rect.width;
+    const scaleY = 520 / rect.height;
+    const mx = (e.clientX - rect.left) * scaleX;
+    const my = (e.clientY - rect.top) * scaleY;
+
+    const tc = TC[currentTC], ph = tc.phases[currentPhase];
+    let foundState = null;
+    for (const s of ph.states) {
+        const dx = s.x - mx, dy = s.y - my;
+        if (Math.sqrt(dx*dx + dy*dy) <= 28) {
+            foundState = s;
+            break;
+        }
+    }
+    hoveredState = foundState;
+}
+
+function selectTC(idx) {
+    currentTC = idx; currentPhase = 0;
+    document.querySelectorAll(".nav button").forEach((b, i) => b.classList.toggle("active", i === idx));
+    renderPhaseButtons(); startAnim();
+}
+
+function selectPhase(idx) {
+    currentPhase = idx; renderPhaseButtons(); startAnim();
+}
+
+function renderPhaseButtons() {
+    const tc = TC[currentTC], c = document.getElementById("phaseBtns");
+    c.innerHTML = "";
+    if (tc.phases.length > 1) {
+        tc.phases.forEach((p, i) => {
+            const btn = document.createElement("button");
+            btn.textContent = p.label;
+            btn.classList.toggle("active", i === currentPhase);
+            btn.onclick = () => selectPhase(i);
+            c.appendChild(btn);
+        });
+    }
+}
+
+let loopProgress = 0; // 0 to 1 for the moving dot along the path
+
+function startAnim() {
+    if (animId) cancelAnimationFrame(animId);
+    animProgress = 0;
+    loopProgress = 0;
+    animate();
+}
+
+function animate() {
+    if (animProgress < 1.0) {
+        animProgress = Math.min(animProgress + 0.02, 1.0);
+    }
+    // Continuous loop for traveling dot along the path
+    loopProgress = (loopProgress + 0.007) % 1.0;
+
+    render();
+    animId = requestAnimationFrame(animate);
+}
+
+function ease(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
+
+function render() {
+    const tc = TC[currentTC], ph = tc.phases[currentPhase];
+    document.getElementById("canvasTitle").textContent = tc.name + " (" + ph.label + ")";
+    document.getElementById("tcTitle").textContent = tc.name;
+    document.getElementById("tcDesc").textContent = tc.desc;
+    document.getElementById("tcExplain").textContent = ph.explain;
+
+    const pathStr = ph.path.map(id => { const s = ph.states.find(s => s.id === id); return s ? s.name : id; }).join("  \u2192  ");
+    document.getElementById("pathDisplay").textContent = pathStr;
+    document.getElementById("mStatus").textContent = ph.metrics.success ? "FOUND" : "FAIL";
+    document.getElementById("mCost").textContent = ph.metrics.cost;
+    document.getElementById("mSafety").textContent = ph.metrics.safety;
+    document.getElementById("mExplored").textContent = ph.metrics.explored;
+
+    const canvas = document.getElementById("graphCanvas");
+    const dpr = window.devicePixelRatio || 1;
+    const ctx = canvas.getContext("2d");
+    
+    ctx.save();
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.scale(dpr, dpr);
+
+    const pathEdges = new Set();
+    for (let i = 0; i < ph.path.length - 1; i++) pathEdges.add(ph.path[i] + "->" + ph.path[i+1]);
+
+    // Draw edges
+    ph.edges.forEach(e => {
+        const from = ph.states.find(s => s.id === e.from);
+        const to = ph.states.find(s => s.id === e.to);
+        if (!from || !to) return;
+        const isPath = pathEdges.has(e.from + "->" + e.to);
+        drawEdge(ctx, from, to, e, isPath);
+    });
+
+    // Draw states
+    ph.states.forEach(s => {
+        const isBad = ph.bad.includes(s.id);
+        const isOnPath = ph.path.includes(s.id);
+        const idx = ph.path.indexOf(s.id);
+        const np = isOnPath ? ease(Math.min(1, animProgress * ph.path.length - idx * 0.7)) : 1;
+        const isHovered = (hoveredState && hoveredState.id === s.id);
+        drawState(ctx, s, isBad, isOnPath, Math.max(0, np), isHovered);
+    });
+
+    // Draw continuous moving dot along the path
+    if (ph.path && ph.path.length > 1) {
+        drawMovingDot(ctx, ph);
+    }
+
+    ctx.restore();
+}
+
+function drawMovingDot(ctx, ph) {
+    const totalSegments = ph.path.length - 1;
+    const currentSegmentFloat = loopProgress * totalSegments;
+    const segIndex = Math.min(Math.floor(currentSegmentFloat), totalSegments - 1);
+    const segT = currentSegmentFloat - segIndex;
+
+    const fromId = ph.path[segIndex];
+    const toId = ph.path[segIndex + 1];
+    const from = ph.states.find(s => s.id === fromId);
+    const to = ph.states.find(s => s.id === toId);
+
+    if (!from || !to) return;
+
+    const dotX = from.x + (to.x - from.x) * segT;
+    const dotY = from.y + (to.y - from.y) * segT;
+
+    ctx.save();
+    // Outer glowing halo
+    ctx.beginPath();
+    ctx.arc(dotX, dotY, 11, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(0, 0, 0, 0.12)";
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(dotX, dotY, 7, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
+    ctx.fill();
+
+    // Solid core dot
+    ctx.beginPath();
+    ctx.arc(dotX, dotY, 4.5, 0, Math.PI * 2);
+    ctx.fillStyle = "#111111";
+    ctx.fill();
+    ctx.restore();
+}
+
+function drawEdge(ctx, from, to, edge, isPath) {
+    const dx = to.x - from.x, dy = to.y - from.y;
+    const len = Math.sqrt(dx*dx + dy*dy);
+    const ux = dx/len, uy = dy/len;
+    const r = 27;
+    const x1 = from.x + ux*r, y1 = from.y + uy*r;
+    const x2 = to.x - ux*r, y2 = to.y - uy*r;
+
+    ctx.save();
+    ctx.beginPath();
+
+    if (!edge.avail) {
+        ctx.setLineDash([6, 5]);
+        ctx.strokeStyle = "#bbb";
+        ctx.lineWidth = 1.6;
+        ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+    } else if (edge.shortcut) {
+        ctx.setLineDash([6, 4]);
+        ctx.strokeStyle = isPath ? "#111" : "#999";
+        ctx.lineWidth = isPath ? 2.6 : 1.6;
+        ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+    } else if (isPath) {
+        // Grey base line
+        ctx.strokeStyle = "#e0e0e0"; ctx.lineWidth = 1.6;
+        ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+        // Solid black active path
+        const p = ease(animProgress);
+        ctx.beginPath();
+        ctx.strokeStyle = "#111"; ctx.lineWidth = 2.8;
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x1 + (x2-x1)*p, y1 + (y2-y1)*p);
+        ctx.stroke();
+    } else {
+        ctx.strokeStyle = "#ddd"; ctx.lineWidth = 1.4;
+        ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+    }
+    ctx.setLineDash([]);
+
+    // Arrowhead
+    const angle = Math.atan2(y2-y1, x2-x1), sz = 9.5;
+    ctx.beginPath();
+    ctx.moveTo(x2, y2);
+    ctx.lineTo(x2 - sz*Math.cos(angle-0.35), y2 - sz*Math.sin(angle-0.35));
+    ctx.lineTo(x2 - sz*Math.cos(angle+0.35), y2 - sz*Math.sin(angle+0.35));
+    ctx.closePath();
+    ctx.fillStyle = !edge.avail ? "#ccc" : isPath ? "#111" : "#bbb";
+    ctx.fill();
+
+    // Cost pill badge
+    const mx = (x1+x2)/2, my = (y1+y2)/2;
+    const ox = -uy*14, oy = ux*14;
+    const txt = "c=" + edge.cost;
+    
+    ctx.font = "11px 'Segoe UI', sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    // Pill background
+    const tw = ctx.measureText(txt).width + 8;
+    ctx.fillStyle = "rgba(255, 255, 255, 0.92)";
+    ctx.fillRect(mx + ox - tw/2, my + oy - 8, tw, 16);
+    ctx.strokeStyle = "#e5e5e5";
+    ctx.lineWidth = 0.8;
+    ctx.strokeRect(mx + ox - tw/2, my + oy - 8, tw, 16);
+
+    ctx.fillStyle = isPath ? "#111" : "#777";
+    ctx.fillText(txt, mx+ox, my+oy);
+
+    if (!edge.avail) {
+        ctx.fillStyle = "#888";
+        ctx.font = "bold 10px 'Segoe UI', sans-serif";
+        ctx.fillText("\u2718 disabled", mx+ox, my+oy+14);
+    }
+    if (edge.shortcut) {
+        ctx.fillStyle = "#555";
+        ctx.font = "italic 10px 'Segoe UI', sans-serif";
+        ctx.fillText("(shortcut)", mx+ox, my+oy+14);
+    }
+    ctx.restore();
+}
+
+function drawState(ctx, st, isBad, isOnPath, prog, isHovered) {
+    const r = 26, sc = (0.6 + 0.4*prog) * (isHovered ? 1.1 : 1.0);
+    ctx.save();
+    ctx.translate(st.x, st.y);
+    ctx.scale(sc, sc);
+
+    // Bad state danger zone
+    if (isBad) {
+        ctx.beginPath(); ctx.arc(0, 0, r+26, 0, Math.PI*2);
+        ctx.fillStyle = "rgba(0,0,0,0.04)"; ctx.fill();
+        ctx.beginPath(); ctx.arc(0, 0, r+26, 0, Math.PI*2);
+        ctx.strokeStyle = "#aaa"; ctx.lineWidth = 1.2; ctx.setLineDash([4,4]); ctx.stroke(); ctx.setLineDash([]);
+    }
+
+    // Node Circle
+    ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI*2);
+    const type = isBad ? "bad" : st.type;
+
+    if (type === "start") {
+        ctx.fillStyle = "#111"; ctx.fill();
+        ctx.strokeStyle = "#111"; ctx.lineWidth = 2.5; ctx.stroke();
+        ctx.fillStyle = "#fff";
+    } else if (type === "goal") {
+        ctx.fillStyle = "#fff"; ctx.fill();
+        ctx.strokeStyle = "#111"; ctx.lineWidth = 2.8; ctx.stroke();
+        // Double inner circle for goal
+        ctx.beginPath(); ctx.arc(0, 0, r-5, 0, Math.PI*2);
+        ctx.strokeStyle = "#111"; ctx.lineWidth = 1.4; ctx.stroke();
+        ctx.fillStyle = "#111";
+    } else if (type === "bad") {
+        ctx.fillStyle = "#eee"; ctx.fill();
+        ctx.strokeStyle = "#777"; ctx.lineWidth = 2; ctx.stroke();
+        ctx.fillStyle = "#777";
+    } else {
+        ctx.fillStyle = isOnPath ? "#f8f8f8" : "#fff"; ctx.fill();
+        ctx.strokeStyle = isOnPath ? "#111" : "#aaa";
+        ctx.lineWidth = isOnPath ? 2.5 : 1.4; ctx.stroke();
+        ctx.fillStyle = "#111";
+    }
+
+    // Label
+    ctx.font = "bold 14px 'Segoe UI', sans-serif";
+    ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.fillText(st.name, 0, 0);
+
+    // ID Badge
+    ctx.font = "10px 'Segoe UI', sans-serif";
+    ctx.fillStyle = "#888";
+    ctx.fillText("id=" + st.id, 0, r + 14);
+
+    ctx.restore();
+}
+
+init();
+</script>
+</body>
+</html>

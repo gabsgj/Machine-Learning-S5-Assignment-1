@@ -1,0 +1,10 @@
+build/
+*.exe
+*.o
+*.obj
+.vscode/
+emsdk/
+web/node_modules/
+web/dist/
+web/public/planner.js
+web/public/planner.wasm

@@ -1,0 +1,31 @@
+# Build intermediates and native binaries
+bin/
+*.exe
+*.o
+*.obj
+*.out
+*.app
+*.dSYM/
+
+# Emscripten cache and temp files
+.emscripten_cache/
+.emscripten_sanity
+emcc_cache/
+
+# Node / Package managers
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# System and IDE artifacts
+.DS_Store
+Thumbs.db
+Microsoft/
+.vscode/
+.idea/
+
+# Explicitly track compiled WASM and JS glue in wasm/
+!wasm/
+!wasm/*.wasm
+!wasm/*.js

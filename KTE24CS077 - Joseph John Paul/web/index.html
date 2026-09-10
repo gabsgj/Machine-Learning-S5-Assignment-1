@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orchestration Algorithm Workbench - LPA* Pathfinding</title>
+    <meta name="description" content="Configure initial state, goal state, bad states, and transitions to solve optimal safe paths using Lifelong Planning A* (LPA*) based on orchestration.c++">
+    
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Header Navbar -->
+    <header>
+        <div class="brand">
+            <div class="brand-icon">
+                <i class="fa-solid fa-diagram-project"></i>
+            </div>
+            <div>
+                <span class="brand-title">Orchestration Visualizer</span>
+                <span class="brand-subtitle">LPA* Engine</span>
+            </div>
+        </div>
+        <div class="top-controls">
+            <button id="btnPresetSelect" class="btn btn-secondary btn-sm">
+                <i class="fa-solid fa-cubes"></i> Presets
+            </button>
+            <button id="btnExportJson" class="btn btn-secondary btn-sm">
+                <i class="fa-solid fa-download"></i> Save JSON
+            </button>
+            <label for="importJsonFile" class="btn btn-secondary btn-sm" style="cursor: pointer;">
+                <i class="fa-solid fa-upload"></i> Load JSON
+                <input type="file" id="importJsonFile" accept=".json" style="display: none;">
+            </label>
+            <button id="btnExportCpp" class="btn btn-gold btn-sm">
+                <i class="fa-solid fa-code"></i> Export C++ Code
+            </button>
+            <button id="btnRunPlanner" class="btn btn-primary">
+                <i class="fa-solid fa-play"></i> Compute Path
+            </button>
+        </div>
+    </header>
+
+    <!-- App Container -->
+    <div class="app-container">
+        
+        <!-- Sidebar Controls -->
+        <sidebar>
+            <!-- Preset Scenario Panel -->
+            <div class="panel-section">
+                <div class="panel-title">
+                    <span><i class="fa-solid fa-sliders"></i> Preset Scenarios</span>
+                </div>
+                <div class="form-group">
+                    <select id="presetDropdown">
+                        <option value="default_cpp">C++ Test Verification Benchmark (main)</option>
+                        <option value="amr_navigation">Autonomous Mobile Robot Grid</option>
+                        <option value="microservices">Microservice Fault Resilient Mesh</option>
+                        <option value="drone_corridor">Urban Drone Air Corridor</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Problem Setup Panel -->
+            <div class="panel-section">
+                <div class="panel-title">
+                    <span><i class="fa-solid fa-bullseye"></i> Problem Configuration</span>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group" style="flex: 1;">
+                        <label class="form-label" for="selectInitialState">Initial State (Start)</label>
+                        <select id="selectInitialState"></select>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label class="form-label" for="selectGoalState">Goal State</label>
+                        <select id="selectGoalState"></select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Bad States (Hazards to Avoid)</label>
+                    <div class="bad-states-chips" id="badStatesContainer">
+                        <!-- Bad State chips rendered dynamically -->
+                    </div>
+                    <div class="form-row" style="margin-top: 4px;">
+                        <select id="selectBadStateToAdd" style="flex: 1;"></select>
+                        <button id="btnAddBadState" class="btn btn-danger btn-sm">
+                            <i class="fa-solid fa-plus"></i> Add
+                        </button>
+                    </div>
+                </div>
+
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <span>Safety Penalty Weight (&alpha;)</span>
+                        <span class="slider-value" id="alphaValueDisplay">2.0</span>
+                    </div>
+                    <input type="range" id="inputAlpha" min="0.0" max="10.0" step="0.5" value="2.0">
+                </div>
+            </div>
+
+            <!-- Management Tools -->
+            <div class="panel-section">
+                <div class="panel-title">
+                    <span><i class="fa-solid fa-layer-group"></i> Graph Manager</span>
+                </div>
+                <div class="form-row">
+                    <button id="btnOpenStateModal" class="btn btn-secondary btn-sm" style="flex: 1;">
+                        <i class="fa-solid fa-circle-dot"></i> States (<span id="stateCountBadge">0</span>)
+                    </button>
+                    <button id="btnOpenTransModal" class="btn btn-secondary btn-sm" style="flex: 1;">
+                        <i class="fa-solid fa-arrow-right-arrow-left"></i> Transitions (<span id="transCountBadge">0</span>)
+                    </button>
+                </div>
+                <div class="form-row">
+                    <button id="btnAddNodeQuick" class="btn btn-secondary btn-sm" style="flex: 1;">
+                        <i class="fa-solid fa-plus-circle"></i> Add Node
+                    </button>
+                    <button id="btnClearGraph" class="btn btn-danger btn-sm" style="flex: 1;">
+                        <i class="fa-solid fa-trash"></i> Reset
+                    </button>
+                </div>
+            </div>
+
+            <!-- Instructions Box -->
+            <div class="panel-section" style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.4;">
+                <div class="panel-title" style="margin-bottom: 4px;">
+                    <span><i class="fa-solid fa-circle-info"></i> Instructions</span>
+                </div>
+                <ul style="padding-left: 16px; margin: 0;">
+                    <li><strong>Drag</strong> nodes to change embeddings `[x, y]`.</li>
+                    <li><strong>Shift + Click</strong> two nodes to connect a transition.</li>
+                    <li><strong>Right Click</strong> a node to toggle Bad State status.</li>
+                </ul>
+            </div>
+        </sidebar>
+
+        <!-- Canvas Container -->
+        <div class="canvas-wrapper">
+            <!-- Floating Toolbar -->
+            <div class="canvas-toolbar">
+                <button class="toolbar-btn" id="btnZoomIn" title="Zoom In"><i class="fa-solid fa-plus"></i></button>
+                <button class="toolbar-btn" id="btnZoomOut" title="Zoom Out"><i class="fa-solid fa-minus"></i></button>
+                <button class="toolbar-btn" id="btnResetView" title="Reset View"><i class="fa-solid fa-compress"></i></button>
+                <button class="toolbar-btn" id="btnToggleGrid" title="Toggle Grid"><i class="fa-solid fa-border-all"></i></button>
+                <button class="toolbar-btn" id="btnToggleSafetyAura" title="Toggle Safety Heatmap"><i class="fa-solid fa-radiation"></i></button>
+            </div>
+
+            <canvas id="graphCanvas"></canvas>
+
+            <!-- Legend Overlay -->
+            <div class="legend-overlay">
+                <div class="legend-item">
+                    <div class="legend-color legend-start"></div>
+                    <span>Initial State</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color legend-goal"></div>
+                    <span>Goal State</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color legend-bad"></div>
+                    <span>Bad State (Penalty Zone)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color legend-path"></div>
+                    <span>Optimal Path</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Drawer -->
+        <div class="results-drawer">
+            <div class="results-stats">
+                <div class="stat-box">
+                    <span class="stat-label">Planner Status</span>
+                    <span class="stat-value" id="resultStatus">Ready</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">Total Effective Cost</span>
+                    <span class="stat-value cost" id="resultTotalCost">0.00</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">Min Safety Distance</span>
+                    <span class="stat-value safety" id="resultSafetyScore">N/A</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">Path Length</span>
+                    <span class="stat-value" id="resultPathLength">0 steps</span>
+                </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+                <span class="stat-label">Optimal State Sequence</span>
+                <div class="path-flow" id="resultPathFlow">
+                    <span style="color: var(--text-muted); font-size: 0.8rem;">Click 'Compute Path' to solve problem</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modals -->
+
+    <!-- C++ Code Export Modal -->
+    <div class="modal-overlay" id="modalCppExport">
+        <div class="modal-container">
+            <div class="modal-header">
+                <span class="modal-title"><i class="fa-solid fa-code"></i> C++ Driver Setup Code</span>
+                <button class="toolbar-btn btnCloseModal" data-modal="modalCppExport"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 0.85rem; color: var(--text-secondary);">
+                    Copy this auto-generated C++ code directly into your <code>orchestration.c++</code> <code>main()</code> function to reproduce this exact problem instance in C++.
+                </p>
+                <pre class="code-block" id="cppCodeContainer"></pre>
+                <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                    <button class="btn btn-secondary" id="btnCopyCppCode"><i class="fa-solid fa-copy"></i> Copy Code</button>
+                    <button class="btn btn-primary btnCloseModal" data-modal="modalCppExport">Done</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- State Manager Modal -->
+    <div class="modal-overlay" id="modalStatesManager">
+        <div class="modal-container" style="width: 760px;">
+            <div class="modal-header">
+                <span class="modal-title"><i class="fa-solid fa-circle-dot"></i> State Manager</span>
+                <button class="toolbar-btn btnCloseModal" data-modal="modalStatesManager"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 0.85rem; color: var(--text-secondary);">Manage state IDs and embedding coordinates [X, Y].</span>
+                    <button id="btnModalAddState" class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Add State</button>
+                </div>
+                <div style="max-height: 350px; overflow-y: auto;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Embedding X</th>
+                                <th>Embedding Y</th>
+                                <th>Type</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="statesTableBody">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transition Manager Modal -->
+    <div class="modal-overlay" id="modalTransitionsManager">
+        <div class="modal-container" style="width: 820px;">
+            <div class="modal-header">
+                <span class="modal-title"><i class="fa-solid fa-arrow-right-arrow-left"></i> Transition Manager</span>
+                <button class="toolbar-btn btnCloseModal" data-modal="modalTransitionsManager"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 0.85rem; color: var(--text-secondary);">Manage transition parameters: cost, safety, reliability, and availability.</span>
+                    <button id="btnModalAddTransition" class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Add Transition</button>
+                </div>
+                <div style="max-height: 350px; overflow-y: auto;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Cost</th>
+                                <th>Safety</th>
+                                <th>Reliability</th>
+                                <th>Available</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transitionsTableBody">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main JavaScript Logic -->
+    <script src="app.js"></script>
+</body>
+</html>

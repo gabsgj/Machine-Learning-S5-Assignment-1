@@ -1,0 +1,7 @@
+test_case,success,state_path,transition_path,total_path_cost,minimum_safety_distance,average_reliability,explored_states,planning_time_seconds
+1 - Basic Reachability,True,0->1->3,0->13,2.0,1.4142,0.98,6,0.00011463
+2 - Bad State Avoidance,True,0->1->3,0->13,2.0,1.4142,0.98,0,1.815e-05
+3 - Safety Margin,True,0->1->3,0->13,2.0,1.4142,0.98,0,1.439e-05
+4 - Dynamic Transition,True,0->1->2->3,0->1->2,3.0,1.0,0.98,6,5.635e-05
+5 - Goal Update,True,0->1->2->11,0->1->14,2.8,1.0,0.98,4,3.906e-05
+6 - Transition Addition,True,0->3,99,0.5,1.4142,0.99,1,1.306e-05

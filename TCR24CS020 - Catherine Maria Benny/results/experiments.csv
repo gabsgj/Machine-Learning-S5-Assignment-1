@@ -1,0 +1,5 @@
+numStates,success,totalCost,minSafetyDistance,reliability,objectiveScore,badStatesVisited,exploredStates,planningTimeMs,memoryBytesEstimate,replanningTimeMs,replanExploredStates
+100,1,223,3.27668,0.678883,-109.657,0,35,0.5305,21992,0.3094,51
+500,1,83.8715,2.4341,0.797568,28.9724,0,8,1.541,324680,5.0335,31
+1000,1,164.778,1.25743,0.853713,-53.7263,0,230,11.7948,697632,12.4306,293
+5000,1,116.452,1.64517,0.639774,-6.76388,0,226,29.567,4717632,14.9316,16

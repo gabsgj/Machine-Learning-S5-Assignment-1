@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safe Semantic Planner - Cartesian State Space Visualizer</title>
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --accent-gold: #f59e0b;
+            --accent-purple: #a855f7;
+            --border-color: #475569;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-title h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-title h1 span {
+            color: var(--accent-blue);
+        }
+
+        .header-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 320px 1fr 340px;
+            gap: 1rem;
+            padding: 1rem;
+            flex: 1;
+            height: calc(100vh - 75px);
+        }
+
+        @media (max-width: 1200px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+        }
+
+        .panel {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            overflow-y: auto;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+        }
+
+        .panel-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--accent-blue);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .control-group label {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        select, input[type="range"], button {
+            background-color: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0.55rem 0.75rem;
+            font-size: 0.85rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        select:focus, button:focus {
+            border-color: var(--accent-blue);
+        }
+
+        button {
+            cursor: pointer;
+            font-weight: 600;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            border: none;
+            color: white;
+            box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3);
+        }
+
+        button:hover {
+            opacity: 0.92;
+            transform: translateY(-1px);
+        }
+
+        button.btn-secondary {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            box-shadow: none;
+        }
+
+        button.btn-danger {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+        }
+
+        button.btn-dynamic {
+            background: linear-gradient(135deg, #d97706, #b45309);
+        }
+
+        .canvas-container {
+            position: relative;
+            background-color: #0b1120;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .canvas-toolbar {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 10;
+            background: rgba(30, 41, 59, 0.85);
+            padding: 6px 12px;
+            border-radius: 8px;
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border-color);
+        }
+
+        .canvas-legend {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            display: flex;
+            gap: 1rem;
+            z-index: 10;
+            background: rgba(30, 41, 59, 0.85);
+            padding: 6px 12px;
+            border-radius: 8px;
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border-color);
+            font-size: 0.75rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        #graphCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* Metric Cards */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.6rem;
+        }
+
+        .metric-card {
+            background-color: var(--bg-card);
+            border-radius: 8px;
+            padding: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            border-left: 3px solid var(--accent-blue);
+        }
+
+        .metric-card.success { border-left-color: var(--accent-green); }
+        .metric-card.warning { border-left-color: var(--accent-gold); }
+        .metric-card.danger { border-left-color: var(--accent-red); }
+
+        .metric-title {
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .metric-value {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-top: 0.2rem;
+            color: var(--text-primary);
+        }
+
+        /* LPA State Table */
+        .table-wrapper {
+            overflow-x: auto;
+            max-height: 260px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.78rem;
+        }
+
+        th, td {
+            padding: 0.45rem 0.5rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--bg-card);
+            color: var(--text-secondary);
+            position: sticky;
+            top: 0;
+        }
+
+        .badge {
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .badge-consistent { background: #065f46; color: #6ee7b7; }
+        .badge-over { background: #1e40af; color: #93c5fd; }
+        .badge-under { background: #991b1b; color: #fca5a5; }
+        .badge-path { background: #92400e; color: #fde68a; }
+
+        .info-box {
+            background: rgba(56, 189, 248, 0.08);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-size: 0.8rem;
+            line-height: 1.4;
+            color: #bae6fd;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-title">
+            <h1><span>⚡</span> Safe Semantic Planner</h1>
+            <div class="header-subtitle">Finite Cartesian State Space | Lifelong Planning A* (LPA*) & Multi-Objective Safety</div>
+        </div>
+        <div>
+            <span class="badge badge-consistent">v1.0.0 (C++ / Web Interop)</span>
+        </div>
+    </header>
+
+    <div class="main-layout">
+        <!-- Left Panel: Scenario Controls -->
+        <div class="panel">
+            <div class="panel-title">
+                <span>Scenarios & Presets</span>
+            </div>
+
+            <div class="control-group">
+                <label for="scenarioSelect">Select Test Case</label>
+                <select id="scenarioSelect">
+                    <option value="tc1">Test Case 1: Basic Reachability</option>
+                    <option value="tc2">Test Case 2: Bad State Avoidance</option>
+                    <option value="tc3" selected>Test Case 3: Safety Margin & Clearance</option>
+                    <option value="tc4">Test Case 4: Dynamic Transition Failure</option>
+                    <option value="tc5">Test Case 5: Dynamic Goal Update</option>
+                    <option value="tc6">Test Case 6: Dynamic Shortcut Discovery</option>
+                    <option value="grid">Bonus: 2D Grid Maze Navigation</option>
+                    <option value="kg">Bonus: 8D Semantic Knowledge Graph</option>
+                </select>
+            </div>
+
+            <div id="scenarioDescription" class="info-box">
+                Balances nominal cost vs safety repulsive potential; safely detours around dangerous obstacle zones.
+            </div>
+
+            <button id="btnRunPlan">🚀 Recompute Safe Path</button>
+            <button id="btnDynamicEvent" class="btn-dynamic">⚡ Trigger Dynamic Event</button>
+            <button id="btnReset" class="btn-secondary">↺ Reset Problem</button>
+
+            <div class="panel-title" style="margin-top: 0.5rem;">
+                <span>Safety & Objective Weights</span>
+            </div>
+
+            <div class="control-group">
+                <label>
+                    <span>Safety Barrier Weight (w_s)</span>
+                    <span id="valSafetyWeight">50.0</span>
+                </label>
+                <input type="range" id="sliderSafetyWeight" min="0" max="150" value="50" step="5">
+            </div>
+
+            <div class="control-group">
+                <label>
+                    <span>Safety Buffer Radius</span>
+                    <span id="valSafetyRadius">8.0</span>
+                </label>
+                <input type="range" id="sliderSafetyRadius" min="1" max="25" value="8" step="0.5">
+            </div>
+
+            <div class="control-group">
+                <label>
+                    <span>Reliability Penalty (w_r)</span>
+                    <span id="valRelWeight">2.0</span>
+                </label>
+                <input type="range" id="sliderRelWeight" min="0" max="10" value="2" step="0.5">
+            </div>
+
+            <div class="control-group">
+                <label>Interactive Click Mode</label>
+                <select id="clickModeSelect">
+                    <option value="inspect">Inspect / Move Node</option>
+                    <option value="toggleBad">Toggle Bad State (Obstacle)</option>
+                    <option value="toggleEdge">Toggle Transition Availability</option>
+                    <option value="setStart">Set Initial State (S)</option>
+                    <option value="setGoal">Set Goal State (G)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Center: Interactive Cartesian Visualizer Canvas -->
+        <div class="canvas-container">
+            <div class="canvas-toolbar">
+                <span style="font-size: 0.8rem; color: var(--text-secondary);">Interactive Canvas: Drag nodes or switch click modes to simulate real-time dynamic changes.</span>
+            </div>
+
+            <canvas id="graphCanvas"></canvas>
+
+            <div class="canvas-legend">
+                <div class="legend-item"><div class="legend-dot" style="background: var(--accent-blue);"></div> Start (S)</div>
+                <div class="legend-item"><div class="legend-dot" style="background: var(--accent-green);"></div> Goal (G)</div>
+                <div class="legend-item"><div class="legend-dot" style="background: var(--accent-red);"></div> Bad State (B)</div>
+                <div class="legend-item"><div class="legend-dot" style="background: var(--accent-gold);"></div> Planned Path</div>
+                <div class="legend-item"><div class="legend-dot" style="background: #64748b;"></div> Disabled Edge</div>
+            </div>
+        </div>
+
+        <!-- Right Panel: Live Evaluation Dashboard & LPA* State Table -->
+        <div class="panel">
+            <div class="panel-title">
+                <span>Evaluation Metrics</span>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card success">
+                    <span class="metric-title">Goal Status</span>
+                    <span id="metricStatus" class="metric-value">REACHED</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-title">Path Cost (C)</span>
+                    <span id="metricCost" class="metric-value">10.00</span>
+                </div>
+                <div class="metric-card warning">
+                    <span class="metric-title">Min Clearance (D)</span>
+                    <span id="metricDist" class="metric-value">15.07</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-title">Reliability (R)</span>
+                    <span id="metricRel" class="metric-value">0.9412</span>
+                </div>
+            </div>
+
+            <div class="metric-card" style="border-left-color: var(--accent-purple);">
+                <span class="metric-title">Multi-Objective Score (Score(P))</span>
+                <span id="metricScore" class="metric-value" style="color: var(--accent-purple);">124.86</span>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <span class="metric-title">Explored States</span>
+                    <span id="metricExplored" class="metric-value">4</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-title">Planning Latency</span>
+                    <span id="metricTime" class="metric-value">12.4 μs</span>
+                </div>
+            </div>
+
+            <div class="panel-title" style="margin-top: 0.5rem;">
+                <span>LPA* Vertex Inconsistency Table</span>
+            </div>
+
+            <div class="table-wrapper">
+                <table id="lpaTable">
+                    <thead>
+                        <tr>
+                            <th>State</th>
+                            <th>g(s)</th>
+                            <th>rhs(s)</th>
+                            <th>Key [k1, k2]</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dynamically filled -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =====================================================================
+        // Safe Semantic Planner Engine (JavaScript Port of C++ LPA* Core)
+        // =====================================================================
+
+        class GraphState {
+            constructor(id, embedding, name = '') {
+                this.id = id;
+                this.embedding = embedding;
+                this.name = name || `S${id}`;
+                this.x = 0;
+                this.y = 0;
+            }
+        }
+
+        class GraphTransition {
+            constructor(id, from, to, cost = 1.0, safety = 1.0, reliability = 1.0, available = true) {
+                this.id = id;
+                this.from = from;
+                this.to = to;
+                this.cost = cost;
+                this.safety = safety;
+                this.reliability = reliability;
+                this.available = available;
+            }
+        }
+
+        // State Machine & Data
+        let currentProblem = {
+            initialState: 0,
+            goalState: 5,
+            badStates: [6],
+            states: [],
+            transitions: []
+        };
+
+        let lastResult = {
+            success: false,
+            statePath: [],
+            transitionPath: [],
+            totalCost: 0,
+            minSafetyDistance: 0,
+            cumulativeReliability: 1,
+            multiObjectiveScore: 0,
+            exploredStatesCount: 0,
+            executionTimeMicroseconds: 0
+        };
+
+        let lpaState = {
+            g: {},
+            rhs: {},
+            keys: {}
+        };
+
+        // Scenario Presets Definitions
+        const Scenarios = {
+            tc1: {
+                name: "Test Case 1: Basic Reachability",
+                desc: "Validates fundamental reachability along linear chain S -> A -> B -> G",
+                data: () => ({
+                    initialState: 0,
+                    goalState: 3,
+                    badStates: [],
+                    states: [
+                        new GraphState(0, [0, 0], "S"),
+                        new GraphState(1, [10, 0], "A"),
+                        new GraphState(2, [20, 0], "B"),
+                        new GraphState(3, [30, 0], "G")
+                    ],
+                    transitions: [
+                        new GraphTransition(1, 0, 1, 5.0, 1.0, 0.98),
+                        new GraphTransition(2, 1, 2, 5.0, 1.0, 0.95),
+                        new GraphTransition(3, 2, 3, 5.0, 1.0, 0.99)
+                    ]
+                })
+            },
+            tc2: {
+                name: "Test Case 2: Bad State Avoidance",
+                desc: "Path 1 through bad state X is strictly avoided. Planner selects safe path S -> C -> D -> G.",
+                data: () => ({
+                    initialState: 0,
+                    goalState: 3,
+                    badStates: [2],
+                    states: [
+                        new GraphState(0, [0, 10], "S"),
+                        new GraphState(1, [10, 15], "A"),
+                        new GraphState(2, [20, 15], "X (Bad)"),
+                        new GraphState(3, [30, 10], "G"),
+                        new GraphState(4, [10, 5], "C"),
+                        new GraphState(5, [20, 5], "D")
+                    ],
+                    transitions: [
+                        new GraphTransition(1, 0, 1, 2.0, 0.5, 0.99),
+                        new GraphTransition(2, 1, 2, 2.0, 0.1, 0.99),
+                        new GraphTransition(3, 2, 3, 2.0, 0.1, 0.99),
+                        new GraphTransition(4, 0, 4, 4.0, 1.0, 0.95),
+                        new GraphTransition(5, 4, 5, 4.0, 1.0, 0.95),
+                        new GraphTransition(6, 5, 3, 4.0, 1.0, 0.95)
+                    ]
+                })
+            },
+            tc3: {
+                name: "Test Case 3: Safety Margin & Clearance",
+                desc: "Path 1 has low nominal cost (6.0) but passes near obstacle B1. Path 2 (cost 10.0) maintains wide safety buffer.",
+                data: () => ({
+                    initialState: 0,
+                    goalState: 5,
+                    badStates: [6],
+                    states: [
+                        new GraphState(0, [0, 10], "S"),
+                        new GraphState(1, [10, 11], "N1"),
+                        new GraphState(2, [20, 11], "N2"),
+                        new GraphState(3, [10, -10], "F1"),
+                        new GraphState(4, [20, -10], "F2"),
+                        new GraphState(5, [30, 10], "G"),
+                        new GraphState(6, [15, 11.5], "B1 (Bad)")
+                    ],
+                    transitions: [
+                        new GraphTransition(1, 0, 1, 2.0, 0.4, 0.98),
+                        new GraphTransition(2, 1, 2, 2.0, 0.3, 0.98),
+                        new GraphTransition(3, 2, 5, 2.0, 0.4, 0.98),
+                        new GraphTransition(4, 0, 3, 3.5, 1.0, 0.98),
+                        new GraphTransition(5, 3, 4, 3.0, 1.0, 0.98),
+                        new GraphTransition(6, 4, 5, 3.5, 1.0, 0.98)
+                    ]
+                })
+            },
+            tc4: {
+                name: "Test Case 4: Dynamic Transition Failure",
+                desc: "Initially S -> A -> G. Click 'Trigger Dynamic Event' to disable (A, G) and observe instant LPA* replan to S -> B -> G.",
+                data: () => ({
+                    initialState: 0,
+                    goalState: 3,
+                    badStates: [],
+                    states: [
+                        new GraphState(0, [0, 10], "S"),
+                        new GraphState(1, [15, 15], "A"),
+                        new GraphState(2, [15, 5], "B"),
+                        new GraphState(3, [30, 10], "G")
+                    ],
+                    transitions: [
+                        new GraphTransition(1, 0, 1, 2.0, 1.0, 0.95),
+                        new GraphTransition(2, 1, 3, 2.0, 1.0, 0.95),
+                        new GraphTransition(3, 0, 2, 4.0, 1.0, 0.95),
+                        new GraphTransition(4, 2, 3, 4.0, 1.0, 0.95)
+                    ]
+                }),
+                dynamicAction: () => {
+                    const t = currentProblem.transitions.find(x => x.id === 2);
+                    if (t) {
+                        t.available = !t.available;
+                        return t.available ? "Transition (A -> G) re-enabled" : "Transition (A -> G) failed / disabled";
+                    }
+                }
+            },
+            tc5: {
+                name: "Test Case 5: Dynamic Goal Update",
+                desc: "Goal changes during execution from G1 (Node 3) to G2 (Node 4). LPA* re-keys heuristics and replans.",
+                data: () => ({
+                    initialState: 0,
+                    goalState: 3,
+                    badStates: [],
+                    states: [
+                        new GraphState(0, [0, 10], "S"),
+                        new GraphState(1, [10, 15], "A"),
+                        new GraphState(2, [10, 5], "B"),
+                        new GraphState(3, [25, 15], "G1"),
+                        new GraphState(4, [25, 5], "G2")
+                    ],
+                    transitions: [
+                        new GraphTransition(1, 0, 1, 3.0, 1.0, 0.99),
+                        new GraphTransition(2, 1, 3, 3.0, 1.0, 0.99),
+                        new GraphTransition(3, 0, 2, 3.0, 1.0, 0.99),
+                        new GraphTransition(4, 2, 4, 3.0, 1.0, 0.99),
+                        new GraphTransition(5, 1, 2, 2.0, 1.0, 0.99)
+                    ]
+                }),
+                dynamicAction: () => {
+                    currentProblem.goalState = currentProblem.goalState === 3 ? 4 : 3;
+                    return `Goal updated to Node ${currentProblem.goalState}`;
+                }
+            },
+            tc6: {
+                name: "Test Case 6: Dynamic Shortcut Discovery",
+                desc: "A direct shortcut transition S -> G is dynamically inserted; LPA* detects and switches to improved optimal path.",
+                data: () => ({
+                    initialState: 0,
+                    goalState: 3,
+                    badStates: [],
+                    states: [
+                        new GraphState(0, [0, 0], "S"),
+                        new GraphState(1, [10, 5], "A"),
+                        new GraphState(2, [20, 5], "B"),
+                        new GraphState(3, [30, 0], "G")
+                    ],
+                    transitions: [
+                        new GraphTransition(1, 0, 1, 3.0, 1.0, 0.95),
+                        new GraphTransition(2, 1, 2, 3.0, 1.0, 0.95),
+                        new GraphTransition(3, 2, 3, 3.0, 1.0, 0.95)
+                    ]
+                }),
+                dynamicAction: () => {
+                    const existing = currentProblem.transitions.find(x => x.id === 4);
+                    if (existing) {
+                        currentProblem.transitions = currentProblem.transitions.filter(x => x.id !== 4);
+                        return "Shortcut transition S -> G removed";
+                    } else {
+                        currentProblem.transitions.push(new GraphTransition(4, 0, 3, 4.0, 1.0, 0.99));
+                        return "Shortcut transition S -> G (Cost 4.0) added";
+                    }
+                }
+            },
+            grid: {
+                name: "Bonus: 2D Grid Maze Navigation",
+                desc: "8x8 Cartesian grid environment with central obstacle wall; demonstrates real-time safety barrier avoidance.",
+                data: () => {
+                    const width = 8, height = 8;
+                    const states = [];
+                    const transitions = [];
+                    const badStates = [19, 27, 35, 43]; // Obstacle column
+
+                    for (let y = 0; y < height; ++y) {
+                        for (let x = 0; x < width; ++x) {
+                            const id = x + y * width;
+                            states.push(new GraphState(id, [x * 4, y * 4], `${id}`));
+                        }
+                    }
+
+                    let tid = 1;
+                    const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+                    for (let y = 0; y < height; ++y) {
+                        for (let x = 0; x < width; ++x) {
+                            const u = x + y * width;
+                            for (const [dx, dy] of dirs) {
+                                const nx = x + dx, ny = y + dy;
+                                if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
+                                    const v = nx + ny * width;
+                                    transitions.push(new GraphTransition(tid++, u, v, 10.0, 1.0, 0.99));
+                                }
+                            }
+                        }
+                    }
+
+                    return {
+                        initialState: 0,
+                        goalState: width * height - 1,
+                        badStates,
+                        states,
+                        transitions
+                    };
+                }
+            },
+            kg: {
+                name: "Bonus: 8D Semantic Knowledge Graph",
+                desc: "8-dimensional semantic embedding space for LLM agent verification pipelines, bypassing hallucinated fact nodes.",
+                data: () => ({
+                    initialState: 0,
+                    goalState: 5,
+                    badStates: [3],
+                    states: [
+                        new GraphState(0, [0, 5], "User_Query"),
+                        new GraphState(1, [8, 12], "Entity_Link"),
+                        new GraphState(2, [16, 12], "Knowledge_Retr"),
+                        new GraphState(3, [24, 18], "Hallucination (Bad)"),
+                        new GraphState(4, [24, 4], "Verification"),
+                        new GraphState(5, [32, 5], "Verified_Decision")
+                    ],
+                    transitions: [
+                        new GraphTransition(1, 0, 1, 1.5, 0.95, 0.99),
+                        new GraphTransition(2, 1, 2, 2.0, 0.90, 0.98),
+                        new GraphTransition(3, 2, 3, 1.0, 0.20, 0.70),
+                        new GraphTransition(4, 3, 5, 1.0, 0.20, 0.70),
+                        new GraphTransition(5, 2, 4, 2.5, 0.99, 0.99),
+                        new GraphTransition(6, 4, 5, 2.0, 0.98, 0.99)
+                    ]
+                })
+            }
+        };
+
+        // Euclidean Distance in R^d
+        function euclideanDist(a, b) {
+            if (!a || !b) return 0;
+            let sum = 0;
+            const dim = Math.min(a.length, b.length);
+            for (let i = 0; i < dim; ++i) {
+                const diff = a[i] - b[i];
+                sum += diff * diff;
+            }
+            return Math.sqrt(sum);
+        }
+
+        // Multi-Objective Safe LPA* Solver
+        function solveLPA() {
+            const startTime = performance.now();
+            const startId = currentProblem.initialState;
+            const goalId = currentProblem.goalState;
+            const badSet = new Set(currentProblem.badStates);
+
+            const safetyWeight = parseFloat(document.getElementById('sliderSafetyWeight').value);
+            const safetyRadius = parseFloat(document.getElementById('sliderSafetyRadius').value);
+            const relWeight = parseFloat(document.getElementById('sliderRelWeight').value);
+
+            const stateMap = {};
+            currentProblem.states.forEach(s => stateMap[s.id] = s);
+
+            const inTrans = {};
+            const outTrans = {};
+            currentProblem.states.forEach(s => {
+                inTrans[s.id] = [];
+                outTrans[s.id] = [];
+            });
+
+            currentProblem.transitions.forEach(t => {
+                if (outTrans[t.from]) outTrans[t.from].push(t);
+                if (inTrans[t.to]) inTrans[t.to].push(t);
+            });
+
+            // Distance to bad states
+            function getMinDistToBad(state) {
+                if (badSet.size === 0) return 1000.0;
+                if (badSet.has(state.id)) return 0.0;
+                let minD = Infinity;
+                for (const bId of badSet) {
+                    const bState = stateMap[bId];
+                    if (bState) {
+                        const d = euclideanDist(state.embedding, bState.embedding);
+                        if (d < minD) minD = d;
+                    }
+                }
+                return minD;
+            }
+
+            // Effective Transition Cost
+            function getEffectiveCost(trans) {
+                if (!trans.available || badSet.has(trans.to)) return Infinity;
+                const targetState = stateMap[trans.to];
+                if (!targetState) return Infinity;
+
+                let safetyPenalty = 0;
+                const d = getMinDistToBad(targetState);
+                if (d < safetyRadius) {
+                    safetyPenalty = safetyWeight * Math.pow((safetyRadius - d) / (d + 0.1), 2);
+                }
+
+                const r = Math.max(0.001, Math.min(1.0, trans.reliability));
+                const relPenalty = -relWeight * Math.log(r);
+
+                return trans.cost + safetyPenalty + relPenalty;
+            }
+
+            // Heuristic
+            function heuristic(uId, vId) {
+                const u = stateMap[uId], v = stateMap[vId];
+                if (!u || !v) return 0;
+                return euclideanDist(u.embedding, v.embedding);
+            }
+
+            // LPA* data structures
+            const g = {};
+            const rhs = {};
+            currentProblem.states.forEach(s => {
+                g[s.id] = Infinity;
+                rhs[s.id] = Infinity;
+            });
+            rhs[startId] = 0;
+
+            function calcKey(u) {
+                const m = Math.min(g[u], rhs[u]);
+                return [m + heuristic(u, goalId), m];
+            }
+
+            function keyLess(k1, k2) {
+                const eps = 1e-9;
+                if (Math.abs(k1[0] - k2[0]) > eps) return k1[0] < k2[0];
+                return k1[1] < k2[1];
+            }
+
+            const openList = new Set();
+            openList.add(startId);
+
+            function updateVertex(u) {
+                if (u !== startId) {
+                    let minRhs = Infinity;
+                    for (const t of inTrans[u] || []) {
+                        const c = getEffectiveCost(t);
+                        if (g[t.from] < Infinity && c < Infinity) {
+                            const cand = g[t.from] + c;
+                            if (cand < minRhs) minRhs = cand;
+                        }
+                    }
+                    rhs[u] = minRhs;
+                }
+
+                if (Math.abs(g[u] - rhs[u]) > 1e-9) {
+                    openList.add(u);
+                } else {
+                    openList.delete(u);
+                }
+            }
+
+            let exploredCount = 0;
+
+            // Main LPA* Loop
+            while (openList.size > 0) {
+                // Find node with minimum key
+                let minNode = null;
+                let minKey = [Infinity, Infinity];
+                for (const u of openList) {
+                    const k = calcKey(u);
+                    if (minNode === null || keyLess(k, minKey)) {
+                        minNode = u;
+                        minKey = k;
+                    }
+                }
+
+                const goalKey = calcKey(goalId);
+                if (!keyLess(minKey, goalKey) && Math.abs(rhs[goalId] - g[goalId]) <= 1e-9) {
+                    break;
+                }
+
+                openList.delete(minNode);
+                exploredCount++;
+
+                if (g[minNode] > rhs[minNode]) {
+                    g[minNode] = rhs[minNode];
+                    for (const t of outTrans[minNode] || []) {
+                        updateVertex(t.to);
+                    }
+                } else {
+                    g[minNode] = Infinity;
+                    updateVertex(minNode);
+                    for (const t of outTrans[minNode] || []) {
+                        updateVertex(t.to);
+                    }
+                }
+            }
+
+            const endTime = performance.now();
+            const durationMicros = (endTime - startTime) * 1000;
+
+            // Path reconstruction
+            const result = {
+                success: false,
+                statePath: [],
+                transitionPath: [],
+                totalCost: 0,
+                minSafetyDistance: 1000,
+                cumulativeReliability: 1.0,
+                multiObjectiveScore: 0,
+                exploredStatesCount: exploredCount,
+                executionTimeMicroseconds: durationMicros
+            };
+
+            if (g[goalId] < Infinity / 2) {
+                result.success = true;
+                let curr = goalId;
+                const revStates = [curr];
+                const revTrans = [];
+                let costSum = 0;
+                let relProd = 1.0;
+                let minClearance = Infinity;
+
+                let visited = new Set();
+                visited.add(curr);
+
+                while (curr !== startId) {
+                    let bestPred = null;
+                    let bestTrans = null;
+                    let bestVal = Infinity;
+
+                    for (const t of inTrans[curr] || []) {
+                        const c = getEffectiveCost(t);
+                        if (g[t.from] < Infinity && c < Infinity) {
+                            const val = g[t.from] + c;
+                            if (val < bestVal) {
+                                bestVal = val;
+                                bestPred = t.from;
+                                bestTrans = t;
+                            }
+                        }
+                    }
+
+                    if (!bestPred || visited.has(bestPred)) {
+                        result.success = false;
+                        break;
+                    }
+
+                    costSum += bestTrans.cost;
+                    relProd *= bestTrans.reliability;
+                    revTrans.push(bestTrans.id);
+                    revStates.push(bestPred);
+                    visited.add(bestPred);
+                    curr = bestPred;
+                }
+
+                if (result.success) {
+                    result.statePath = revStates.reverse();
+                    result.transitionPath = revTrans.reverse();
+                    result.totalCost = costSum;
+                    result.cumulativeReliability = relProd;
+
+                    for (const sId of result.statePath) {
+                        const s = stateMap[sId];
+                        if (s) {
+                            const d = getMinDistToBad(s);
+                            if (d < minClearance) minClearance = d;
+                        }
+                    }
+                    result.minSafetyDistance = minClearance === Infinity ? 1000.0 : minClearance;
+                    
+                    // Score(P) = alpha * G - beta * C + gamma * D + delta * R
+                    const alpha = 100.0, beta = 1.0, gamma = 2.0, delta = 5.0;
+                    result.multiObjectiveScore = (alpha * 1.0) - (beta * result.totalCost) + 
+                                                 (gamma * result.minSafetyDistance) + (delta * result.cumulativeReliability);
+                }
+            }
+
+            // Save LPA State for table
+            lpaState.g = g;
+            lpaState.rhs = rhs;
+            lpaState.keys = {};
+            currentProblem.states.forEach(s => {
+                lpaState.keys[s.id] = calcKey(s.id);
+            });
+
+            lastResult = result;
+            updateDashboard();
+            updateLPATable();
+            drawCanvas();
+        }
+
+        // =====================================================================
+        // Canvas Rendering & Coordinate Projection
+        // =====================================================================
+
+        const canvas = document.getElementById('graphCanvas');
+        const ctx = canvas.getContext('2d');
+        let hoveredNode = null;
+        let draggedNode = null;
+
+        function resizeCanvas() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height - 40;
+            drawCanvas();
+        }
+        window.addEventListener('resize', resizeCanvas);
+
+        function projectCoordinates() {
+            if (currentProblem.states.length === 0) return;
+
+            let minX = Infinity, maxX = -Infinity;
+            let minY = Infinity, maxY = -Infinity;
+
+            currentProblem.states.forEach(s => {
+                const x = s.embedding[0] || 0;
+                const y = s.embedding[1] || 0;
+                if (x < minX) minX = x;
+                if (x > maxX) maxX = x;
+                if (y < minY) minY = y;
+                if (y > maxY) maxY = y;
+            });
+
+            const padX = (maxX - minX) * 0.15 || 5;
+            const padY = (maxY - minY) * 0.15 || 5;
+            minX -= padX; maxX += padX;
+            minY -= padY; maxY += padY;
+
+            const w = canvas.width - 80;
+            const h = canvas.height - 80;
+
+            currentProblem.states.forEach(s => {
+                const ex = s.embedding[0] || 0;
+                const ey = s.embedding[1] || 0;
+                s.x = 40 + ((ex - minX) / (maxX - minX)) * w;
+                s.y = canvas.height - (40 + ((ey - minY) / (maxY - minY)) * h);
+            });
+        }
+
+        function drawCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Subtle Background Grid
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 1;
+            const gridSize = 40;
+            for (let x = 0; x < canvas.width; x += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+            for (let y = 0; y < canvas.height; y += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+
+            const badSet = new Set(currentProblem.badStates);
+            const stateMap = {};
+            currentProblem.states.forEach(s => stateMap[s.id] = s);
+
+            const pathTransSet = new Set(lastResult.transitionPath || []);
+            const pathNodeSet = new Set(lastResult.statePath || []);
+
+            // 1. Draw Safety Buffer Halos around Bad States
+            const safetyRadius = parseFloat(document.getElementById('sliderSafetyRadius').value);
+            badSet.forEach(bId => {
+                const s = stateMap[bId];
+                if (s) {
+                    ctx.save();
+                    const grad = ctx.createRadialGradient(s.x, s.y, 10, s.x, s.y, safetyRadius * 15);
+                    grad.addColorStop(0, 'rgba(239, 68, 68, 0.45)');
+                    grad.addColorStop(0.5, 'rgba(239, 68, 68, 0.15)');
+                    grad.addColorStop(1, 'rgba(239, 68, 68, 0)');
+                    ctx.fillStyle = grad;
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, safetyRadius * 15, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
+                }
+            });
+
+            // 2. Draw Directed Transitions
+            currentProblem.transitions.forEach(t => {
+                const u = stateMap[t.from];
+                const v = stateMap[t.to];
+                if (!u || !v) return;
+
+                const isPath = pathTransSet.has(t.id);
+                const isAvailable = t.available && !badSet.has(t.to);
+
+                ctx.save();
+                ctx.beginPath();
+
+                // Compute arrow direction
+                const dx = v.x - u.x;
+                const dy = v.y - u.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist === 0) return;
+
+                const nx = dx / dist;
+                const ny = dy / dist;
+
+                const startX = u.x + nx * 20;
+                const startY = u.y + ny * 20;
+                const endX = v.x - nx * 20;
+                const endY = v.y - ny * 20;
+
+                ctx.moveTo(startX, startY);
+                ctx.lineTo(endX, endY);
+
+                if (isPath) {
+                    ctx.strokeStyle = '#f59e0b';
+                    ctx.lineWidth = 4;
+                    ctx.shadowColor = '#f59e0b';
+                    ctx.shadowBlur = 10;
+                } else if (!isAvailable) {
+                    ctx.strokeStyle = '#475569';
+                    ctx.lineWidth = 1.5;
+                    ctx.setLineDash([4, 4]);
+                } else {
+                    ctx.strokeStyle = '#38bdf8';
+                    ctx.lineWidth = 2;
+                }
+                ctx.stroke();
+                ctx.restore();
+
+                // Arrow head
+                ctx.save();
+                ctx.fillStyle = isPath ? '#f59e0b' : (!isAvailable ? '#475569' : '#38bdf8');
+                ctx.beginPath();
+                const arrowSize = isPath ? 9 : 7;
+                ctx.moveTo(endX, endY);
+                ctx.lineTo(endX - nx * arrowSize - ny * (arrowSize / 2), endY - ny * arrowSize + nx * (arrowSize / 2));
+                ctx.lineTo(endX - nx * arrowSize + ny * (arrowSize / 2), endY - ny * arrowSize - nx * (arrowSize / 2));
+                ctx.closePath();
+                ctx.fill();
+                ctx.restore();
+
+                // Edge Cost Label
+                const midX = (startX + endX) / 2 - ny * 10;
+                const midY = (startY + endY) / 2 + nx * 10;
+                ctx.fillStyle = isPath ? '#fde68a' : '#94a3b8';
+                ctx.font = '10px Segoe UI';
+                ctx.fillText(`c=${t.cost.toFixed(1)}`, midX, midY);
+            });
+
+            // 3. Draw Nodes (States)
+            currentProblem.states.forEach(s => {
+                const isStart = s.id === currentProblem.initialState;
+                const isGoal = s.id === currentProblem.goalState;
+                const isBad = badSet.has(s.id);
+                const isPath = pathNodeSet.has(s.id);
+
+                ctx.save();
+
+                // Node Body
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, 18, 0, Math.PI * 2);
+
+                if (isStart) {
+                    ctx.fillStyle = '#2563eb';
+                    ctx.strokeStyle = '#60a5fa';
+                    ctx.shadowColor = '#3b82f6';
+                    ctx.shadowBlur = 12;
+                } else if (isGoal) {
+                    ctx.fillStyle = '#059669';
+                    ctx.strokeStyle = '#34d399';
+                    ctx.shadowColor = '#10b981';
+                    ctx.shadowBlur = 12;
+                } else if (isBad) {
+                    ctx.fillStyle = '#dc2626';
+                    ctx.strokeStyle = '#f87171';
+                    ctx.shadowColor = '#ef4444';
+                    ctx.shadowBlur = 12;
+                } else if (isPath) {
+                    ctx.fillStyle = '#b45309';
+                    ctx.strokeStyle = '#fbbf24';
+                } else {
+                    ctx.fillStyle = '#1e293b';
+                    ctx.strokeStyle = '#475569';
+                }
+
+                ctx.lineWidth = 2.5;
+                ctx.fill();
+                ctx.stroke();
+                ctx.restore();
+
+                // Node Text
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 11px Segoe UI';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(s.name, s.x, s.y);
+            });
+        }
+
+        // =====================================================================
+        // UI & Dashboard Updates
+        // =====================================================================
+
+        function updateDashboard() {
+            const elStatus = document.getElementById('metricStatus');
+            const elCost = document.getElementById('metricCost');
+            const elDist = document.getElementById('metricDist');
+            const elRel = document.getElementById('metricRel');
+            const elScore = document.getElementById('metricScore');
+            const elExplored = document.getElementById('metricExplored');
+            const elTime = document.getElementById('metricTime');
+
+            if (lastResult.success) {
+                elStatus.textContent = "REACHED";
+                elStatus.parentElement.className = "metric-card success";
+            } else {
+                elStatus.textContent = "NO PATH";
+                elStatus.parentElement.className = "metric-card danger";
+            }
+
+            elCost.textContent = lastResult.totalCost.toFixed(2);
+            elDist.textContent = lastResult.minSafetyDistance > 500 ? "Safe (N/A)" : lastResult.minSafetyDistance.toFixed(2);
+            elRel.textContent = lastResult.cumulativeReliability.toFixed(4);
+            elScore.textContent = lastResult.multiObjectiveScore.toFixed(2);
+            elExplored.textContent = lastResult.exploredStatesCount;
+            elTime.textContent = lastResult.executionTimeMicroseconds < 1 ? "< 1 μs" : `${lastResult.executionTimeMicroseconds.toFixed(1)} μs`;
+        }
+
+        function updateLPATable() {
+            const tbody = document.querySelector('#lpaTable tbody');
+            tbody.innerHTML = '';
+
+            const pathSet = new Set(lastResult.statePath || []);
+
+            currentProblem.states.forEach(s => {
+                const tr = document.createElement('tr');
+                const gVal = lpaState.g[s.id] ?? Infinity;
+                const rhsVal = lpaState.rhs[s.id] ?? Infinity;
+                const key = lpaState.keys[s.id] ?? [Infinity, Infinity];
+
+                let statusBadge = '<span class="badge badge-consistent">Consistent</span>';
+                if (pathSet.has(s.id)) {
+                    statusBadge = '<span class="badge badge-path">On Path</span>';
+                } else if (Math.abs(gVal - rhsVal) > 1e-9) {
+                    if (gVal > rhsVal) statusBadge = '<span class="badge badge-over">Overconsistent</span>';
+                    else statusBadge = '<span class="badge badge-under">Underconsistent</span>';
+                }
+
+                tr.innerHTML = `
+                    <td><strong>${s.name}</strong></td>
+                    <td>${gVal >= 1e6 ? '∞' : gVal.toFixed(1)}</td>
+                    <td>${rhsVal >= 1e6 ? '∞' : rhsVal.toFixed(1)}</td>
+                    <td>[${key[0] >= 1e6 ? '∞' : key[0].toFixed(1)}, ${key[1] >= 1e6 ? '∞' : key[1].toFixed(1)}]</td>
+                    <td>${statusBadge}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function loadScenario(key) {
+            const sc = Scenarios[key];
+            if (!sc) return;
+            document.getElementById('scenarioDescription').textContent = sc.desc;
+            currentProblem = sc.data();
+            projectCoordinates();
+            solveLPA();
+        }
+
+        // =====================================================================
+        // Event Listeners & Interactive Controls
+        // =====================================================================
+
+        document.getElementById('scenarioSelect').addEventListener('change', (e) => {
+            loadScenario(e.target.value);
+        });
+
+        document.getElementById('btnRunPlan').addEventListener('click', () => {
+            solveLPA();
+        });
+
+        document.getElementById('btnReset').addEventListener('click', () => {
+            const key = document.getElementById('scenarioSelect').value;
+            loadScenario(key);
+        });
+
+        document.getElementById('btnDynamicEvent').addEventListener('click', () => {
+            const key = document.getElementById('scenarioSelect').value;
+            const sc = Scenarios[key];
+            if (sc && sc.dynamicAction) {
+                const msg = sc.dynamicAction();
+                document.getElementById('scenarioDescription').textContent = `⚡ Dynamic Event: ${msg}`;
+                solveLPA();
+            } else {
+                alert("Dynamic event simulation available on Test Cases 4, 5, and 6!");
+            }
+        });
+
+        // Sliders
+        const sWeight = document.getElementById('sliderSafetyWeight');
+        sWeight.addEventListener('input', (e) => {
+            document.getElementById('valSafetyWeight').textContent = parseFloat(e.target.value).toFixed(1);
+            solveLPA();
+        });
+
+        const sRadius = document.getElementById('sliderSafetyRadius');
+        sRadius.addEventListener('input', (e) => {
+            document.getElementById('valSafetyRadius').textContent = parseFloat(e.target.value).toFixed(1);
+            solveLPA();
+        });
+
+        const sRel = document.getElementById('sliderRelWeight');
+        sRel.addEventListener('input', (e) => {
+            document.getElementById('valRelWeight').textContent = parseFloat(e.target.value).toFixed(1);
+            solveLPA();
+        });
+
+        // Interactive Canvas Clicks
+        canvas.addEventListener('mousedown', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const clickY = e.clientY - rect.top;
+
+            const mode = document.getElementById('clickModeSelect').value;
+
+            // Check if clicked on a node
+            const clickedState = currentProblem.states.find(s => {
+                const dx = s.x - clickX, dy = s.y - clickY;
+                return Math.sqrt(dx * dx + dy * dy) <= 22;
+            });
+
+            if (clickedState) {
+                if (mode === 'toggleBad') {
+                    const idx = currentProblem.badStates.indexOf(clickedState.id);
+                    if (idx >= 0) currentProblem.badStates.splice(idx, 1);
+                    else currentProblem.badStates.push(clickedState.id);
+                    solveLPA();
+                } else if (mode === 'setStart') {
+                    currentProblem.initialState = clickedState.id;
+                    solveLPA();
+                } else if (mode === 'setGoal') {
+                    currentProblem.goalState = clickedState.id;
+                    solveLPA();
+                } else if (mode === 'inspect') {
+                    draggedNode = clickedState;
+                }
+                return;
+            }
+
+            // Check if clicked on a transition
+            if (mode === 'toggleEdge') {
+                const stateMap = {};
+                currentProblem.states.forEach(s => stateMap[s.id] = s);
+                currentProblem.transitions.forEach(t => {
+                    const u = stateMap[t.from], v = stateMap[t.to];
+                    if (u && v) {
+                        const midX = (u.x + v.x) / 2;
+                        const midY = (u.y + v.y) / 2;
+                        const d = Math.sqrt((clickX - midX) ** 2 + (clickY - midY) ** 2);
+                        if (d < 18) {
+                            t.available = !t.available;
+                            solveLPA();
+                        }
+                    }
+                });
+            }
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (draggedNode) {
+                const rect = canvas.getBoundingClientRect();
+                draggedNode.x = e.clientX - rect.left;
+                draggedNode.y = e.clientY - rect.top;
+                drawCanvas();
+            }
+        });
+
+        window.addEventListener('mouseup', () => {
+            if (draggedNode) {
+                draggedNode = null;
+                solveLPA();
+            }
+        });
+
+        // Initialize with default scenario
+        window.addEventListener('DOMContentLoaded', () => {
+            resizeCanvas();
+            loadScenario('tc3');
+        });
+    </script>
+</body>
+</html>

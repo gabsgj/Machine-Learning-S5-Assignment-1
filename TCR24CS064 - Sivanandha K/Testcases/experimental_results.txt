@@ -1,0 +1,128 @@
+PCCST503 Assignment 1 - Safe Semantic Planner
+Algorithm: D* Lite with cost, reliability and safety-aware edge weighting
+
+=== Test Case 1: Basic Reachability ===
+Success: YES
+State path: 1 -> 2 -> 3 -> 4
+Transition path: 1 -> 2 -> 3
+Total path cost: 3.000
+Minimum safety distance: N/A
+Cumulative reliability: 3.000
+Bad states visited: 0
+Explored states: 4
+Planning time (ms): 0.008
+Replanning time (ms): 0.000
+Approx. memory (bytes): 424
+Message: Safe path found.
+
+=== Test Case 2: Bad State Avoidance ===
+Success: YES
+State path: 1 -> 3 -> 5
+Transition path: 4 -> 5
+Total path cost: 2.400
+Minimum safety distance: 1.000000
+Cumulative reliability: 2.000
+Bad states visited: 0
+Explored states: 3
+Planning time (ms): 0.003
+Replanning time (ms): 0.000
+Approx. memory (bytes): 552
+Message: Safe path found.
+
+=== Test Case 3: Safety Margin ===
+Success: YES
+State path: 1 -> 3 -> 4 -> 6
+Transition path: 4 -> 5 -> 6
+Total path cost: 5.000
+Minimum safety distance: 1.802776
+Cumulative reliability: 3.000
+Bad states visited: 0
+Explored states: 4
+Planning time (ms): 0.004
+Replanning time (ms): 0.000
+Approx. memory (bytes): 672
+Message: Safe path found.
+
+=== Test Case 4A: Before Transition Failure ===
+Success: YES
+State path: 1 -> 2 -> 4
+Transition path: 1 -> 2
+Total path cost: 2.000
+Minimum safety distance: N/A
+Cumulative reliability: 2.000
+Bad states visited: 0
+Explored states: 3
+Planning time (ms): 0.003
+Replanning time (ms): 0.000
+Approx. memory (bytes): 464
+Message: Safe path found.
+
+=== Test Case 4B: After A->G Unavailable ===
+Success: YES
+State path: 1 -> 3 -> 4
+Transition path: 3 -> 4
+Total path cost: 3.000
+Minimum safety distance: N/A
+Cumulative reliability: 2.000
+Bad states visited: 0
+Explored states: 7
+Planning time (ms): 0.000
+Replanning time (ms): 0.001
+Approx. memory (bytes): 480
+Message: Safe path found.
+
+=== Test Case 5A: Original Goal ===
+Success: YES
+State path: 1 -> 2 -> 3 -> 4
+Transition path: 1 -> 2 -> 3
+Total path cost: 3.000
+Minimum safety distance: N/A
+Cumulative reliability: 3.000
+Bad states visited: 0
+Explored states: 4
+Planning time (ms): 0.003
+Replanning time (ms): 0.000
+Approx. memory (bytes): 584
+Message: Safe path found.
+
+=== Test Case 5B: Updated Goal ===
+Success: YES
+State path: 1 -> 5
+Transition path: 4
+Total path cost: 1.200
+Minimum safety distance: N/A
+Cumulative reliability: 1.000
+Bad states visited: 0
+Explored states: 2
+Planning time (ms): 0.000
+Replanning time (ms): 0.001
+Approx. memory (bytes): 504
+Message: Safe path found.
+
+=== Test Case 6A: Before Shortcut ===
+Success: YES
+State path: 1 -> 2 -> 3 -> 4
+Transition path: 1 -> 2 -> 3
+Total path cost: 6.000
+Minimum safety distance: N/A
+Cumulative reliability: 3.000
+Bad states visited: 0
+Explored states: 4
+Planning time (ms): 0.003
+Replanning time (ms): 0.000
+Approx. memory (bytes): 424
+Message: Safe path found.
+
+=== Test Case 6B: After Shortcut Addition ===
+Success: YES
+State path: 1 -> 4
+Transition path: 4
+Total path cost: 0.800
+Minimum safety distance: N/A
+Cumulative reliability: 1.000
+Bad states visited: 0
+Explored states: 5
+Planning time (ms): 0.000
+Replanning time (ms): 0.001
+Approx. memory (bytes): 480
+Message: Safe path found.

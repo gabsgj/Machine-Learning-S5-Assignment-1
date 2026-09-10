@@ -1,0 +1,358 @@
+{
+  "exp1_scalability": [
+    {
+      "size": "10x10 (100 states)",
+      "planner": "LPA*",
+      "success": true,
+      "cost": 18.0,
+      "clearance": 1.4142135623730951,
+      "explored": 68,
+      "time_ms": 17.979239999476704,
+      "memory_kb": 191.9375
+    },
+    {
+      "size": "10x10 (100 states)",
+      "planner": "D* Lite",
+      "success": true,
+      "cost": 18.0,
+      "clearance": 1.4142135623730951,
+      "explored": 68,
+      "time_ms": 17.187876999742002,
+      "memory_kb": 184.65625
+    },
+    {
+      "size": "10x10 (100 states)",
+      "planner": "A* (Scratch)",
+      "success": true,
+      "cost": 18.0,
+      "clearance": 1.4142135623730951,
+      "explored": 68,
+      "time_ms": 10.816960000738618,
+      "memory_kb": 180.09375
+    },
+    {
+      "size": "10x10 (100 states)",
+      "planner": "Parallel Search",
+      "success": true,
+      "cost": 18.0,
+      "clearance": 1.4142135623730951,
+      "explored": 68,
+      "time_ms": 12.445173000742216,
+      "memory_kb": 188.8798828125
+    },
+    {
+      "size": "20x20 (400 states)",
+      "planner": "LPA*",
+      "success": true,
+      "cost": 38.0,
+      "clearance": 1.0,
+      "explored": 215,
+      "time_ms": 62.014237000767025,
+      "memory_kb": 751.765625
+    },
+    {
+      "size": "20x20 (400 states)",
+      "planner": "D* Lite",
+      "success": true,
+      "cost": 38.0,
+      "clearance": 1.0,
+      "explored": 333,
+      "time_ms": 82.74875900133338,
+      "memory_kb": 776.2734375
+    },
+    {
+      "size": "20x20 (400 states)",
+      "planner": "A* (Scratch)",
+      "success": true,
+      "cost": 38.0,
+      "clearance": 1.0,
+      "explored": 215,
+      "time_ms": 41.84984899984556,
+      "memory_kb": 746.0546875
+    },
+    {
+      "size": "20x20 (400 states)",
+      "planner": "Parallel Search",
+      "success": true,
+      "cost": 38.0,
+      "clearance": 1.0,
+      "explored": 215,
+      "time_ms": 44.17225699944538,
+      "memory_kb": 754.0126953125
+    },
+    {
+      "size": "30x30 (900 states)",
+      "planner": "LPA*",
+      "success": true,
+      "cost": 58.0,
+      "clearance": 1.0,
+      "explored": 471,
+      "time_ms": 144.94243900117,
+      "memory_kb": 1664.921875
+    },
+    {
+      "size": "30x30 (900 states)",
+      "planner": "D* Lite",
+      "success": true,
+      "cost": 58.0,
+      "clearance": 1.0,
+      "explored": 611,
+      "time_ms": 173.99145900162694,
+      "memory_kb": 1713.21875
+    },
+    {
+      "size": "30x30 (900 states)",
+      "planner": "A* (Scratch)",
+      "success": true,
+      "cost": 58.0,
+      "clearance": 1.0,
+      "explored": 471,
+      "time_ms": 97.21338800045487,
+      "memory_kb": 1670.2578125
+    },
+    {
+      "size": "30x30 (900 states)",
+      "planner": "Parallel Search",
+      "success": true,
+      "cost": 58.0,
+      "clearance": 1.0,
+      "explored": 471,
+      "time_ms": 98.29969800011895,
+      "memory_kb": 1679.5361328125
+    },
+    {
+      "size": "40x40 (1600 states)",
+      "planner": "LPA*",
+      "success": true,
+      "cost": 78.0,
+      "clearance": 1.0,
+      "explored": 1082,
+      "time_ms": 314.20625199825736,
+      "memory_kb": 3046.5546875
+    },
+    {
+      "size": "40x40 (1600 states)",
+      "planner": "D* Lite",
+      "success": true,
+      "cost": 78.0,
+      "clearance": 1.0,
+      "explored": 1237,
+      "time_ms": 294.9016689999553,
+      "memory_kb": 3102.9765625
+    },
+    {
+      "size": "40x40 (1600 states)",
+      "planner": "A* (Scratch)",
+      "success": true,
+      "cost": 78.0,
+      "clearance": 1.0,
+      "explored": 1082,
+      "time_ms": 87.38764500049001,
+      "memory_kb": 3034.2421875
+    },
+    {
+      "size": "40x40 (1600 states)",
+      "planner": "Parallel Search",
+      "success": true,
+      "cost": 78.0,
+      "clearance": 1.0,
+      "explored": 1083,
+      "time_ms": 90.88841099946876,
+      "memory_kb": 3042.7470703125
+    },
+    {
+      "size": "50x50 (2500 states)",
+      "planner": "LPA*",
+      "success": true,
+      "cost": 100.0,
+      "clearance": 1.0,
+      "explored": 1592,
+      "time_ms": 216.73586799988698,
+      "memory_kb": 4521.609375
+    },
+    {
+      "size": "50x50 (2500 states)",
+      "planner": "D* Lite",
+      "success": true,
+      "cost": 100.0,
+      "clearance": 1.0,
+      "explored": 1585,
+      "time_ms": 215.878764000081,
+      "memory_kb": 4523.453125
+    },
+    {
+      "size": "50x50 (2500 states)",
+      "planner": "A* (Scratch)",
+      "success": true,
+      "cost": 100.0,
+      "clearance": 1.0,
+      "explored": 1592,
+      "time_ms": 159.0541720015608,
+      "memory_kb": 4711.828125
+    },
+    {
+      "size": "50x50 (2500 states)",
+      "planner": "Parallel Search",
+      "success": true,
+      "cost": 100.0,
+      "clearance": 1.0,
+      "explored": 996,
+      "time_ms": 136.83407499956957,
+      "memory_kb": 4416.107421875
+    }
+  ],
+  "exp2_replanning": [
+    {
+      "event": "1 Edge Disabled (On Path)",
+      "t_astar": 28.11592199941515,
+      "t_lpa": 43.834398999024415,
+      "t_dstar": 0.5554489998758072,
+      "speedup_lpa": 0.6414122844490443,
+      "speedup_dstar": 50.61836821328617,
+      "nodes_lpa": 1034,
+      "nodes_astar": 523
+    },
+    {
+      "event": "3 Edges Disabled",
+      "t_astar": 28.793987999961246,
+      "t_lpa": 42.20883099878847,
+      "t_dstar": 0.6012169997120509,
+      "speedup_lpa": 0.6821792340277731,
+      "speedup_dstar": 47.892837384425164,
+      "nodes_lpa": 1034,
+      "nodes_astar": 523
+    },
+    {
+      "event": "5 Edges Disabled",
+      "t_astar": 27.9695540011744,
+      "t_lpa": 43.23402999943937,
+      "t_dstar": 1.008349998301128,
+      "speedup_lpa": 0.6469337695684878,
+      "speedup_dstar": 27.73794223067151,
+      "nodes_lpa": 1034,
+      "nodes_astar": 523
+    },
+    {
+      "event": "Dynamic Bad State Inserted",
+      "t_astar": 29.56706800068787,
+      "t_lpa": 17.16871999997238,
+      "t_dstar": 27.353309000318404,
+      "speedup_lpa": 1.7221474868677125,
+      "speedup_dstar": 1.0809320364254174,
+      "nodes_lpa": 295,
+      "nodes_astar": 522
+    },
+    {
+      "event": "Dynamic Shortcut Inserted",
+      "t_astar": 16.10000199980277,
+      "t_lpa": 2.6309429995308165,
+      "t_dstar": 2.9356699997151736,
+      "speedup_lpa": 6.11947959445489,
+      "speedup_dstar": 5.484268327627027,
+      "nodes_lpa": 65,
+      "nodes_astar": 118
+    }
+  ],
+  "exp3_dimension": [
+    {
+      "dim": 2,
+      "cost": 38.0,
+      "explored": 232,
+      "time_ms": 29.10342699942703,
+      "memory_kb": 752.640625
+    },
+    {
+      "dim": 4,
+      "cost": 38.091626068054374,
+      "explored": 231,
+      "time_ms": 28.374847999657504,
+      "memory_kb": 755.3125
+    },
+    {
+      "dim": 8,
+      "cost": 38.53761692057962,
+      "explored": 235,
+      "time_ms": 28.872054999737884,
+      "memory_kb": 771.1953125
+    },
+    {
+      "dim": 16,
+      "cost": 39.01075040404648,
+      "explored": 239,
+      "time_ms": 28.85738700024376,
+      "memory_kb": 802.4921875
+    },
+    {
+      "dim": 32,
+      "cost": 40.468800226860864,
+      "explored": 265,
+      "time_ms": 30.94018500087259,
+      "memory_kb": 864.828125
+    },
+    {
+      "dim": 64,
+      "cost": 42.88749309395258,
+      "explored": 296,
+      "time_ms": 33.56598800019128,
+      "memory_kb": 1000.6796875
+    },
+    {
+      "dim": 128,
+      "cost": 47.57705739997727,
+      "explored": 362,
+      "time_ms": 37.77424699910625,
+      "memory_kb": 1273.0703125
+    }
+  ],
+  "exp4_pareto": [
+    {
+      "margin": 0.0,
+      "cost": 38.0,
+      "clearance": 1.0,
+      "score": 967.5387644440051,
+      "time_ms": 35.804948000077275
+    },
+    {
+      "margin": 0.5,
+      "cost": 38.0,
+      "clearance": 1.0,
+      "score": 967.5387644440051,
+      "time_ms": 34.69143500115024
+    },
+    {
+      "margin": 1.0,
+      "cost": 38.0,
+      "clearance": 1.0,
+      "score": 967.5387644440051,
+      "time_ms": 34.303397000257974
+    },
+    {
+      "margin": 1.5,
+      "cost": 38.0,
+      "clearance": 1.0,
+      "score": 967.4084904637341,
+      "time_ms": 32.25213000041549
+    },
+    {
+      "margin": 2.0,
+      "cost": 44.0,
+      "clearance": 2.0,
+      "score": 966.3356112995889,
+      "time_ms": 23.56462100033241
+    },
+    {
+      "margin": 2.5,
+      "cost": 50.0,
+      "clearance": 2.0,
+      "score": 960.2857019545118,
+      "time_ms": 28.606032999960007
+    },
+    {
+      "margin": 3.0,
+      "cost": 50.0,
+      "clearance": 2.0,
+      "score": 960.2857019545118,
+      "time_ms": 36.30088300087664
+    }
+  ]
+}

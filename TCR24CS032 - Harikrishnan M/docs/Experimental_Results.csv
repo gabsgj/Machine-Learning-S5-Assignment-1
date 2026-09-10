@@ -1,0 +1,7 @@
+Test_Case,Goal_Success,Bad_States_Visited,Total_Path_Cost,Min_Safety_Distance,Explored_States,Planning_Time_ms,Memory_Usage_KB,Replanning_Time_ms
+Test_1_Reachability,PASS,0,2.0,1000.0,3,0.12,120,N/A
+Test_2_Bad_State_Avoidance,PASS,0,3.0,1.41,4,0.18,128,N/A
+Test_3_Safety_Margin,PASS,0,3.0,2.50,4,0.22,132,N/A
+Test_4_Dynamic_Transition,PASS,0,4.0,1000.0,4,0.25,135,0.08
+Test_5_Goal_Update,PASS,0,2.0,1000.0,3,0.15,124,0.05
+Test_6_Transition_Addition,PASS,0,0.5,1000.0,3,0.14,122,0.04

@@ -1,0 +1,7 @@
+TestCase,Success,BadStatesVisited,TotalCost,MinimumSafetyDistance,ExploredStates,PlanningTimeMs,ReplanningTimeMs,MemoryUsageKB
+1,1,0,6,1e+09,6,0.044,0,5352
+2,1,0,9,1.41421,5,0.035,0,5352
+3,1,0,9,1.28062,6,0.0392,0,5352
+4,1,0,4,1e+09,3,0,0.0191,5352
+5,1,0,6,1e+09,3,0.024,0,5352
+6,1,0,1,1e+09,6,0,0.0328,5352

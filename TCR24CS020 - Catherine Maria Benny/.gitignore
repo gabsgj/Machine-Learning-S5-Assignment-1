@@ -1,0 +1,7 @@
+*.o
+*.obj
+*.exe
+safepath
+test_runner
+__pycache__/
+build/

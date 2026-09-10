@@ -1,0 +1,28 @@
+# Build and binary artifacts
+build/
+bin/
+*.o
+*.a
+*.so
+*.dylib
+*.out
+
+# Playwright and MCP artifacts
+.playwright-mcp/
+ui_*.png
+*.playwright*
+
+# Reference folder
+JUST A REF/
+
+# OS artifacts
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+
+# IDE and temporary files
+.vscode/
+.idea/
+*.swp
+*~

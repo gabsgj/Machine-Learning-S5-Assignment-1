@@ -1,0 +1,23 @@
+{
+  "testName": "Bonus: Semantic Knowledge Graph",
+  "description": "High-dimensional concept space navigation with obstacle concept bypass.",
+  "initialState": 1,
+  "goalState": 6,
+  "badStates": [3],
+  "states": [
+    {"id": 1, "embedding": [0.9, 0.1, 0.0, 0.2], "label": "Concept_Query"},
+    {"id": 2, "embedding": [0.7, 0.3, 0.1, 0.2], "label": "Entity_Resolver"},
+    {"id": 3, "embedding": [0.1, 0.8, 0.9, 0.4], "label": "Malicious_Entity (BAD)"},
+    {"id": 4, "embedding": [0.6, 0.2, 0.2, 0.7], "label": "Knowledge_Fusion"},
+    {"id": 5, "embedding": [0.5, 0.1, 0.3, 0.8], "label": "Verified_Fact"},
+    {"id": 6, "embedding": [0.2, 0.1, 0.4, 0.9], "label": "Goal_Insight"}
+  ],
+  "transitions": [
+    {"id": 1, "from": 1, "to": 2, "cost": 1.2, "safety": 0.9, "reliability": 0.98, "available": true},
+    {"id": 2, "from": 2, "to": 3, "cost": 0.8, "safety": 0.1, "reliability": 0.50, "available": true},
+    {"id": 3, "from": 3, "to": 6, "cost": 0.9, "safety": 0.1, "reliability": 0.50, "available": true},
+    {"id": 4, "from": 2, "to": 4, "cost": 1.4, "safety": 0.95, "reliability": 0.99, "available": true},
+    {"id": 5, "from": 4, "to": 5, "cost": 1.1, "safety": 0.99, "reliability": 0.99, "available": true},
+    {"id": 6, "from": 5, "to": 6, "cost": 1.0, "safety": 0.99, "reliability": 0.99, "available": true}
+  ]
+}

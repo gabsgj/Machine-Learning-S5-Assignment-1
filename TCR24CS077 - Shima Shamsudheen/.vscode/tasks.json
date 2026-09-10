@@ -1,0 +1,21 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build safe_planner_test",
+      "type": "shell",
+      "command": "g++",
+      "args": ["-std=c++17", "-O2", "-Wall", "-Iinclude", "src/LPAStarPlanner.cpp", "src/main.cpp", "-o", "safe_planner_test.exe"],
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": ["$gcc"]
+    },
+    {
+      "label": "Build experiment",
+      "type": "shell",
+      "command": "g++",
+      "args": ["-std=c++17", "-O2", "-Wall", "-Iinclude", "src/LPAStarPlanner.cpp", "src/experiment.cpp", "-o", "experiment.exe"],
+      "group": "build",
+      "problemMatcher": ["$gcc"]
+    }
+  ]
+}

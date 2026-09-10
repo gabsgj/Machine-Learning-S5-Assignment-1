@@ -1,0 +1,2046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Safe Semantic Planner</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f6fb;
+    color: #182033;
+}
+
+.app {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ================= SIDEBAR ================= */
+
+.sidebar {
+    width: 230px;
+    background: #111827;
+    color: white;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    padding: 20px 14px;
+}
+
+.brand {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.logo {
+    width: 42px;
+    height: 42px;
+    border-radius: 11px;
+    background: #5146e5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 21px;
+}
+
+.brand h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.brand p {
+    margin: 4px 0 0;
+    font-size: 11px;
+    color: #9ca3af;
+}
+
+.nav {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.nav-item {
+    padding: 13px;
+    border-radius: 9px;
+    color: #b8c0d0;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.nav-item:hover,
+.nav-item.active {
+    background: #3d358e;
+    color: white;
+}
+
+.algorithm {
+    position: absolute;
+    bottom: 25px;
+    left: 14px;
+    right: 14px;
+    background: #202b3c;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.algorithm small {
+    color: #8d9cff;
+}
+
+.algorithm h2 {
+    margin: 6px 0;
+}
+
+.algorithm p {
+    margin: 0;
+    font-size: 11px;
+    color: #9ca3af;
+}
+
+/* ================= MAIN ================= */
+
+.main {
+    margin-left: 230px;
+    width: calc(100% - 230px);
+    padding: 32px 42px 60px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 29px;
+}
+
+.subtitle {
+    color: #68738a;
+    margin-top: 7px;
+}
+
+.status {
+    background: white;
+    padding: 10px 15px;
+    border-radius: 20px;
+    border: 1px solid #e1e5ed;
+    font-size: 13px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    display: inline-block;
+    border-radius: 50%;
+    background: #16a34a;
+    margin-right: 7px;
+}
+
+/* ================= CARD ================= */
+
+.card {
+    background: white;
+    border: 1px solid #e1e6ef;
+    border-radius: 13px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.03);
+}
+
+.section-title {
+    font-size: 19px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.section-subtitle {
+    font-size: 13px;
+    color: #7b8497;
+    margin-bottom: 18px;
+}
+
+/* ================= CONFIG ================= */
+
+.config-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.2fr;
+    gap: 15px;
+}
+
+label {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+select,
+input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d8deea;
+    border-radius: 8px;
+    font-size: 14px;
+    background: white;
+}
+
+select:focus,
+input:focus {
+    outline: none;
+    border-color: #5146e5;
+}
+
+.badge {
+    display: inline-flex;
+    width: 31px;
+    height: 31px;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    background: #dcfce7;
+    color: #15803d;
+    font-weight: bold;
+}
+
+.goal-badge {
+    background: #ede9fe;
+    color: #7c3aed;
+}
+
+/* ================= OBJECTIVES ================= */
+
+.objectives {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 12px;
+}
+
+.objective {
+    border: 1px solid #e0e5ee;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.objective strong {
+    display: block;
+    font-size: 13px;
+}
+
+.objective span {
+    color: #8a93a5;
+    font-size: 11px;
+}
+
+/* ================= STATE SPACE ================= */
+
+.state-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.buttons {
+    display: flex;
+    gap: 8px;
+}
+
+button {
+    border: 1px solid #d8deea;
+    background: white;
+    border-radius: 8px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #f1f3f7;
+}
+
+.primary {
+    background: #5146e5;
+    color: white;
+    border-color: #5146e5;
+}
+
+.primary:hover {
+    background: #4338ca;
+}
+
+/* ================= GRAPH ================= */
+
+.graph {
+    height: 330px;
+    margin-top: 18px;
+    border: 1px solid #dfe4ed;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+
+    background:
+        linear-gradient(#edf0f6 1px, transparent 1px),
+        linear-gradient(90deg,#edf0f6 1px,transparent 1px);
+
+    background-size: 34px 34px;
+}
+
+.node {
+    width: 58px;
+    height: 58px;
+    position: absolute;
+    border-radius: 50%;
+    background: white;
+    border: 3px solid #5146e5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    z-index: 2;
+}
+
+.node-start {
+    left: 10%;
+    top: 42%;
+    border-color: #16a34a;
+    color: #16a34a;
+}
+
+.node-a {
+    left: 40%;
+    top: 20%;
+}
+
+.node-x {
+    left: 40%;
+    top: 67%;
+    border-color: #dc2626;
+    color: #dc2626;
+}
+
+.node-goal {
+    right: 10%;
+    top: 42%;
+    border-color: #7c3aed;
+    color: #7c3aed;
+}
+
+.edge {
+    position: absolute;
+    height: 3px;
+    background: #9aa4b8;
+    transform-origin: left center;
+}
+
+.edge-1 {
+    left: 14%;
+    top: 48%;
+    width: 30%;
+    transform: rotate(-25deg);
+}
+
+.edge-2 {
+    left: 14%;
+    top: 52%;
+    width: 30%;
+    transform: rotate(25deg);
+}
+
+.edge-3 {
+    left: 45%;
+    top: 49%;
+    width: 38%;
+}
+
+/* ================= RUN ================= */
+
+.run-button {
+    width: 100%;
+    margin-top: 18px;
+    padding: 15px;
+    font-size: 15px;
+}
+
+/* ================= RESULTS ================= */
+
+.result {
+    display: none;
+}
+
+.result.success {
+    border-left: 5px solid #16a34a;
+}
+
+.result.error {
+    border-left: 5px solid #dc2626;
+}
+
+.result h2 {
+    margin-top: 0;
+}
+
+.metrics {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.metric {
+    background: #f6f7fa;
+    padding: 15px;
+    border-radius: 9px;
+}
+
+.metric-title {
+    color: #7b8497;
+    font-size: 12px;
+}
+
+.metric-value {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 6px;
+}
+
+/* ================= MODAL ================= */
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15,23,42,.55);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-box {
+    background: white;
+    width: 420px;
+    max-width: 90%;
+    border-radius: 13px;
+    padding: 25px;
+}
+
+.modal-box h2 {
+    margin-top: 0;
+}
+
+.form-group {
+    margin-top: 15px;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+/* ================= STATE LIST ================= */
+
+.state-list,
+.transition-list {
+    margin-top: 15px;
+}
+
+.list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f7f8fb;
+    padding: 10px 12px;
+    border-radius: 7px;
+    margin-bottom: 7px;
+    font-size: 13px;
+}
+
+.remove {
+    color: #dc2626;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* ================= FOOTER ================= */
+
+.footer {
+    text-align: center;
+    margin-top: 30px;
+    color: #8b94a6;
+    font-size: 12px;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:900px) {
+
+    .sidebar {
+        display: none;
+    }
+
+    .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 20px;
+    }
+
+    .config-grid,
+    .objectives,
+    .metrics {
+        grid-template-columns: 1fr;
+    }
+
+    .header {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="app">
+
+<!-- ================= SIDEBAR ================= -->
+
+<aside class="sidebar">
+
+    <div class="brand">
+
+        <div class="logo">S</div>
+
+        <div>
+            <h3>Safe Planner</h3>
+            <p>Semantic Path Planning</p>
+        </div>
+
+    </div>
+
+
+    <div class="nav">
+
+        <div class="nav-item active">
+            ⌂ &nbsp; Planner
+        </div>
+
+        <div class="nav-item">
+            ◇ &nbsp; Graph View
+        </div>
+
+        <div class="nav-item">
+            ✓ &nbsp; Results
+        </div>
+
+        <div class="nav-item">
+            ↻ &nbsp; Dynamic Environment
+        </div>
+
+        <div class="nav-item">
+            ▣ &nbsp; Test Cases
+        </div>
+
+        <div class="nav-item">
+            ⓘ &nbsp; About
+        </div>
+
+    </div>
+
+
+    <div class="algorithm">
+
+        <small>ALGORITHM</small>
+
+        <h2>LPA*</h2>
+
+        <p>Incremental path planning</p>
+
+    </div>
+
+</aside>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="main">
+
+
+    <div class="header">
+
+        <div>
+
+            <h1>
+                Safe Semantic Planner
+            </h1>
+
+            <div class="subtitle">
+                Find the safest and most efficient path
+                through a finite state space.
+            </div>
+
+        </div>
+
+
+        <div class="status">
+
+            <span class="dot"></span>
+
+            System Ready
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= CONFIGURATION ================= -->
+
+    <div class="card">
+
+        <div class="section-title">
+            Planning Configuration
+        </div>
+
+        <div class="section-subtitle">
+            Define the initial state, goal and unsafe states.
+        </div>
+
+
+        <div class="config-grid">
+
+
+            <div>
+
+                <label>
+                    Initial State
+                </label>
+
+                <div style="display:flex;align-items:center;">
+
+                    <span class="badge">
+                        S
+                    </span>
+
+                    <select id="initialState">
+                        <option value="1">
+                            S — Start
+                        </option>
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Goal State
+                </label>
+
+                <div style="display:flex;align-items:center;">
+
+                    <span class="badge goal-badge">
+                        G
+                    </span>
+
+                    <select id="goalState">
+
+                        <option value="4">
+                            G — Goal
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Bad States
+                </label>
+
+                <input
+                    id="badStates"
+                    value="3"
+                    placeholder="Example: 3,5"
+                >
+
+                <div style="font-size:11px;color:#7b8497;margin-top:6px;">
+                    States that must never be visited.
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= OBJECTIVES ================= -->
+
+    <div class="card">
+
+        <div class="section-title">
+            Optimization Objectives
+        </div>
+
+        <div class="section-subtitle">
+            Configure how the planner evaluates paths.
+        </div>
+
+
+        <div class="objectives">
+
+            <div class="objective">
+                <strong>🎯 Goal Completion</strong>
+                <span>Reach target state</span>
+            </div>
+
+            <div class="objective">
+                <strong>💰 Path Cost</strong>
+                <span>Minimize cost</span>
+            </div>
+
+            <div class="objective">
+                <strong>🛡 Safety Distance</strong>
+                <span>Avoid bad states</span>
+            </div>
+
+            <div class="objective">
+                <strong>✓ Reliability</strong>
+                <span>Reliable transitions</span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= STATE SPACE ================= -->
+
+    <div class="card">
+
+        <div class="state-header">
+
+            <div>
+
+                <div class="section-title">
+                    State Space
+                </div>
+
+                <div class="section-subtitle">
+                    Create and manage states and transitions.
+                </div>
+
+            </div>
+
+
+            <div class="buttons">
+
+                <button id="addStateBtn">
+                    + Add State
+                </button>
+
+                <button id="addTransitionBtn">
+                    + Add Transition
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- GRAPH -->
+
+        <div class="graph" id="graph">
+
+            <div class="edge edge-1"></div>
+            <div class="edge edge-2"></div>
+            <div class="edge edge-3"></div>
+
+
+            <div
+                class="node node-start"
+                id="node1"
+            >
+                S
+            </div>
+
+
+            <div
+                class="node node-a"
+                id="node2"
+            >
+                A
+            </div>
+
+
+            <div
+                class="node node-x"
+                id="node3"
+            >
+                X
+            </div>
+
+
+            <div
+                class="node node-goal"
+                id="node4"
+            >
+                G
+            </div>
+
+        </div>
+
+
+        <!-- RUN -->
+
+        <button
+            id="runPlanner"
+            class="primary run-button"
+        >
+            ▶ Run Planner
+        </button>
+
+    </div>
+
+
+    <!-- ================= RESULT ================= -->
+
+    <div
+        id="result"
+        class="card result"
+    >
+    </div>
+
+
+    <!-- ================= CREATED STATES ================= -->
+
+    <div
+        class="card"
+        id="stateListCard"
+        style="display:none;"
+    >
+
+        <div class="section-title">
+            Created States
+        </div>
+
+        <div
+            id="stateList"
+            class="state-list"
+        ></div>
+
+    </div>
+
+
+    <!-- ================= TRANSITIONS ================= -->
+
+    <div
+        class="card"
+        id="transitionListCard"
+        style="display:none;"
+    >
+
+        <div class="section-title">
+            Created Transitions
+        </div>
+
+        <div
+            id="transitionList"
+            class="transition-list"
+        ></div>
+
+    </div>
+
+
+    <div class="footer">
+
+        Safe Semantic Planner • LPA* Incremental Planning
+
+    </div>
+
+</main>
+
+</div>
+
+
+<!-- ================= ADD STATE MODAL ================= -->
+
+<div
+    class="modal"
+    id="stateModal"
+>
+
+    <div class="modal-box">
+
+        <h2>
+            Add New State
+        </h2>
+
+        <div class="section-subtitle">
+            Create a new state in the planning environment.
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                State ID
+            </label>
+
+            <input
+                id="newStateId"
+                type="number"
+                placeholder="Example: 5"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                State Name
+            </label>
+
+            <input
+                id="newStateName"
+                type="text"
+                placeholder="Example: Room 5"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                State Type
+            </label>
+
+            <select id="newStateType">
+
+                <option value="normal">
+                    Normal
+                </option>
+
+                <option value="bad">
+                    Bad / Unsafe
+                </option>
+
+                <option value="goal">
+                    Goal
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="modal-buttons">
+
+            <button id="cancelState">
+                Cancel
+            </button>
+
+            <button
+                id="saveState"
+                class="primary"
+            >
+                Add State
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= ADD TRANSITION MODAL ================= -->
+
+<div
+    class="modal"
+    id="transitionModal"
+>
+
+    <div class="modal-box">
+
+        <h2>
+            Add Transition
+        </h2>
+
+        <div class="section-subtitle">
+            Define a connection between two states.
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                From State
+            </label>
+
+            <input
+                id="fromState"
+                type="number"
+                placeholder="Example: 1"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                To State
+            </label>
+
+            <input
+                id="toState"
+                type="number"
+                placeholder="Example: 2"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Cost
+            </label>
+
+            <input
+                id="transitionCost"
+                type="number"
+                value="1"
+                min="0"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Safety Score
+            </label>
+
+            <input
+                id="transitionSafety"
+                type="number"
+                value="0.9"
+                min="0"
+                max="1"
+                step="0.1"
+            >
+
+        </div>
+
+
+        <div class="modal-buttons">
+
+            <button id="cancelTransition">
+                Cancel
+            </button>
+
+            <button
+                id="saveTransition"
+                class="primary"
+            >
+                Add Transition
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   SAFE SEMANTIC PLANNER FRONTEND
+   ========================================================= */
+
+
+/*
+ * Backend endpoint
+ *
+ * Your C++ server currently listens on localhost:8080.
+ */
+
+const SERVER_URL =
+    "http://localhost:8080/plan";
+
+
+/* =========================================================
+   DATA
+   ========================================================= */
+
+let states = [
+    {
+        id: 1,
+        name: "Start",
+        type: "start"
+    },
+
+    {
+        id: 2,
+        name: "State A",
+        type: "normal"
+    },
+
+    {
+        id: 3,
+        name: "Unsafe",
+        type: "bad"
+    },
+
+    {
+        id: 4,
+        name: "Goal",
+        type: "goal"
+    }
+];
+
+
+let transitions = [
+    {
+        from: 1,
+        to: 2,
+        cost: 2,
+        safety: 0.9
+    },
+
+    {
+        from: 2,
+        to: 4,
+        cost: 5,
+        safety: 0.9
+    },
+
+    {
+        from: 1,
+        to: 3,
+        cost: 1,
+        safety: 0.1
+    }
+];
+
+
+/* =========================================================
+   ELEMENTS
+   ========================================================= */
+
+const stateModal =
+    document.getElementById("stateModal");
+
+const transitionModal =
+    document.getElementById("transitionModal");
+
+
+/* =========================================================
+   OPEN ADD STATE
+   ========================================================= */
+
+document
+    .getElementById("addStateBtn")
+    .addEventListener("click", function () {
+
+        document
+            .getElementById("newStateId")
+            .value = "";
+
+        document
+            .getElementById("newStateName")
+            .value = "";
+
+        document
+            .getElementById("newStateType")
+            .value = "normal";
+
+        stateModal.classList.add("show");
+
+    });
+
+
+/* =========================================================
+   CANCEL STATE
+   ========================================================= */
+
+document
+    .getElementById("cancelState")
+    .addEventListener("click", function () {
+
+        stateModal.classList.remove("show");
+
+    });
+
+
+/* =========================================================
+   SAVE STATE
+   ========================================================= */
+
+document
+    .getElementById("saveState")
+    .addEventListener("click", function () {
+
+        const id =
+            Number(
+                document
+                    .getElementById("newStateId")
+                    .value
+            );
+
+        const name =
+            document
+                .getElementById("newStateName")
+                .value
+                .trim();
+
+        const type =
+            document
+                .getElementById("newStateType")
+                .value;
+
+
+        if (!id || !name) {
+
+            alert(
+                "Please enter both State ID and State Name."
+            );
+
+            return;
+        }
+
+
+        if (
+            states.some(
+                state => state.id === id
+            )
+        ) {
+
+            alert(
+                "A state with this ID already exists."
+            );
+
+            return;
+        }
+
+
+        states.push({
+            id: id,
+            name: name,
+            type: type
+        });
+
+
+        addStateToDropdowns(
+            id,
+            name,
+            type
+        );
+
+
+        createGraphNode(
+            id,
+            name,
+            type
+        );
+
+
+        updateStateList();
+
+
+        stateModal.classList.remove("show");
+
+    });
+
+
+/* =========================================================
+   ADD STATE TO DROPDOWNS
+   ========================================================= */
+
+function addStateToDropdowns(
+    id,
+    name,
+    type
+) {
+
+    const initial =
+        document.getElementById(
+            "initialState"
+        );
+
+    const goal =
+        document.getElementById(
+            "goalState"
+        );
+
+
+    const option1 =
+        document.createElement("option");
+
+    option1.value = id;
+
+    option1.textContent =
+        `${id} — ${name}`;
+
+    initial.appendChild(option1);
+
+
+    const option2 =
+        document.createElement("option");
+
+    option2.value = id;
+
+    option2.textContent =
+        `${id} — ${name}`;
+
+    goal.appendChild(option2);
+
+
+    if (type === "bad") {
+
+        const bad =
+            document.getElementById(
+                "badStates"
+            );
+
+        if (bad.value.trim() === "") {
+
+            bad.value = id;
+
+        } else {
+
+            bad.value += "," + id;
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   CREATE GRAPH NODE
+   ========================================================= */
+
+function createGraphNode(
+    id,
+    name,
+    type
+) {
+
+    const graph =
+        document.getElementById("graph");
+
+
+    const node =
+        document.createElement("div");
+
+
+    node.className = "node";
+
+
+    node.id =
+        "node" + id;
+
+
+    node.textContent =
+        name.charAt(0).toUpperCase();
+
+
+    /*
+     * Position newly-created nodes
+     */
+
+    const count =
+        states.length;
+
+
+    const left =
+        10 + ((count * 17) % 75);
+
+    const top =
+        10 + ((count * 23) % 70);
+
+
+    node.style.left =
+        left + "%";
+
+    node.style.top =
+        top + "%";
+
+
+    if (type === "bad") {
+
+        node.style.borderColor =
+            "#dc2626";
+
+        node.style.color =
+            "#dc2626";
+
+    }
+
+    else if (type === "goal") {
+
+        node.style.borderColor =
+            "#7c3aed";
+
+        node.style.color =
+            "#7c3aed";
+
+    }
+
+    else {
+
+        node.style.borderColor =
+            "#5146e5";
+
+        node.style.color =
+            "#5146e5";
+
+    }
+
+
+    graph.appendChild(node);
+
+}
+
+
+/* =========================================================
+   UPDATE STATE LIST
+   ========================================================= */
+
+function updateStateList() {
+
+    const card =
+        document.getElementById(
+            "stateListCard"
+        );
+
+    const list =
+        document.getElementById(
+            "stateList"
+        );
+
+
+    card.style.display =
+        "block";
+
+
+    list.innerHTML = "";
+
+
+    states.forEach(function(state) {
+
+        const item =
+            document.createElement("div");
+
+        item.className =
+            "list-item";
+
+
+        item.innerHTML = `
+
+            <span>
+                <strong>
+                    ${state.id}
+                </strong>
+                —
+                ${state.name}
+                (${state.type})
+            </span>
+
+        `;
+
+
+        list.appendChild(item);
+
+    });
+
+}
+
+
+/* =========================================================
+   OPEN ADD TRANSITION
+   ========================================================= */
+
+document
+    .getElementById("addTransitionBtn")
+    .addEventListener("click", function () {
+
+        document
+            .getElementById("fromState")
+            .value = "";
+
+        document
+            .getElementById("toState")
+            .value = "";
+
+        document
+            .getElementById("transitionCost")
+            .value = "1";
+
+        document
+            .getElementById("transitionSafety")
+            .value = "0.9";
+
+        transitionModal.classList.add("show");
+
+    });
+
+
+/* =========================================================
+   CANCEL TRANSITION
+   ========================================================= */
+
+document
+    .getElementById("cancelTransition")
+    .addEventListener("click", function () {
+
+        transitionModal.classList.remove("show");
+
+    });
+
+
+/* =========================================================
+   SAVE TRANSITION
+   ========================================================= */
+
+document
+    .getElementById("saveTransition")
+    .addEventListener("click", function () {
+
+        const from =
+            Number(
+                document
+                    .getElementById("fromState")
+                    .value
+            );
+
+        const to =
+            Number(
+                document
+                    .getElementById("toState")
+                    .value
+            );
+
+        const cost =
+            Number(
+                document
+                    .getElementById("transitionCost")
+                    .value
+            );
+
+        const safety =
+            Number(
+                document
+                    .getElementById("transitionSafety")
+                    .value
+            );
+
+
+        if (!from || !to) {
+
+            alert(
+                "Please enter From State and To State."
+            );
+
+            return;
+        }
+
+
+        if (
+            !states.some(
+                state => state.id === from
+            )
+        ) {
+
+            alert(
+                "From State does not exist."
+            );
+
+            return;
+        }
+
+
+        if (
+            !states.some(
+                state => state.id === to
+            )
+        ) {
+
+            alert(
+                "To State does not exist."
+            );
+
+            return;
+        }
+
+
+        transitions.push({
+            from: from,
+            to: to,
+            cost: cost,
+            safety: safety
+        });
+
+
+        updateTransitionList();
+
+
+        transitionModal.classList.remove("show");
+
+
+        alert(
+            `Transition ${from} → ${to} added successfully.`
+        );
+
+    });
+
+
+/* =========================================================
+   UPDATE TRANSITION LIST
+   ========================================================= */
+
+function updateTransitionList() {
+
+    const card =
+        document.getElementById(
+            "transitionListCard"
+        );
+
+    const list =
+        document.getElementById(
+            "transitionList"
+        );
+
+
+    card.style.display =
+        "block";
+
+
+    list.innerHTML = "";
+
+
+    transitions.forEach(function(t) {
+
+        const item =
+            document.createElement("div");
+
+        item.className =
+            "list-item";
+
+
+        item.innerHTML = `
+
+            <span>
+
+                <strong>
+                    ${t.from} → ${t.to}
+                </strong>
+
+                &nbsp;
+
+                Cost: ${t.cost}
+
+                &nbsp;
+
+                Safety: ${t.safety}
+
+            </span>
+
+        `;
+
+
+        list.appendChild(item);
+
+    });
+
+}
+
+
+/* =========================================================
+   RUN PLANNER
+   ========================================================= */
+
+document
+    .getElementById("runPlanner")
+    .addEventListener(
+        "click",
+        runPlanner
+    );
+
+
+async function runPlanner() {
+
+    const result =
+        document.getElementById(
+            "result"
+        );
+
+    const button =
+        document.getElementById(
+            "runPlanner"
+        );
+
+
+    result.style.display =
+        "block";
+
+
+    result.className =
+        "card result";
+
+
+    result.innerHTML = `
+
+        <h2>
+            ⏳ Running Planner...
+        </h2>
+
+        <p>
+            Connecting to the LPA* planning server.
+        </p>
+
+    `;
+
+
+    button.disabled =
+        true;
+
+
+    button.textContent =
+        "Planning...";
+
+
+    try {
+
+        console.log(
+            "Connecting to:",
+            SERVER_URL
+        );
+
+
+        const response =
+            await fetch(
+                SERVER_URL
+            );
+
+
+        console.log(
+            "Server status:",
+            response.status
+        );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "HTTP " +
+                response.status
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "Planner response:",
+            data
+        );
+
+
+        if (!data.success) {
+
+            result.className =
+                "card result error";
+
+
+            result.innerHTML = `
+
+                <h2>
+                    ❌ No Safe Path Found
+                </h2>
+
+                <p>
+                    The planner could not find
+                    a safe path.
+                </p>
+
+            `;
+
+
+            return;
+
+        }
+
+
+        let path = "Unknown";
+
+
+        if (
+            Array.isArray(data.path)
+        ) {
+
+            path =
+                data.path.join(" → ");
+
+        }
+
+        else if (
+            data.path
+        ) {
+
+            path =
+                data.path;
+
+        }
+
+
+        let safety =
+            Number(data.safety);
+
+
+        if (!isNaN(safety)) {
+
+            if (safety <= 1) {
+
+                safety *= 100;
+
+            }
+
+            safety =
+                safety.toFixed(0) + "%";
+
+        }
+
+        else {
+
+            safety =
+                "N/A";
+
+        }
+
+
+        const cost =
+            data.cost !== undefined
+                ? data.cost
+                : "N/A";
+
+
+        const count =
+            Array.isArray(data.path)
+                ? data.path.length
+                : "N/A";
+
+
+        result.className =
+            "card result success";
+
+
+        result.innerHTML = `
+
+            <h2>
+                ✓ Safe Path Found
+            </h2>
+
+            <p>
+
+                <strong>
+                    State Path:
+                </strong>
+
+                ${path}
+
+            </p>
+
+
+            <div class="metrics">
+
+
+                <div class="metric">
+
+                    <div class="metric-title">
+                        Total Cost
+                    </div>
+
+                    <div class="metric-value">
+                        ${cost}
+                    </div>
+
+                </div>
+
+
+                <div class="metric">
+
+                    <div class="metric-title">
+                        Minimum Safety
+                    </div>
+
+                    <div class="metric-value">
+                        ${safety}
+                    </div>
+
+                </div>
+
+
+                <div class="metric">
+
+                    <div class="metric-title">
+                        States in Path
+                    </div>
+
+                    <div class="metric-value">
+                        ${count}
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        `;
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Planner error:",
+            error
+        );
+
+
+        result.className =
+            "card result error";
+
+
+        result.innerHTML = `
+
+            <h2>
+                ⚠ Cannot Connect to Planner
+            </h2>
+
+            <p>
+                Make sure
+                <strong>server.exe</strong>
+                is running.
+            </p>
+
+            <p>
+                Server:
+                <strong>
+                    http://localhost:8080
+                </strong>
+            </p>
+
+            <p style="font-size:12px;color:#777;">
+                ${error.message}
+            </p>
+
+        `;
+
+    }
+
+    finally {
+
+        button.disabled =
+            false;
+
+        button.textContent =
+            "▶ Run Planner";
+
+    }
+
+}
+
+
+/* =========================================================
+   CLOSE MODALS WHEN CLICKING OUTSIDE
+   ========================================================= */
+
+stateModal.addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            event.target === stateModal
+        ) {
+
+            stateModal.classList.remove(
+                "show"
+            );
+
+        }
+
+    }
+);
+
+
+transitionModal.addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            event.target === transitionModal
+        ) {
+
+            transitionModal.classList.remove(
+                "show"
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   INITIAL DISPLAY
+   ========================================================= */
+
+updateStateList();
+
+updateTransitionList();
+
+</script>
+
+</body>
+</html>

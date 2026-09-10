@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safe Semantic Planner | PCCST503 Interactive Demonstration</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo-area">
+            <span class="badge-tag">PCCST503</span>
+            <div>
+                <h1>Safe Semantic Planner</h1>
+                <div class="sub-title">Finite Cartesian State Space | Lifelong Planning A* & D* Lite</div>
+            </div>
+        </div>
+        <div class="header-status">
+            <div class="live-indicator">
+                <span class="pulse-dot"></span>
+                <span>REAL-TIME REPLANNING ACTIVE</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="app-container">
+        <!-- Left Panel: Configuration & Dynamic Tools -->
+        <aside class="panel">
+            <div class="panel-title">
+                <span>⚙️</span>
+                <span>Planning Problem</span>
+            </div>
+
+            <div class="control-group">
+                <label for="scenarioSelect">Select Scenario / Test Case</label>
+                <select id="scenarioSelect">
+                    <option value="testcase1">Test Case 1: Basic Reachability</option>
+                    <option value="testcase2">Test Case 2: Bad State Avoidance</option>
+                    <option value="testcase3">Test Case 3: Safety Margin Optimization</option>
+                    <option value="testcase4">Test Case 4: Dynamic Transition Blockage</option>
+                    <option value="testcase5">Test Case 5: Dynamic Goal State Update</option>
+                    <option value="testcase6">Test Case 6: Dynamic Shortcut Insertion</option>
+                    <option value="random_graph">Large Complex Semantic Mesh (16 Nodes)</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="algoSelect">Search Engine / Algorithm</label>
+                <select id="algoSelect">
+                    <option value="lpastar">Lifelong Planning A* (LPA*)</option>
+                    <option value="dstarlite">D* Lite (Incremental Heuristic)</option>
+                </select>
+            </div>
+
+            <!-- Dynamic Interactive Scenario Trigger Button -->
+            <button id="dynamicActionBtn" class="btn-primary" style="display: none;">
+                ⚡ Trigger Dynamic Event
+            </button>
+
+            <div class="panel-title" style="margin-top: 0.5rem;">
+                <span>🎯</span>
+                <span>Objective Weights</span>
+            </div>
+
+            <div class="control-group">
+                <label>Goal Completion (&alpha;): <span id="valAlpha">100</span></label>
+                <input type="range" id="sliderAlpha" min="0" max="200" value="100" step="5">
+            </div>
+
+            <div class="control-group">
+                <label>Transition Cost Weight (&beta;): <span id="valBeta">1.0</span></label>
+                <input type="range" id="sliderBeta" min="0.1" max="5.0" value="1.0" step="0.1">
+            </div>
+
+            <div class="control-group">
+                <label>Safety Clearance Weight (&gamma;): <span id="valGamma">5.0</span></label>
+                <input type="range" id="sliderGamma" min="0.0" max="30.0" value="5.0" step="0.5">
+            </div>
+
+            <div class="control-group">
+                <label>Reliability Weight (&delta;): <span id="valDelta">2.0</span></label>
+                <input type="range" id="sliderDelta" min="0.0" max="10.0" value="2.0" step="0.2">
+            </div>
+
+            <div class="control-group">
+                <label>Safety Halo Radius (D<sub>safe</sub>): <span id="valSafetyRadius">3.0</span></label>
+                <input type="range" id="sliderSafetyRadius" min="1.0" max="6.0" value="3.0" step="0.2">
+            </div>
+
+            <div class="interactive-hint">
+                💡 <strong>Interactive Controls:</strong><br>
+                • <strong>Click any Node:</strong> Toggle Bad State (Hazard) in real time.<br>
+                • <strong>Click any Edge:</strong> Cut / Restore transition link to test incremental replanning.
+            </div>
+        </aside>
+
+        <!-- Center Panel: Cartesian State-Space Visualizer -->
+        <section class="canvas-panel">
+            <div class="canvas-toolbar">
+                <div id="scenarioDesc" class="scenario-info-banner">
+                    Loading scenario...
+                </div>
+            </div>
+
+            <div class="canvas-wrapper">
+                <canvas id="plannerCanvas"></canvas>
+
+                <div class="canvas-legend">
+                    <div class="legend-item">
+                        <span class="legend-dot" style="background: #10b981;"></span>
+                        <span>Start (s<sub>I</sub>)</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-dot" style="background: #a855f7;"></span>
+                        <span>Goal (s<sub>G</sub>)</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-dot" style="background: #f43f5e;"></span>
+                        <span>Bad State (Hazard)</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-dot" style="background: #38bdf8;"></span>
+                        <span>Active Trajectory</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Panel: Telemetry & LPA* State Inspector -->
+        <aside class="panel">
+            <div class="panel-title">
+                <span>📊</span>
+                <span>Live Telemetry</span>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <span class="metric-label">Total Cost (C)</span>
+                    <span id="metricCost" class="metric-value highlight-blue">0.00</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-label">Min Clearance (D)</span>
+                    <span id="metricClearance" class="metric-value highlight-green">0.00</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-label">Reliability (R)</span>
+                    <span id="metricReliability" class="metric-value highlight-amber">100%</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-label">Bad Visits</span>
+                    <span id="metricBadVisits" class="metric-value highlight-green">0</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-label">Planning Time</span>
+                    <span id="metricTime" class="metric-value">0.00 ms</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-label">Explored Nodes</span>
+                    <span id="metricExplored" class="metric-value">0</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label>Composite Objective Score:</label>
+                <div id="metricScore" class="metric-value highlight-green" style="font-size: 1.3rem;">0.00</div>
+            </div>
+
+            <div class="control-group">
+                <label>Active Trajectory Sequence:</label>
+                <div id="pathDisplay" class="path-display-box">Computing path...</div>
+            </div>
+
+            <div class="panel-title" style="margin-top: 0.5rem;">
+                <span>🔍</span>
+                <span>LPA* Vertex Estimates</span>
+            </div>
+
+            <div style="overflow-x: auto; max-height: 220px;">
+                <table class="state-table">
+                    <thead>
+                        <tr>
+                            <th>State</th>
+                            <th>g(s)</th>
+                            <th>rhs(s)</th>
+                            <th>Key [k1, k2]</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stateTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </aside>
+    </main>
+
+    <!-- Scripts -->
+    <script src="planner_engine.js"></script>
+    <script src="test_scenarios.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

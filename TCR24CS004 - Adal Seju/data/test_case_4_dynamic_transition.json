@@ -1,0 +1,21 @@
+{
+  "testName": "Test Case 4: Dynamic Transition",
+  "description": "Primary path S->A->G fails when edge (A, G) is disabled, triggering incremental rerouting to S->B->C->G.",
+  "initialState": 1,
+  "goalState": 3,
+  "badStates": [],
+  "states": [
+    {"id": 1, "embedding": [0.0, 0.0], "label": "S (Start)"},
+    {"id": 2, "embedding": [1.0, 1.0], "label": "A (Primary)"},
+    {"id": 3, "embedding": [2.0, 0.0], "label": "G (Goal)"},
+    {"id": 4, "embedding": [0.8, -1.0], "label": "B (Bypass)"},
+    {"id": 5, "embedding": [1.4, -1.0], "label": "C (Bypass)"}
+  ],
+  "transitions": [
+    {"id": 1, "from": 1, "to": 2, "cost": 1.0, "safety": 1.0, "reliability": 1.0, "available": true},
+    {"id": 2, "from": 2, "to": 3, "cost": 1.0, "safety": 1.0, "reliability": 1.0, "available": false},
+    {"id": 3, "from": 1, "to": 4, "cost": 1.2, "safety": 1.0, "reliability": 1.0, "available": true},
+    {"id": 4, "from": 4, "to": 5, "cost": 1.0, "safety": 1.0, "reliability": 1.0, "available": true},
+    {"id": 5, "from": 5, "to": 3, "cost": 1.2, "safety": 1.0, "reliability": 1.0, "available": true}
+  ]
+}

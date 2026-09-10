@@ -1,0 +1,25 @@
+Sample experimental outcomes
+
+Test 1: Basic Reachability
+Success: true
+Path: 1 -> 2 -> 3 -> 4
+
+Test 2: Bad State Avoidance
+Success: true
+Path: 1 -> 4 -> 5 -> 6
+
+Test 3: Safety Margin
+Success: true
+Path: 1 -> 5 -> 6
+
+Test 4: Dynamic Transition
+Before removal: 1 -> 2 -> 4
+After removal:  1 -> 3 -> 4
+
+Test 5: Goal Update
+Original goal: 1 -> 5 -> 3 -> 4
+New goal:      1 -> 5
+
+Test 6: Transition Addition
+Before shortcut: no path
+After shortcut:  1 -> 2 -> 4

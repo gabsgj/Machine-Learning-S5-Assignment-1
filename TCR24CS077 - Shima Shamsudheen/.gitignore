@@ -1,0 +1,18 @@
+# Build outputs
+*.exe
+*.o
+*.obj
+safe_planner_test
+experiment
+build/
+out/
+
+# VS Code
+.vscode/*
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/c_cpp_properties.json
+
+# OS junk
+.DS_Store
+Thumbs.db

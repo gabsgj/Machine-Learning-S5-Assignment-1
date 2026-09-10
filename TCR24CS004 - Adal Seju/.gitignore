@@ -1,0 +1,10 @@
+# Binaries and build outputs
+bin/
+*.exe
+*.o
+*.obj
+*.pdb
+*.ilk
+.vscode/
+.idea/
+.DS_Store
