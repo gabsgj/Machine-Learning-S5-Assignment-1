@@ -79,7 +79,7 @@ This repository is a consolidated collection of student submissions for **Machin
 | 56 | `TCR24CS058` | Royce Pathayil Saji | ✅ Submitted | [TCR24CS058 - Royce Pathayil Saji](./TCR24CS058%20-%20Royce%20Pathayil%20Saji) |
 | 57 | `TCR24CS059` | Sahil Shaji | ✅ Submitted | [TCR24CS059 - Sahil Shaji](./TCR24CS059%20-%20Sahil%20Shaji) |
 | 58 | `TCR24CS060` | Shazia | ✅ Submitted | [TCR24CS060 - Shazia](./TCR24CS060%20-%20Shazia) |
-| 59 | `TCR24CS061` | Shivas Seagal Ks | ✅ Submitted | [TCR24CS061 - Shivas Seagal Ks](./TCR24CS061%20-%20Shivas%20Seagal%20Ks) *(Google Colab)* |
+| 59 | `TCR24CS061` | Shivas Seagal Ks | ✅ Submitted | [TCR24CS061 - Shivas Seagal Ks](./TCR24CS061%20-%20Shivas%20Seagal%20Ks) |
 | 60 | `TCR24CS062` | Shobin Pn | ✅ Submitted | [TCR24CS062 - Shobin Pn](./TCR24CS062%20-%20Shobin%20Pn) |
 | 61 | `TCR24CS063` | Sidharth V Jain | ✅ Submitted | [TCR24CS063 - Sidharth V Jain](./TCR24CS063%20-%20Sidharth%20V%20Jain) |
 | 62 | `TCR24CS064` | Sivanandha K | ✅ Submitted | [TCR24CS064 - Sivanandha K](./TCR24CS064%20-%20Sivanandha%20K) |
