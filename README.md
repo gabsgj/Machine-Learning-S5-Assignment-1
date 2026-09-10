@@ -14,7 +14,6 @@ This repository is a consolidated collection of student submissions for **Machin
 | **Total Students** | 76 |
 | **Submissions Received** | 71 |
 | **Missing / Pending** | 5 |
-| **Submission Rate** | 93.4% |
 
 ---
 
@@ -101,8 +100,8 @@ This repository is a consolidated collection of student submissions for **Machin
 
 ---
 
-### 🛠️ Repository Synchronization
+<!-- ### 🛠️ Repository Synchronization
 To synchronize or fetch updated submissions, run:
 ```bash
 python3 fetch_repos.py
-```
+``` -->
