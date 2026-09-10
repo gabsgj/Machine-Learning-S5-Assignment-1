@@ -12,9 +12,9 @@ This repository is a consolidated collection of student submissions for **Machin
 | Metric | Count |
 | :--- | :--- |
 | **Total Students** | 76 |
-| **Submissions Received** | 69 |
-| **Missing / Pending** | 7 |
-| **Submission Rate** | 90.8% |
+| **Submissions Received** | 71 |
+| **Missing / Pending** | 5 |
+| **Submission Rate** | 93.4% |
 
 ---
 
@@ -44,7 +44,7 @@ This repository is a consolidated collection of student submissions for **Machin
 | 20 | `TCR24CS021` | Cilla Elsa Binoy | ✅ Submitted | [TCR24CS021 - Cilla Elsa Binoy](./TCR24CS021%20-%20Cilla%20Elsa%20Binoy) |
 | 21 | `TCR24CS022` | David Chacko Binoy | ✅ Submitted | [TCR24CS022 - David Chacko Binoy](./TCR24CS022%20-%20David%20Chacko%20Binoy) |
 | 22 | `TCR24CS023` | Devanandan JY | ✅ Submitted | [TCR24CS023 - Devanandan JY](./TCR24CS023%20-%20Devanandan%20JY) |
-| 23 | `TCR24CS024` | Devika S | ❌ **Missing** | *Not Submitted* |
+| 23 | `TCR24CS024` | Devika S | ✅ Submitted | [TCR24CS024 - Devika S](./TCR24CS024%20-%20Devika%20S) |
 | 24 | `TCR24CS025` | Dilshath P K | ✅ Submitted | [TCR24CS025 - Dilshath P K](./TCR24CS025%20-%20Dilshath%20P%20K) |
 | 25 | `TCR24CS026` | Emilin Suresh | ✅ Submitted | [TCR24CS026 - Emilin Suresh](./TCR24CS026%20-%20Emilin%20Suresh) |
 | 26 | `TCR24CS027` | Farha T K | ✅ Submitted | [TCR24CS027 - Farha T K](./TCR24CS027%20-%20Farha%20T%20K) |
@@ -71,7 +71,7 @@ This repository is a consolidated collection of student submissions for **Machin
 | 47 | `TCR24CS049` | Muhammad Shanidh T P | ❌ **Missing** | *Not Submitted* |
 | 48 | `TCR24CS050` | Nandana Sasikumar | ✅ Submitted | [TCR24CS050 - Nandana Sasikumar](./TCR24CS050%20-%20Nandana%20Sasikumar) |
 | 49 | `TCR24CS051` | Nayana Shaji Mekkunnel | ✅ Submitted | [TCR24CS051 - Nayana Shaji Mekkunnel](./TCR24CS051%20-%20Nayana%20Shaji%20Mekkunnel) |
-| 50 | `TCR24CS052` | Nevin Beno | ❌ **Missing** | *Not Submitted* |
+| 50 | `TCR24CS052` | Nevin Beno | ✅ Submitted | [TCR24CS052 - Nevin Beno](./TCR24CS052%20-%20Nevin%20Beno) |
 | 51 | `TCR24CS053` | Niranjana Kanjoor | ✅ Submitted | [TCR24CS053 - Niranjana Kanjoor](./TCR24CS053%20-%20Niranjana%20Kanjoor) |
 | 52 | `TCR24CS054` | NIRANJAN PP | ✅ Submitted | [TCR24CS054 - NIRANJAN PP](./TCR24CS054%20-%20NIRANJAN%20PP) |
 | 53 | `TCR24CS055` | Pavithra S | ✅ Submitted | [TCR24CS055 - Pavithra S](./TCR24CS055%20-%20Pavithra%20S) |

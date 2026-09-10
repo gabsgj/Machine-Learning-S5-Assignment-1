@@ -156,7 +156,9 @@ USERNAME_TO_REG = {
     'sreelekshmi-h': 'TCR24CS067',
     'sreelekshmi-harikumar': 'TCR24CS068',
     'surya-t-s': 'TCR24CS069',
-    'vrindhap': 'TCR24CS071'
+    'vrindhap': 'TCR24CS071',
+    'devikashilu': 'TCR24CS024',
+    'nevinbeno': 'TCR24CS052'
 }
 
 def remove_readonly(func, path, excinfo):
