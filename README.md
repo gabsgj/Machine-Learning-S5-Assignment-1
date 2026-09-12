@@ -1,4 +1,4 @@
-# Machine Learning - S4 Assignments
+# Machine Learning - S5 Assignments
 
 ## Assignment 1: Design of a Safe Semantic Planner in a Finite Cartesian State Space
 **Course:** PCCST503 - Machine Learning | **Institution:** Government Engineering College, Thrissur (GECT)
