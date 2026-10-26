@@ -153,6 +153,7 @@ USERNAME_TO_REG = {
     'sidharthvjain': 'TCR24CS063',
     'lumberrjackk': 'TCR24CS064',
     'pixelprogrammer4209': 'TCR24CS065',
+    'sreehari8059': 'TCR24CS066',
     'sreelekshmi-h': 'TCR24CS067',
     'sreelekshmi-harikumar': 'TCR24CS068',
     'surya-t-s': 'TCR24CS069',

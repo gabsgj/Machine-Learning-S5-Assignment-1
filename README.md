@@ -12,8 +12,8 @@ This repository is a consolidated collection of student submissions for **Machin
 | Metric | Count |
 | :--- | :--- |
 | **Total Students** | 76 |
-| **Submissions Received** | 71 |
-| **Missing / Pending** | 5 |
+| **Submissions Received** | 72 |
+| **Missing / Pending** | 4 |
 
 ---
 
@@ -84,7 +84,7 @@ This repository is a consolidated collection of student submissions for **Machin
 | 61 | `TCR24CS063` | Sidharth V Jain | ✅ Submitted | [TCR24CS063 - Sidharth V Jain](./TCR24CS063%20-%20Sidharth%20V%20Jain) |
 | 62 | `TCR24CS064` | Sivanandha K | ✅ Submitted | [TCR24CS064 - Sivanandha K](./TCR24CS064%20-%20Sivanandha%20K) |
 | 63 | `TCR24CS065` | Sooraj K R | ✅ Submitted | [TCR24CS065 - Sooraj K R](./TCR24CS065%20-%20Sooraj%20K%20R) |
-| 64 | `TCR24CS066` | Sreehari M Nambiar | ❌ **Missing** | *Not Submitted* |
+| 64 | `TCR24CS066` | Sreehari M Nambiar | ✅ Submitted | [TCR24CS066 - Sreehari M Nambiar](./TCR24CS066%20-%20Sreehari%20M%20Nambiar) |
 | 65 | `TCR24CS067` | Sreelekshmi H | ✅ Submitted | [TCR24CS067 - Sreelekshmi H](./TCR24CS067%20-%20Sreelekshmi%20H) |
 | 66 | `TCR24CS068` | Sreelekshmi Harikumar | ✅ Submitted | [TCR24CS068 - Sreelekshmi Harikumar](./TCR24CS068%20-%20Sreelekshmi%20Harikumar) |
 | 67 | `TCR24CS069` | Surya T S | ✅ Submitted | [TCR24CS069 - Surya T S](./TCR24CS069%20-%20Surya%20T%20S) |

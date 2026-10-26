@@ -1,0 +1,7 @@
+TestCase,Success,BadStatesVisited,TotalPathCost,MinimumSafetyDistance,SafetyScore,ExploredStates,PlanningTimeMs,ReplanningTimeMs,MemoryUsageBytes
+1,1,0,3.0000,0.0000,0.9500,4,0.0000,0.0000,672
+2,1,0,3.2000,1.0000,0.9500,4,0.0000,0.0000,1104
+3,1,0,6.0000,3.0000,0.9800,6,0.0000,0.0000,1248
+4,1,0,3.0000,0.0000,0.9500,3,0.0000,0.0000,728
+5,1,0,2.0000,0.0000,0.9500,3,0.0000,0.0000,1104
+6,1,0,0.5000,0.0000,0.9800,2,0.0000,1.0640,1032
