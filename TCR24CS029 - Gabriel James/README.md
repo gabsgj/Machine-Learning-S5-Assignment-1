@@ -1,12 +1,12 @@
 # Safe Semantic Planner (SSP)
 
 [![C++17](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](https://en.cppreference.com/w/cpp/17)
-[![Developer: Gabriel James](https://img.shields.io/badge/developer-Gabriel%20James-6366f1.svg)](https://ssp.gabrieljames.me)
+[![Developer: Gabriel James](https://img.shields.io/badge/developer-Gabriel%20James-6366f1.svg)](https://ssp.gabrieljames.dev)
 [![Zero Cloud Dependencies](https://img.shields.io/badge/offline-100%25%20local-orange.svg)]()
 
 
 **Developer**: Gabriel James  
-**Live Demo**: [ssp.gabrieljames.me](https://ssp.gabrieljames.me)
+**Live Demo**: [ssp.gabrieljames.dev](https://ssp.gabrieljames.dev)
 ---
 **Register Number**: TCR24CS029
 
@@ -66,7 +66,7 @@ High-dimensional real-time safe motion and semantic workflow planning engine in 
 │  │                 EMBEDDED C++ WEBSERVER & REST API                     │  │
 │  │  • 2D Graph / 3D Isometric / Pipeline Flow / Data Matrix Perspectives │  │
 │  │  • Rich Hover Tooltips, Drag & Pan Map, Enriched JSON Path Exports    │  │
-│  │  • Live Production Service at ssp.gabrieljames.me                     │  │
+│  │  • Live Production Service at ssp.gabrieljames.dev                     │  │
 │  └───────────────────────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -89,7 +89,7 @@ make test
 ```bash
 make server
 ```
-Open **`http://localhost:8080`** in your browser, or visit **`https://ssp.gabrieljames.me`**.
+Open **`http://localhost:8080`** in your browser, or visit **`https://ssp.gabrieljames.dev`**.
 
 ---
 

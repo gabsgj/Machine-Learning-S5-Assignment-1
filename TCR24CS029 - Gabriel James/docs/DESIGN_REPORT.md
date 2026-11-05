@@ -2,7 +2,7 @@
 ## Architectural Design & Theoretical Report
 
 **Standard**: C++17 Header-Only Planning Engine + Single-Binary Embedded HTTP/REST Visualizer  
-**Live Production URL**: [ssp.gabrieljames.me](https://ssp.gabrieljames.me)  
+**Live Production URL**: [ssp.gabrieljames.dev](https://ssp.gabrieljames.dev)  
 
 ---
 

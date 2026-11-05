@@ -3,7 +3,7 @@
 
 **Standard**: C++17 Native Engine  
 **Platform**: macOS Apple Silicon / Linux x86_64 (Clang `-O3`, POSIX Threads)  
-**Live Production URL**: [ssp.gabrieljames.me](https://ssp.gabrieljames.me)  
+**Live Production URL**: [ssp.gabrieljames.dev](https://ssp.gabrieljames.dev)  
 
 ---
 

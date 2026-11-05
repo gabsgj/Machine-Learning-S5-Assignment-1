@@ -2,7 +2,7 @@
 ## Comprehensive User Manual & Operational Runbook
 
 **Standard**: C++17 Header-Only Library + Single-Binary Embedded HTTP Visualizer  
-**Live Production URL**: [ssp.gabrieljames.me](https://ssp.gabrieljames.me)  
+**Live Production URL**: [ssp.gabrieljames.dev](https://ssp.gabrieljames.dev)  
 **Local Visualizer URL**: `http://localhost:8080`  
 
 ---
@@ -108,7 +108,7 @@ Launch the local web server:
 ```bash
 make server
 ```
-Then open `http://localhost:8080` in your web browser, or access the live deployed instance at **[ssp.gabrieljames.me](https://ssp.gabrieljames.me)**.
+Then open `http://localhost:8080` in your web browser, or access the live deployed instance at **[ssp.gabrieljames.dev](https://ssp.gabrieljames.dev)**.
 
 ### 4.1 Four Visualizer Perspectives
 - **2D Graph Mode**: Interactive continuous vector space canvas. Supports deep zoom ($0.02\times$ to $50\times$), pan (drag empty canvas), and live node relocation with sub-microsecond replanning.
